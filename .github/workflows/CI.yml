@@ -57,31 +57,51 @@ jobs:
           apt update
           apt install -y openjdk-11-jre-headless
 
-      # Using Unity Test Runner through CLI, Run Edit Mode Tests
-      - name: Run Edit-Mode Tests
-        run: unity-editor -nographics -logFile /dev/stdout -runTests -testPlatform editmode -testResults Tests/editmode-results.xml -enableCodeCoverage -coverageResultsPath Tests -debugCodeOptimization 
-        timeout-minutes: 20
-        
-      # Using Unity Test Runner through CLI, Run Play Mode Tests  
-      - name: Run Play-Mode Tests
-        run: unity-editor -nographics -logFile /dev/stdout -runTests -testPlatform playmode -testResults Tests/playmode-results.xml -enableCodeCoverage -coverageResultsPath Tests -debugCodeOptimization 
-        timeout-minutes: 20
+      # Using GameCI's Unity Test Runner, Run Tests via CLI
+      - name: Unity EditMode Test Runner via CLI
+        uses: game-ci/unity-test-runner@v2
+        id: edit-tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: NaturalSelectionSimulation
+          testMode: editmode
+          artifactsPath: editmode-artifacts
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: editmode Test Results
+          customParameters: -nographics -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./CodeCoverage -coverageOptions generateAdditionalMetrics
+          unityVersion: 2020.3.25f1
 
-      # Upload Test Results  as Artifacts
-      - name: Archive Test Results
-        uses: actions/upload-artifact@v2.3.1
+      # Using GameCI's Unity Test Runner, Run Tests via CLI
+      - name: Unity PlayMode Test Runner via CLI
+        uses: game-ci/unity-test-runner@v2
+        id: play-tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: NaturalSelectionSimulation
+          testMode: playmode
+          artifactsPath: playmode-artifacts
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: playmode Test Results
+          customParameters: -nographics -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./CodeCoverage -coverageOptions generateAdditionalMetrics
+          unityVersion: 2020.3.25f1
+
+      # Upload Test Results as Artifacts for each testMode matrix
+      - name: Upload EditMode Results as Artifacts
+        uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: Test Results
-          path: Tests
-
-      # Publish Test Results Using NUnit-Reporter
-      - name: Publish Test Results
-        uses: MirageNet/nunit-reporter@v1.0.11
+          name: Test results for editMode
+          path: ${{ steps.edit-tests.outputs.artifactsPath }}
+      
+       # Upload Test Results as Artifacts for each testMode matrix
+      - name: Upload PlayMode Results as Artifacts
+        uses: actions/upload-artifact@v2
         if: always()
         with:
-          path: "Tests/*.xml"
-          access-token: ${{ secrets.GITHUB_TOKEN }}
+          name: Test results for playMode
+          path: ${{ steps.play-tests.outputs.artifactsPath }}
 
       # Builds dontnet solution of project for SonarCloud analysis
       - name: Generate Solution
