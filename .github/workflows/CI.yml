@@ -2,11 +2,10 @@
 #   Uses: SonarCloud, GameCI, UnityTestRunner,
 #   From: Mirage, SonarCloud, and Fathom7
 
-name: Continuous Integration
+name: CI
 on:
   push:
-    branches:
-      - main
+    branches: [main, dev]
     paths-ignore:
       - 'docs/**'
       - '*.md'
@@ -52,10 +51,11 @@ jobs:
 
       # Install dotnet version of the SonarScanner tool via SonarCloud
       - name: Install Sonar Scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: |
           $DOTNET_ROOT/dotnet tool install dotnet-sonarscanner --tool-path . --version 5.2.0
           apt update
-          apt install -y openjdk-11-jre-headless=11.0.11+9-0ubuntu2~18.04
+          apt install -y openjdk-11-jre-headless
 
       # Builds dontnet solution of project for SonarCloud analysis
       - name: Generate Solution
