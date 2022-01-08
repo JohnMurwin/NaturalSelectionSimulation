@@ -57,6 +57,24 @@ jobs:
           apt update
           apt install -y openjdk-11-jre-headless
 
+      # Using Unity Test Runner through CLI, Run Edit Mode Tests
+      - name: Run Edit-Mode Tests
+        run: unity-editor -nographics -logFile /dev/stdout -runTests -testPlatform editmode -testResults Tests/editmode-results.xml -enableCodeCoverage -coverageResultsPath Tests -debugCodeOptimization 
+        timeout-minutes: 20
+        
+      # Using Unity Test Runner through CLI, Run Play Mode Tests  
+      - name: Run Play-Mode Tests
+        run: unity-editor -nographics -logFile /dev/stdout -runTests -testPlatform playmode -testResults Tests/playmode-results.xml -enableCodeCoverage -coverageResultsPath Tests -debugCodeOptimization 
+        timeout-minutes: 20
+
+      # Upload Test Results  as Artifacts
+      - name: Archive Test Results
+        uses: actions/upload-artifact@v2.3.1
+        if: always()
+        with:
+          name: Test Results
+          path: Tests
+
       # Builds dontnet solution of project for SonarCloud analysis
       - name: Generate Solution
         run: unity-editor -nographics -logFile /dev/stdout -customBuildName NaturalSelectionSimulation -projectPath NaturalSelectionSimulation -executeMethod  UnityEditor.SyncVS.SyncSolution -quit
