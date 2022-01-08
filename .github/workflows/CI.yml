@@ -75,6 +75,14 @@ jobs:
           name: Test Results
           path: Tests
 
+      # Publish Test Results Using NUnit-Reporter
+      - name: Publish Test Results
+        uses: MirageNet/nunit-reporter@v1.0.11
+        if: always()
+        with:
+          path: "Tests/*.xml"
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+
       # Builds dontnet solution of project for SonarCloud analysis
       - name: Generate Solution
         run: unity-editor -nographics -logFile /dev/stdout -customBuildName NaturalSelectionSimulation -projectPath NaturalSelectionSimulation -executeMethod  UnityEditor.SyncVS.SyncSolution -quit
@@ -94,5 +102,9 @@ jobs:
             /d:sonar.login=$SONAR_TOKEN \
             /d:sonar.host.url=https://sonarcloud.io \
             /d:sonar.exclusions=Assets/Plugins/**,Assets/_Demo/**
+            /d:sonar.cpd.exclusions=Assets/NaturalSelectionSimulation/Tests/** \
+            /d:sonar.coverage.exclusions=Assets/NaturalSelectionSimulation/Tests/** \
+            /d:sonar.cs.nunit.reportsPaths=Tests/editmode-results.xml,Tests/playmode-results.xml \
+            /d:sonar.cs.opencover.reportsPaths=Tests/NaturalSelectionSimulation-opencov/EditMode/TestCoverageResults_0000.xml,Tests/NaturalSelectionSimulation-opencov/PlayMode/TestCoverageResults_0000.xml
           $DOTNET_ROOT/dotnet build NaturalSelectionSimulation/NaturalSelectionSimulation.sln
           ./dotnet-sonarscanner end /d:sonar.login=$SONAR_TOKEN
