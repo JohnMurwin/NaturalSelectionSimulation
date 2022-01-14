@@ -75,6 +75,6 @@ jobs:
             /d:sonar.verbose=false \
             /d:sonar.login=$SONAR_TOKEN \
             /d:sonar.host.url=https://sonarcloud.io \
-            /d:sonar.exclusions=Assets/Plugins/**,Assets/_Demo/** \
+            /d:sonar.exclusions=Assets/Plugins/**,Assets/_Demo/**
           $DOTNET_ROOT/dotnet build NaturalSelectionSimulation/NaturalSelectionSimulation.sln
           ./dotnet-sonarscanner end /d:sonar.login=$SONAR_TOKEN
