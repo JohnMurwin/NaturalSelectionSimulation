@@ -57,52 +57,6 @@ jobs:
           apt update
           apt install -y openjdk-11-jre-headless
 
-      # Using GameCI's Unity Test Runner, Run Tests via CLI
-      - name: Unity EditMode Test Runner via CLI
-        uses: game-ci/unity-test-runner@v2
-        id: edit-tests
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-        with:
-          projectPath: NaturalSelectionSimulation
-          testMode: editmode
-          artifactsPath: editmode-artifacts
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: editmode Test Results
-          customParameters: -nographics -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./CodeCoverage -coverageOptions generateAdditionalMetrics
-          unityVersion: 2020.3.25f1
-
-      # Using GameCI's Unity Test Runner, Run Tests via CLI
-      - name: Unity PlayMode Test Runner via CLI
-        uses: game-ci/unity-test-runner@v2
-        id: play-tests
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-        with:
-          projectPath: NaturalSelectionSimulation
-          testMode: playmode
-          artifactsPath: playmode-artifacts
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: playmode Test Results
-          customParameters: -nographics -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./CodeCoverage -coverageOptions generateAdditionalMetrics
-          unityVersion: 2020.3.25f1
-
-      # Upload Test Results as Artifacts for each testMode matrix
-      - name: Upload EditMode Results as Artifacts
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: Test results for editMode
-          path: ${{ steps.edit-tests.outputs.artifactsPath }}
-      
-       # Upload Test Results as Artifacts for each testMode matrix
-      - name: Upload PlayMode Results as Artifacts
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: Test results for playMode
-          path: ${{ steps.play-tests.outputs.artifactsPath }}
-
       # Builds dontnet solution of project for SonarCloud analysis
       - name: Generate Solution
         run: unity-editor -nographics -logFile /dev/stdout -customBuildName NaturalSelectionSimulation -projectPath NaturalSelectionSimulation -executeMethod  UnityEditor.SyncVS.SyncSolution -quit
@@ -122,9 +76,5 @@ jobs:
             /d:sonar.login=$SONAR_TOKEN \
             /d:sonar.host.url=https://sonarcloud.io \
             /d:sonar.exclusions=Assets/Plugins/**,Assets/_Demo/** \
-            /d:sonar.cpd.exclusions=Assets/NaturalSelectionSimulation/Tests/** \
-            /d:sonar.coverage.exclusions=Assets/NaturalSelectionSimulation/Tests/** \
-            /d:sonar.cs.nunit.reportsPaths=Tests/editmode-results.xml,Tests/playmode-results.xml \
-            /d:sonar.cs.opencover.reportsPaths=Tests/NaturalSelectionSimulation-opencov/EditMode/TestCoverageResults_0000.xml,Tests/NaturalSelectionSimulation-opencov/PlayMode/TestCoverageResults_0000.xml
           $DOTNET_ROOT/dotnet build NaturalSelectionSimulation/NaturalSelectionSimulation.sln
           ./dotnet-sonarscanner end /d:sonar.login=$SONAR_TOKEN
