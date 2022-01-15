@@ -179,7 +179,7 @@ jobs:
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          customImage: 'unityci/editor:2020.3.25f1-base-0.15.0'
+          customImage: 'unityci/editor:2020.3.26f1-base-0.15.0'
           projectPath: NaturalSelectionSimulation
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Custom
