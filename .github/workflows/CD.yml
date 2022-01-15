@@ -1,0 +1,114 @@
+#   Continuous Deployment Pipeline
+#   Uses: GameCI, Butler for Github
+#   From: John Murwin, Fathom7
+
+name: CD
+on:
+  push:
+    branches: [main, dev, release/**]
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+env:
+  ITCH_USERNAME: johnmurwin
+  ITCH_GAME_ID: natural-selection-simulation-interaction
+
+jobs:
+  BuildProject:
+    name: Build for ${{ matrix.targetPlatform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - StandaloneLinux64 # Build a Linux 64-bit standalone.
+    
+    steps:
+      # First checkout the repo with both LFS and FetchDepth 0 for full commit
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          lfs: true
+      
+      # Cache project for future speed
+      - name: Cache Project Library for next Build
+        uses: actions/cache@v2
+        with:
+          path: NaturalSelectionSimulation/Library
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
+      
+      # Read from file and assign to outputs object
+      - name: Version Assignmnet
+        id: versionOutput
+        run: |
+          read -r firstline < ".github/versionNum.txt"
+          echo ::set-output name=semVer::$firstline
+      
+      # Use GameCI to build project with TargetPlatform Matrix
+      - uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: NaturalSelectionSimulation
+          targetPlatform: ${{ matrix.targetPlatform }}
+          versioning: Custom
+          version: ${{ steps.versionOutput.outputs.semVer }}
+      
+      # Upload Build Artifacts *for Butler Deploys*
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+          
+          
+  DevDeployToItch:
+    name: Deploy to 'Dev' Itch.io Branch
+    runs-on: ubuntu-latest
+    if: ${{ github.ref_name == 'dev' }}
+    strategy: 
+      fail-fast: true
+      matrix:
+        channel:
+          - macos
+          - windows
+          - webgl
+        targetPlatform:
+          - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - StandaloneLinux64
+    
+    steps:
+      # # First checkout the repo with FetchDepth 0 for full commit
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
+      # Download Build Artifacts for Deploy with Butler
+      - name: Download Build Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: Build-${{ matrix.targetPlatform }}
+        path: build/${{ matrix.targetPlatform }}
+            
+      # Read Version from file and assign to outputs object
+      - name: Version Assignmnet
+      id: versionOutput
+      run: |
+        read -r firstline < ".github/versionNum.txt"
+        echo ::set-output name=semVer::$firstline
+
+      - name: Upload to Itch  
+        uses: KikimoraGames/itch-publish@v0.0.3
+        with:
+          butlerApiKey: ${{secrets.BUTLER_TOKEN}}
+          gameData: build/${{ matrix.targetPlatform }}
+          itchUsername: ${{env.ITCH_USERNAME}}
+          itchGameId: ${{ env.ITCH_GAME_ID }}
+          buildChannel: ${{ matrix.channel }}-dev
+          buildNumber: ${{ steps.versionOutput.outputs.semVer }}-dev
+      
