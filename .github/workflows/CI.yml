@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     # available list of containers here:
     # https://hub.docker.com/r/unityci/editor/tags?page=1&ordering=last_updated&name=ubuntu-2020.1.17f1-base
-    container: unityci/editor:ubuntu-2020.3.25f1-base-0.15.0
+    container: unityci/editor:ubuntu-2020.3.26f1-base-0.15.0
     env:
       DOTNET_ROOT: '/opt/unity/Editor/Data/NetCore/Sdk-2.2.107'
 
@@ -47,7 +47,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: Library
-          key: Library-2020.3.25
+          key: Library-2020.3.26
 
       # Install dotnet version of the SonarScanner tool via SonarCloud
       - name: Install Sonar Scanner
@@ -120,7 +120,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: ${{ matrix.testMode }} Test Results
           customParameters: -nographics -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./CodeCoverage -coverageOptions generateAdditionalMetrics
-          unityVersion: 2020.3.25f1
+          unityVersion: 2020.3.26f1
       
       # Upload Code Coverage XML Reports to CodeCov
       - name: Upload XML report to Codecov
@@ -179,7 +179,6 @@ jobs:
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          customImage: 'unityci/editor:2020.3.26f1-base-0.15.0'
           projectPath: NaturalSelectionSimulation
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Custom
