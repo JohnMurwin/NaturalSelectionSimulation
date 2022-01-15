@@ -174,17 +174,20 @@ jobs:
           echo ::set-output name=semVer::$firstline
 
       # Use GameCI to build project with TargetPlatform Matrix
-      - uses: game-ci/unity-builder@v2
+      - name: Build Matrix with UnityBuilder@v2  
+        uses: game-ci/unity-builder@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
+          customImage: 'unityci/editor:2020.3.25f1-base-0.15.0'
           projectPath: NaturalSelectionSimulation
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Custom
           version: ${{ steps.versionOutput.outputs.semVer }}
 
       # Upload Build Artifacts *for PR's*
-      - uses: actions/upload-artifact@v2
+      - name: Upload Build Artifacts with Matrix 
+        uses: actions/upload-artifact@v2
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
