@@ -64,51 +64,6 @@ jobs:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
           
-          
-  MainDeployToItch:
-    name: Deploy to 'Main' Itch.io Branch
-    runs-on: ubuntu-latest
-    if: ${{ github.ref_name == 'main' }}
-    needs: BuildProject
-    strategy:
-      fail-fast: true
-      matrix:
-        channel:
-          - macos
-          - windows
-          - webgl
-    
-    steps:
-      # First checkout the repo with FetchDepth 0 for full commit
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      
-      # Download Build Artifacts for Deploy with Butler
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: Build-StandaloneOSX
-          path: build/StandaloneOSX
-      
-      # Read Version from file and assign to outputs object
-      - name: Version Assignmnet
-        id: versionOutput
-        run: |
-          read -r firstline < ".github/versionNum.txt"
-          echo ::set-output name=semVer::$firstline
-
-      - name: Upload to Itch
-        uses: KikimoraGames/itch-publish@v0.0.3
-        with:
-          butlerApiKey: ${{secrets.BUTLER_TOKEN}}
-          gameData: build/StandaloneOSX
-          itchUsername: ${{env.ITCH_USERNAME}}
-          itchGameId: ${{ env.ITCH_GAME_ID }}
-          buildChannel: macos
-          buildNumber: ${{ steps.versionOutput.outputs.semVer }}
-  
   DevDeployToItch:
     name: Deploy to 'Dev' Itch.io Branch
     runs-on: ubuntu-latest
@@ -117,10 +72,14 @@ jobs:
     strategy: 
       fail-fast: true
       matrix:
-        channel:
-          - macos
-          - windows
-          - webgl
+        channel: [macos, windows, webgl]
+        include:
+          - channel: macos
+            targetPlatform: StandaloneOSX
+          - channel: windows
+            targetPlatform: StandaloneWindows64
+          - channel: webgl
+            targetPlatform: StandaloneLinux64
     
     steps:
       # First checkout the repo with FetchDepth 0 for full commit
@@ -133,8 +92,8 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: Build-StandaloneOSX
-          path: build/StandaloneOSX
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
             
       # Read Version from file and assign to outputs object
       - name: Version Assignmnet
@@ -146,10 +105,10 @@ jobs:
       - name: Upload to Itch  
         uses: KikimoraGames/itch-publish@v0.0.3
         with:
-          butlerApiKey: ${{secrets.BUTLER_TOKEN}}
-          gameData: build/StandaloneOSX
-          itchUsername: ${{env.ITCH_USERNAME}}
+          butlerApiKey: ${{ secrets.BUTLER_TOKEN }}
+          gameData: build/${{ matrix.targetPlatform }}
+          itchUsername: ${{ env.ITCH_USERNAME }}
           itchGameId: ${{ env.ITCH_GAME_ID }}
-          buildChannel: macos-dev
+          buildChannel: ${{ matrix.channel }}-dev
           buildNumber: ${{ steps.versionOutput.outputs.semVer }}-dev
       
