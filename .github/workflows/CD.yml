@@ -101,6 +101,7 @@ jobs:
           read -r firstline < ".github/versionNum.txt"
           echo ::set-output name=semVer::$firstline
 
+      # Use Butler Action to publish Dev branch to .dev channel
       - name: Upload to Itch - Dev Release
         uses: KikimoraGames/itch-publish@v0.0.3
         if: ${{ github.ref_name == 'dev' }}
@@ -111,4 +112,28 @@ jobs:
           itchGameId: ${{ env.ITCH_GAME_ID }}
           buildChannel: .${{ matrix.channel }}.dev
           buildNumber: ${{ steps.versionOutput.outputs.semVer }}-dev
+
+      # Use Butler Action to publish Release to .beta channel
+      - name: Upload to Itch - Beta Release
+        uses: KikimoraGames/itch-publish@v0.0.3
+        if: ${{ github.ref_name == 'release/**' }}
+        with:
+          butlerApiKey: ${{ secrets.BUTLER_TOKEN }}
+          gameData: build/${{ matrix.targetPlatform }}
+          itchUsername: ${{ env.ITCH_USERNAME }}
+          itchGameId: ${{ env.ITCH_GAME_ID }}
+          buildChannel: .${{ matrix.channel }}.beta
+          buildNumber: ${{ steps.versionOutput.outputs.semVer }}-beta
+      
+      # Use Butler Action to publish Main branch to .stable channel
+      - name: Upload to Itch - Main Release
+        uses: KikimoraGames/itch-publish@v0.0.3
+        if: ${{ github.ref_name == 'main' }}
+        with:
+          butlerApiKey: ${{ secrets.BUTLER_TOKEN }}
+          gameData: build/${{ matrix.targetPlatform }}
+          itchUsername: ${{ env.ITCH_USERNAME }}
+          itchGameId: ${{ env.ITCH_GAME_ID }}
+          buildChannel: .${{ matrix.channel }}.stable
+          buildNumber: ${{ steps.versionOutput.outputs.semVer }}
       
