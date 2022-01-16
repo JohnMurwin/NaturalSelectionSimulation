@@ -11,6 +11,9 @@ on:
       - '*.md'
   pull_request:
     types: [opened, synchronize, reopened, edited]
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
 
 jobs:
   LintProject:
