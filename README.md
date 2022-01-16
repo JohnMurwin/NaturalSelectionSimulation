@@ -223,7 +223,7 @@ Project Link: [https://github.com/JohnMurwin/NaturalSelectionSimulation](https:/
 [cd-shield]: https://github.com/JohnMurwin/NaturalSelectionSimulation/actions/workflows/CD.yml/badge.svg
 [cd-url]: https://github.com/JohnMurwin/NaturalSelectionSimulation/actions/workflows/CD.yml
 
-[stable-shield]: https://img.shields.io/github/v/release/JohnMurwin/NaturalSelectionSimulation?include_prereleases&label=stable%20version
+[stable-shield]: https://img.shields.io/github/v/release/JohnMurwin/NaturalSelectionSimulation?include_prereleases&label=stable%20version&style=plastic
 [stable-url]: https://img.shields.io/github/v/release/JohnMurwin/NaturalSelectionSimulation?include_prereleases
 
 
