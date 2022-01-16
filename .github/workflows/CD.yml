@@ -67,18 +67,17 @@ jobs:
   DevDeployToItch:
     name: Deploy to 'Dev' Itch.io Branch
     runs-on: ubuntu-latest
-    if: ${{ github.ref_name == 'dev' }}
     needs: BuildProject
     strategy: 
       fail-fast: true
       matrix:
-        channel: [macos, windows, webgl]
+        channel: [macos, windows, linux]
         include:
           - channel: macos
             targetPlatform: StandaloneOSX
           - channel: windows
             targetPlatform: StandaloneWindows64
-          - channel: webgl
+          - channel: linux
             targetPlatform: StandaloneLinux64
     
     steps:
@@ -102,13 +101,14 @@ jobs:
           read -r firstline < ".github/versionNum.txt"
           echo ::set-output name=semVer::$firstline
 
-      - name: Upload to Itch  
+      - name: Upload to Itch - Dev Release
         uses: KikimoraGames/itch-publish@v0.0.3
+        if: ${{ github.ref_name == 'dev' }}
         with:
           butlerApiKey: ${{ secrets.BUTLER_TOKEN }}
           gameData: build/${{ matrix.targetPlatform }}
           itchUsername: ${{ env.ITCH_USERNAME }}
           itchGameId: ${{ env.ITCH_GAME_ID }}
-          buildChannel: ${{ matrix.channel }}-dev
+          buildChannel: .${{ matrix.channel }}.dev
           buildNumber: ${{ steps.versionOutput.outputs.semVer }}-dev
       
