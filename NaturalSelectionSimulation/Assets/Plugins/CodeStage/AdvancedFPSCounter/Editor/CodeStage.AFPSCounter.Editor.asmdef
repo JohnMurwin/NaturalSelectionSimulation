@@ -1,18 +1,10 @@
 {
     "name": "CodeStage.AFPSCounter.Editor",
-    "rootNamespace": "",
     "references": [
         "CodeStage.AFPSCounter.Runtime"
     ],
-    "includePlatforms": [],
-    "excludePlatforms": [
+    "includePlatforms": [
         "Editor"
     ],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+    "excludePlatforms": []
 }
