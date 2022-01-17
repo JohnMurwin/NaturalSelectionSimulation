@@ -237,7 +237,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   sharpenRelaxation:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0.08
   sharpenClamp:
     m_OverrideState: 0
@@ -246,7 +246,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.5
   tonemap:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   tonemapExposurePre:
     m_OverrideState: 0
@@ -255,8 +255,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   saturate:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 0
     min: -2
     max: 3
   brightness:
@@ -265,8 +265,8 @@ MonoBehaviour:
     min: 0
     max: 2
   contrast:
-    m_OverrideState: 0
-    m_Value: 1.02
+    m_OverrideState: 1
+    m_Value: 1
     min: 0.5
     max: 1.5
   daltonize:
@@ -418,8 +418,8 @@ MonoBehaviour:
     showAlpha: 1
     showEyeDropper: 1
   anamorphicFlaresIntensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.01
     min: 0
     max: 10
   anamorphicFlaresThreshold:
@@ -458,8 +458,8 @@ MonoBehaviour:
     min: 1
     max: 10
   sunFlaresIntensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.01
     min: 0
     max: 1
   sunFlaresTint:
@@ -816,18 +816,18 @@ MonoBehaviour:
     min: 0
     max: 1
   vignettingOuterRing:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.407
     min: 0
     max: 1
   vignettingInnerRing:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.627
     min: 0
     max: 1
   vignettingFade:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.007
     min: 0
     max: 1
   vignettingCircularShape:
@@ -860,7 +860,7 @@ MonoBehaviour:
     m_Value: {fileID: 0}
   outline:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   outlineColor:
     m_OverrideState: 0
     m_Value: {r: 0, g: 0, b: 0, a: 0.8}
