@@ -56,7 +56,7 @@ jobs:
       - name: Install Sonar Scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: |
-          $DOTNET_ROOT/dotnet tool install dotnet-sonarscanner --tool-path . --version 5.2.0
+          $DOTNET_ROOT/dotnet tool install dotnet-sonarscanner --tool-path . --version 5.4.0
           apt update
           apt install -y openjdk-11-jre-headless
 

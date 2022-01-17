@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: c8f38fc6854405743afbf7dcf7d3ccd0
+labels:
+- Boundary
+- Builder
+- Umbra
+- Collider
+- Tool
+- Mesh
+- Navmesh
+- Editor
+timeCreated: 1469148804
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

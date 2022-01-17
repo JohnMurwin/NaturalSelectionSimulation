@@ -30,13 +30,26 @@ MonoBehaviour:
     serializationDepthLimit: 64
     assemblyNames:
     - Cinemachine
+    - Beautify.Universal.Runtime
     - CodeStage.AFPSCounter.Runtime
     - Assembly-CSharp
     - PlayModeTests
     - NaturalSelectionSimulation
+    - Assembly-CSharp-firstpass
+    - TechniePhysicsCreator
+    - Boxophobic.Utils.Scripts
+    - Polyperfect.Animals
+    - Polyperfect.Common
+    - TileWorldCreator
+    - TileWorldCreator.OdinSerializer
     - EditModeTests
     - CodeStage.AFPSCounter.Editor
-    - Plugins
+    - FullscreenEditor
+    - TechniePhysicsCreatorEditor
+    - Boxophobic.Utils.Editor
+    - Boxophobic.SkyboxCubemapExtended.Editor
+    - ThirteenPixels.Placr
+    - TileWorldCreator.Editor
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
