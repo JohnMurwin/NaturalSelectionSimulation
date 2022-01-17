@@ -29,8 +29,14 @@ MonoBehaviour:
     referenceMode: 2
     serializationDepthLimit: 64
     assemblyNames:
-    - Assembly-CSharp-firstpass
+    - Cinemachine
+    - CodeStage.AFPSCounter.Runtime
     - Assembly-CSharp
+    - PlayModeTests
+    - NaturalSelectionSimulation
+    - EditModeTests
+    - CodeStage.AFPSCounter.Editor
+    - Plugins
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
