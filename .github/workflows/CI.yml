@@ -16,25 +16,6 @@ on:
       - '*.md'
 
 jobs:
-
-  #   Continuous Integration Pipeline
-#   Uses: SonarCloud, GameCI, UnityTestRunner,
-#   From: John Murwin, Mirage, SonarCloud, and Fathom7
-
-name: CI
-on:
-  push:
-    branches: [main, dev]
-    paths-ignore:
-      - 'docs/**'
-      - '*.md'
-  pull_request:
-    types: [opened, synchronize, reopened, edited]
-    paths-ignore:
-      - 'docs/**'
-      - '*.md'
-
-jobs:
   LintProject:
     name: Lint Source Code
     runs-on: ubuntu-latest
