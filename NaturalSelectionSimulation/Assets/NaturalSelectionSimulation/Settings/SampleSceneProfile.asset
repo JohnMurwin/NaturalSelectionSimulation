@@ -138,7 +138,7 @@ MonoBehaviour:
     m_Value: 0
   turboMode:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   directWrite:
     m_OverrideState: 1
     m_Value: 0
@@ -203,7 +203,7 @@ MonoBehaviour:
     m_Value: 0
   optimizeBuildUnityPPSAuto:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   stripUnityFilmGrain:
     m_OverrideState: 1
     m_Value: 0
@@ -650,11 +650,11 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   depthOfField:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   depthOfFieldFocusMode:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   depthOfFieldAutofocusMinDistance:
     m_OverrideState: 0
     m_Value: 0
