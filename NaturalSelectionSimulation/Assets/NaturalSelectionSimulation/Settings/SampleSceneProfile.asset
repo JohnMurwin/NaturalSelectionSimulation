@@ -1,110 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7893295128165547882
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
-  m_Name: Bloom
-  m_EditorClassIdentifier: 
-  active: 1
-  m_AdvancedMode: 0
-  threshold:
-    m_OverrideState: 1
-    m_Value: 1
-    min: 0
-  intensity:
-    m_OverrideState: 1
-    m_Value: 1
-    min: 0
-  scatter:
-    m_OverrideState: 0
-    m_Value: 0.7
-    min: 0
-    max: 1
-  clamp:
-    m_OverrideState: 0
-    m_Value: 65472
-    min: 0
-  tint:
-    m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
-    hdr: 0
-    showAlpha: 0
-    showEyeDropper: 1
-  highQualityFiltering:
-    m_OverrideState: 0
-    m_Value: 0
-  skipIterations:
-    m_OverrideState: 0
-    m_Value: 1
-    min: 0
-    max: 16
-  dirtTexture:
-    m_OverrideState: 0
-    m_Value: {fileID: 0}
-  dirtIntensity:
-    m_OverrideState: 0
-    m_Value: 0
-    min: 0
---- !u!114 &-7011558710299706105
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
-  m_Name: Vignette
-  m_EditorClassIdentifier: 
-  active: 1
-  m_AdvancedMode: 0
-  color:
-    m_OverrideState: 0
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
-    hdr: 0
-    showAlpha: 0
-    showEyeDropper: 1
-  center:
-    m_OverrideState: 0
-    m_Value: {x: 0.5, y: 0.5}
-  intensity:
-    m_OverrideState: 1
-    m_Value: 0.25
-    min: 0
-    max: 1
-  smoothness:
-    m_OverrideState: 1
-    m_Value: 0.4
-    min: 0.01
-    max: 1
-  rounded:
-    m_OverrideState: 0
-    m_Value: 0
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: SampleSceneProfile
-  m_EditorClassIdentifier: 
-  components:
-  - {fileID: -7893295128165547882}
-  - {fileID: -7011558710299706105}
-  - {fileID: 347856536276172126}
---- !u!114 &347856536276172126
+--- !u!114 &-7153233525815524720
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,7 +37,7 @@ MonoBehaviour:
     m_Value: 1
   directWrite:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   downsampling:
     m_OverrideState: 1
     m_Value: 0
@@ -203,7 +99,7 @@ MonoBehaviour:
     m_Value: 0
   optimizeBuildUnityPPSAuto:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   stripUnityFilmGrain:
     m_OverrideState: 1
     m_Value: 0
@@ -224,7 +120,7 @@ MonoBehaviour:
     m_Value: 0
   sharpenIntensity:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 4
   sharpenDepthThreshold:
     m_OverrideState: 0
     m_Value: 0.035
@@ -237,7 +133,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   sharpenRelaxation:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0.08
   sharpenClamp:
     m_OverrideState: 0
@@ -246,7 +142,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.5
   tonemap:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   tonemapExposurePre:
     m_OverrideState: 0
@@ -255,8 +151,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   saturate:
-    m_OverrideState: 1
-    m_Value: 0
+    m_OverrideState: 0
+    m_Value: 1
     min: -2
     max: 3
   brightness:
@@ -265,8 +161,8 @@ MonoBehaviour:
     min: 0
     max: 2
   contrast:
-    m_OverrideState: 1
-    m_Value: 1
+    m_OverrideState: 0
+    m_Value: 1.02
     min: 0.5
     max: 1.5
   daltonize:
@@ -418,8 +314,8 @@ MonoBehaviour:
     showAlpha: 1
     showEyeDropper: 1
   anamorphicFlaresIntensity:
-    m_OverrideState: 1
-    m_Value: 0.01
+    m_OverrideState: 0
+    m_Value: 0
     min: 0
     max: 10
   anamorphicFlaresThreshold:
@@ -458,8 +354,8 @@ MonoBehaviour:
     min: 1
     max: 10
   sunFlaresIntensity:
-    m_OverrideState: 1
-    m_Value: 0.01
+    m_OverrideState: 0
+    m_Value: 0
     min: 0
     max: 1
   sunFlaresTint:
@@ -650,11 +546,11 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   depthOfField:
-    m_OverrideState: 1
-    m_Value: 1
+    m_OverrideState: 0
+    m_Value: 0
   depthOfFieldFocusMode:
-    m_OverrideState: 1
-    m_Value: 1
+    m_OverrideState: 0
+    m_Value: 0
   depthOfFieldAutofocusMinDistance:
     m_OverrideState: 0
     m_Value: 0
@@ -816,18 +712,18 @@ MonoBehaviour:
     min: 0
     max: 1
   vignettingOuterRing:
-    m_OverrideState: 1
-    m_Value: 0.407
+    m_OverrideState: 0
+    m_Value: 0
     min: 0
     max: 1
   vignettingInnerRing:
-    m_OverrideState: 1
-    m_Value: 0.627
+    m_OverrideState: 0
+    m_Value: 0
     min: 0
     max: 1
   vignettingFade:
-    m_OverrideState: 1
-    m_Value: 0.007
+    m_OverrideState: 0
+    m_Value: 0
     min: 0
     max: 1
   vignettingCircularShape:
@@ -860,7 +756,7 @@ MonoBehaviour:
     m_Value: {fileID: 0}
   outline:
     m_OverrideState: 0
-    m_Value: 1
+    m_Value: 0
   outlineColor:
     m_OverrideState: 0
     m_Value: {r: 0, g: 0, b: 0, a: 0.8}
@@ -930,3 +826,17 @@ MonoBehaviour:
   blurMask:
     m_OverrideState: 0
     m_Value: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+  m_Name: SampleSceneProfile
+  m_EditorClassIdentifier: 
+  components:
+  - {fileID: -7153233525815524720}
