@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Counter : MonoBehaviour
 {
-    public int Counter { get; set; }
+    public int counter;
 
     // Start is called before the first frame update
     void Start()
     {
-        Counter = 0;
+        counter = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Counter++;
+        counter++;
     }
 }
