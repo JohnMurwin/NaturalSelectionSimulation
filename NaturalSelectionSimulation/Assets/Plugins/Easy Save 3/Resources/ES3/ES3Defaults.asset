@@ -41,6 +41,7 @@ MonoBehaviour:
     - CodeStage.AFPSCounter.Runtime
     - Assembly-CSharp
     - PlayModeTests
+    - sc.stylizedwater2.runtime
     - TechniePhysicsCreatorEditor
     - Boxophobic.Utils.Editor
     - FullscreenEditor
@@ -49,6 +50,7 @@ MonoBehaviour:
     - TileWorldCreator.Editor
     - EditModeTests
     - Boxophobic.SkyboxCubemapExtended.Editor
+    - sc.stylizedwater2.editor
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
