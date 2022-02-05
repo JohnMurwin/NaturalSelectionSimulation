@@ -9,10 +9,4 @@ public class DEV_Brett : MonoBehaviour
     {
         Debug.Log("WANNA PLAY A GAME!!!!");   
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
