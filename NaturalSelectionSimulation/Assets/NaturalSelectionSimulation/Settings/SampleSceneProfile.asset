@@ -151,8 +151,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   saturate:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 2.5
     min: -2
     max: 3
   brightness:
@@ -162,7 +162,7 @@ MonoBehaviour:
     max: 2
   contrast:
     m_OverrideState: 0
-    m_Value: 1.02
+    m_Value: 1.05
     min: 0.5
     max: 1.5
   daltonize:
@@ -203,8 +203,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: {fileID: 0}
   bloomIntensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.01
     min: 0
     max: 10
   bloomThreshold:
@@ -314,8 +314,8 @@ MonoBehaviour:
     showAlpha: 1
     showEyeDropper: 1
   anamorphicFlaresIntensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.01
     min: 0
     max: 10
   anamorphicFlaresThreshold:
@@ -354,8 +354,8 @@ MonoBehaviour:
     min: 1
     max: 10
   sunFlaresIntensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.01
     min: 0
     max: 1
   sunFlaresTint:
@@ -389,18 +389,18 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 30
   sunFlaresSunIntensity:
-    m_OverrideState: 0
-    m_Value: 0.1
+    m_OverrideState: 1
+    m_Value: 0.112
     min: 0
     max: 1
   sunFlaresSunDiskSize:
-    m_OverrideState: 0
-    m_Value: 0.05
+    m_OverrideState: 1
+    m_Value: 0.111
     min: 0
     max: 1
   sunFlaresSunRayDiffractionIntensity:
-    m_OverrideState: 0
-    m_Value: 3.5
+    m_OverrideState: 1
+    m_Value: 3.3
     min: 0
     max: 25
   sunFlaresSunRayDiffractionThreshold:
@@ -409,8 +409,8 @@ MonoBehaviour:
     min: 0
     max: 1
   sunFlaresCoronaRays1Length:
-    m_OverrideState: 0
-    m_Value: 0.02
+    m_OverrideState: 1
+    m_Value: 0.015
     min: 0
     max: 0.2
   sunFlaresCoronaRays1Streaks:
@@ -546,11 +546,11 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   depthOfField:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   depthOfFieldFocusMode:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   depthOfFieldAutofocusMinDistance:
     m_OverrideState: 0
     m_Value: 0
@@ -656,7 +656,7 @@ MonoBehaviour:
     max: 8
   depthOfFieldDownsampling:
     m_OverrideState: 0
-    m_Value: 2
+    m_Value: 1
     min: 1
     max: 5
   depthOfFieldMaxSamples:
@@ -713,17 +713,17 @@ MonoBehaviour:
     max: 1
   vignettingOuterRing:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 0.019
     min: 0
     max: 1
   vignettingInnerRing:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 0.031
     min: 0
     max: 1
   vignettingFade:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 0.067
     min: 0
     max: 1
   vignettingCircularShape:
