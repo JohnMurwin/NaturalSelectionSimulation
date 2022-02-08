@@ -37,20 +37,20 @@ MonoBehaviour:
     - Polyperfect.Animals
     - Polyperfect.Common
     - TileWorldCreator
+    - sc.stylizedwater2.runtime
     - Boxophobic.Utils.Scripts
     - CodeStage.AFPSCounter.Runtime
     - Assembly-CSharp
     - PlayModeTests
-    - sc.stylizedwater2.runtime
     - TechniePhysicsCreatorEditor
     - Boxophobic.Utils.Editor
     - FullscreenEditor
+    - sc.stylizedwater2.editor
     - ThirteenPixels.Placr
     - CodeStage.AFPSCounter.Editor
     - TileWorldCreator.Editor
     - EditModeTests
     - Boxophobic.SkyboxCubemapExtended.Editor
-    - sc.stylizedwater2.editor
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
