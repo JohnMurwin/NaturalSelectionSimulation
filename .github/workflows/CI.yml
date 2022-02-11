@@ -16,6 +16,77 @@ on:
       - '*.md'
 
 jobs:
+  LintProject:
+    name: Lint Source Code
+    runs-on: ubuntu-latest
+    # available list of containers here:
+    # https://hub.docker.com/r/unityci/editor/tags?page=1&ordering=last_updated&name=ubuntu-2020.1.17f1-base
+    container: unityci/editor:ubuntu-2020.3.26f1-base-0.15.0
+    env:
+      DOTNET_ROOT: '/opt/unity/Editor/Data/NetCore/Sdk-2.2.107'
+    
+    steps:
+      
+      # First we need to grab the UnityLicense we uploaded as a Secret from the Workflow: UnityActivation
+      - name: Activate Unity
+        # exit code is 1 for manual activation
+        continue-on-error: true
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        run: |
+          echo "$UNITY_LICENSE" | tr -d '\r' > UnityLicenseFile.ulf
+          unity-editor -nographics -logFile /dev/stdout -manualLicenseFile UnityLicenseFile.ulf -quit
+          
+      # Next checkout the project @ fetch-depth 0 for full history and LFS support
+      - name: Checkout Repository
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
+          lfs: true
+      
+      # Cache library for future speed for Analysis
+      - name: Cache Library
+        id: cache-library
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-2020.3.26
+      
+      # Install and setup .NET Core    
+      - name: Setup .NET Core 2.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 2.1.607
+      
+      # Install dotnet version of the SonarScanner tool via SonarCloud
+      - name: Install Sonar Scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        run: |
+          $DOTNET_ROOT/dotnet tool install dotnet-sonarscanner --tool-path . --version 5.4.0
+          apt update
+          apt install -y openjdk-11-jre-headless
+          
+      # Builds dontnet solution of project for SonarCloud analysis
+      - name: Generate Solution
+        run: unity-editor -nographics -logFile /dev/stdout -customBuildName NaturalSelectionSimulation -projectPath NaturalSelectionSimulation -executeMethod  UnityEditor.SyncVS.SyncSolution -quit
+      
+      # Run SonarCloud Analysis (linting, test coverage, and code duplication = QualityGate) using basic dotnet rule-set
+      - name: SonarCloud Analysis
+        env:
+          FrameworkPathOverride: /opt/unity/Editor/Data/MonoBleedingEdge/
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ls -l
+          ./dotnet-sonarscanner begin \
+            /k:"JohnMurwin_NaturalSelectionSimulation" \
+            /o:"johnmurwin" \
+            /d:sonar.verbose=false \
+            /d:sonar.login=$SONAR_TOKEN \
+            /d:sonar.host.url=https://sonarcloud.io \
+            /d:sonar.exclusions=Assets/Plugins/**,Assets/_Demo/**
+          $DOTNET_ROOT/dotnet build NaturalSelectionSimulation/NaturalSelectionSimulation.sln
+          ./dotnet-sonarscanner end /d:sonar.login=$SONAR_TOKEN
 
   TestProject:
     name: Run Tests in ${{ matrix.testMode }}
