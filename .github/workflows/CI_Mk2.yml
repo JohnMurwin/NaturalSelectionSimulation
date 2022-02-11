@@ -1,0 +1,61 @@
+#   Continuous Integration Pipeline
+#   Uses: SonarCloud, GameCI, UnityTestRunner, ExtendaActions
+#   From: John Murwin, TimothYolt, the MirageNet team, DavidFinol, SonarCloud, and Fathom7
+
+
+name: CI Mk2
+on:
+  push: {branches: [main, dev]}
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+  pull_request: {}
+
+jobs:
+  TestProject:
+    name: Run Tests
+    runs-on: ubuntu-latest
+      # available list of containers here:
+      # https://hub.docker.com/r/unityci/editor/tags?page=1&ordering=last_updated&name=ubuntu-2020.1.17f1-base
+    container: unityci/editor:ubuntu-2020.3.26f1-base-0.17
+    
+    steps:
+      
+      # First we need to grab the UnityLicense we uploaded as a Secret from the Workflow: UnityActivation
+      - name: Activate Unity
+        continue-on-error: true # exit code is 1 for manual activation
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        run: |
+          echo "$UNITY_LICENSE" | tr -d '\r' > UnityLicenseFile.ulf
+          unity-editor -nographics -logFile /dev/stdout -manualLicenseFile UnityLicenseFile.ulf -quit
+          
+      # Checkout the project @ fetch-depth 0 for full history and LFS support
+      - name: Checkout Repository
+        uses: actions/checkout@v1
+          
+      # Cache library for future run speed
+      - name: Cache Library
+        id: cache-library
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-2020.3.26
+
+      # Run editor tests using Unity TestRunner w CodeCoverage
+      - name: Run editor Tests
+        run: unity-editor -nographics -logFile /dev/stdout -runTests -testPlatform editmode -testResults Tests/editmode-results.xml -enableCodeCoverage -coverageResultsPath Tests -debugCodeOptimization
+        timeout-minutes: 20
+
+      # Run play tests using Unity TestRunner w CodeCoverage
+      - name: Run play Tests
+        run: unity-editor -nographics -logFile /dev/stdout -runTests -testPlatform playmode -testResults Tests/playmode-results.xml -enableCodeCoverage -coverageResultsPath Tests -debugCodeOptimization
+        timeout-minutes: 20
+
+      # Upload Test w Coverage Results for Later
+      - name: Archive Test Results
+        uses: actions/upload-artifact@v2.3.1
+        if: always()
+        with:
+          name: Test results
+          path: Tests
