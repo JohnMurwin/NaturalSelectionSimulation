@@ -59,3 +59,11 @@ jobs:
         with:
           name: Test results
           path: Tests
+       
+      # Use NUnit to Publish Github annotation of Test Results    
+      - name: Publish test results
+        uses: MirageNet/nunit-reporter@v1.0.11
+        if: always()
+        with:
+          path: "Tests/*.xml"
+          access-token: ${{ secrets.GITHUB_TOKEN }}
