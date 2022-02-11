@@ -2,10 +2,10 @@
 #   Uses: SonarCloud, GameCI, UnityTestRunner, ExtendaActions
 #   From: John Murwin, TimothYolt, the MirageNet team, DavidFinol, SonarCloud, and Fathom7
 
-
 name: CI Mk2
 on:
-  push: {branches: [main, dev]}
+  push: 
+    branches: [main, dev]
     paths-ignore:
       - 'docs/**'
       - '*.md'
