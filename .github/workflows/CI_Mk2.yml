@@ -67,3 +67,63 @@ jobs:
         with:
           path: "Tests/*.xml"
           access-token: ${{ secrets.GITHUB_TOKEN }}
+          
+  TestProject-Matrix:
+    name: Run Tests in ${{ matrix.testMode }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - NaturalSelectionSimulation
+        testMode:
+          - playmode
+          - editmode
+    
+    steps:
+      # First we checkout the project with LFS support (don't need fetch depth here)
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      
+      # Cache library for future speed for Analysis
+      - name: Cache Library
+        uses: actions/cache@v2
+        with:
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}
+          restore-keys: |
+            Library-
+      
+      # Using GameCI's Unity Test Runner, Run Tests via CLI
+      - name: Unity Test Runner via CLI
+        uses: game-ci/unity-test-runner@v2
+        id: tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          testMode: ${{ matrix.testMode }}
+          artifactsPath: ${{ matrix.testMode }}-artifacts
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: ${{ matrix.testMode }} Test Results
+          customParameters: -nographics -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./CodeCoverage -coverageOptions generateAdditionalMetrics
+          unityVersion: 2020.3.26f1
+      
+      # Upload Code Coverage XML Reports to CodeCov
+      - name: Upload XML report to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          name: Unity Test Runner Results
+          flags: automated
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: CodeCoverage/**/*.xml
+      
+      # Upload Test Results as Artifacts for each testMode matrix
+      - name: Upload Results as Artifacts
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test results for ${{ matrix.testMode }}
+          path: ${{ steps.tests.outputs.artifactsPath }}        
