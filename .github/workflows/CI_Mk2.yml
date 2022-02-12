@@ -39,7 +39,7 @@ jobs:
         id: cache-library
         uses: actions/cache@v2
         with:
-          path: Library
+          path: NaturalSelectionSimulation/Library
           key: Library-2020.3.26
 
       # Run editor tests using Unity TestRunner w CodeCoverage
@@ -176,6 +176,7 @@ jobs:
     needs: [ TestProject ]  # needs coverage from test CI
     name: SonarScan
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     # available list of containers here:
     # https://hub.docker.com/r/unityci/editor/tags?page=1&ordering=last_updated&name=ubuntu-2020.1.17f1-base
     container: unityci/editor:ubuntu-2020.3.26f1-base-0.17
@@ -202,7 +203,7 @@ jobs:
         id: cache-library
         uses: actions/cache@v2
         with:
-          path: Library
+          path: NaturalSelectionSimulation/Library
           key: Library-2020.3.26
 
       # Install dotnet-sonarscanner for analysis
