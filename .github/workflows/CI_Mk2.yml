@@ -39,7 +39,7 @@ jobs:
         id: cache-library
         uses: actions/cache@v2
         with:
-          path: NaturalSelectionSimulation/Library
+          path: Library
           key: Library-2020.3.26
 
       # Run editor tests using Unity TestRunner w CodeCoverage
@@ -142,7 +142,7 @@ jobs:
       - name: Cache Project Library for next Build
         uses: actions/cache@v2
         with:
-          path: NaturalSelectionSimulation/Library
+          path: Library
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
       
@@ -203,7 +203,7 @@ jobs:
         id: cache-library
         uses: actions/cache@v2
         with:
-          path: NaturalSelectionSimulation/Library
+          path: Library
           key: Library-2020.3.26
 
       # Install dotnet-sonarscanner for analysis
@@ -215,7 +215,7 @@ jobs:
           
       # Generate Unity Solution for Scanning    
       - name: Generate Solution
-        run: unity-editor -nographics -logFile /dev/stdout -customBuildName NaturalSelectionSimulation -projectPath NaturalSelectionSimulation -executeMethod  UnityEditor.SyncVS.SyncSolution -quit
+        run: unity-editor -nographics -logFile /dev/stdout -customBuildName NaturalSelectionSimulation -projectPath . -executeMethod  UnityEditor.SyncVS.SyncSolution -quit
           
       # unity 2020.3 outputs <ReferenceOutputAssembly>false</ReferenceOutputAssembly> on linux
       # this breaks references to other csproj for docfx and sonar.
@@ -247,9 +247,9 @@ jobs:
             /d:sonar.login=$SONAR_TOKEN \
             /d:sonar.host.url=https://sonarcloud.io \
             /d:sonar.exclusions=Assets/Plugins/**, Assets/_Demo/** \
-            /d:sonar.cpd.exclusions=Assets/NaturalSelectionSimulation/Tests/** \
-            /d:sonar.coverage.exclusions=Assets/NaturalSelectionSimulation/Tests/** \
+            /d:sonar.cpd.exclusions=Assets/Tests/** \
+            /d:sonar.coverage.exclusions=Assets/Tests/** \
             /d:sonar.cs.nunit.reportsPaths=Tests/editmode-results.xml,Tests/playmode-results.xml \
             /d:sonar.cs.opencover.reportsPaths=Tests/NaturalSelectionSimulation-opencov/EditMode/TestCoverageResults_0000.xml,Tests/NaturalSelectionSimulation-opencov/PlayMode/TestCoverageResults_0000.xml
-          $DOTNET_ROOT/dotnet build NaturalSelectionSimulation/NaturalSelectionSimulation.sln
+          $DOTNET_ROOT/dotnet build NaturalSelectionSimulation.sln
           ./dotnet-sonarscanner end /d:sonar.login=$SONAR_TOKEN
