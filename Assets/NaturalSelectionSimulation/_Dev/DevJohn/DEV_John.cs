@@ -5,10 +5,19 @@ using UnityEngine;
 namespace NaturalSelectionSimulation {
     public class DEV_John : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        public static int NumberAdder(int a, int b)
         {
-            Debug.Log("Hello World!");
+            return a + b;
+        }
+
+        public static int NumberMultiplier(int a, int b)
+        {
+            return a * b;
+        }
+
+        public static int NumberSquarer(int a)
+        {
+            return a * a;
         }
     }
 }
