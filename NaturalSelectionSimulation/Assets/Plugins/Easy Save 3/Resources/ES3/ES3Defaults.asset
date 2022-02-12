@@ -41,7 +41,8 @@ MonoBehaviour:
     - Boxophobic.Utils.Scripts
     - CodeStage.AFPSCounter.Runtime
     - Assembly-CSharp
-    - PlayModeTests
+    - NaturalSelectionSimulation
+    - NSS.PlayTests
     - TechniePhysicsCreatorEditor
     - Boxophobic.Utils.Editor
     - FullscreenEditor
@@ -49,7 +50,7 @@ MonoBehaviour:
     - ThirteenPixels.Placr
     - CodeStage.AFPSCounter.Editor
     - TileWorldCreator.Editor
-    - EditModeTests
+    - NSS.EditTests
     - Boxophobic.SkyboxCubemapExtended.Editor
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0

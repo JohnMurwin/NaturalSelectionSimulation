@@ -1,9 +1,9 @@
 {
-    "name": "EditModeTests",
+    "name": "NSS.EditTests",
     "rootNamespace": "",
     "references": [
-        "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
+        "UnityEngine.TestRunner",
         "NaturalSelectionSimulation"
     ],
     "includePlatforms": [

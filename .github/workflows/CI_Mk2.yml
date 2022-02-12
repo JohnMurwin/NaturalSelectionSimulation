@@ -215,6 +215,13 @@ jobs:
       # Generate Unity Solution for Scanning    
       - name: Generate Solution
         run: unity-editor -nographics -logFile /dev/stdout -customBuildName NaturalSelectionSimulation -projectPath NaturalSelectionSimulation -executeMethod  UnityEditor.SyncVS.SyncSolution -quit
+          
+      # unity 2020.3 outputs <ReferenceOutputAssembly>false</ReferenceOutputAssembly> on linux
+      # this breaks references to other csproj for docfx and sonar.
+      # This step is a work around for this so docfx runs in correctly
+      # replacing false with true in ReferenceOutputAssembly
+      - name: Fix Csproj
+        run: sed -i 's/<ReferenceOutputAssembly>false<\/ReferenceOutputAssembly>/<ReferenceOutputAssembly>true<\/ReferenceOutputAssembly>/g' *.csproj
 
       # Download Test Results from Artifacts
       - name: Get Test Coverages
