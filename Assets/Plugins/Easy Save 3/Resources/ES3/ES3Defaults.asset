@@ -30,7 +30,24 @@ MonoBehaviour:
     serializationDepthLimit: 64
     assemblyNames:
     - Assembly-CSharp-firstpass
+    - TileWorldCreator.OdinSerializer
+    - Cinemachine
+    - Beautify.Universal.Runtime
+    - Polyperfect.Animals
+    - Polyperfect.Common
+    - TileWorldCreator
+    - sc.stylizedwater2.runtime
+    - Boxophobic.Utils.Scripts
+    - CodeStage.AFPSCounter.Runtime
     - Assembly-CSharp
+    - NaturalSelectionSimulation
+    - NSS.PlayTests
+    - Boxophobic.Utils.Editor
+    - sc.stylizedwater2.editor
+    - CodeStage.AFPSCounter.Editor
+    - TileWorldCreator.Editor
+    - NSS.EditTests
+    - Boxophobic.SkyboxCubemapExtended.Editor
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
