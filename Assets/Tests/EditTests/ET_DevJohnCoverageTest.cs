@@ -29,7 +29,7 @@ namespace NSS.EditTests
         public void TestNumberSquarer()
         {
             // this should fail
-            Assert.AreEqual(DEV_John.NumberSquarer(2), 5);
+            Assert.AreEqual(DEV_John.NumberSquarer(2), 4);
         }
     }
 }
