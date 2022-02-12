@@ -250,5 +250,5 @@ jobs:
             /d:sonar.coverage.exclusions=Assets/NaturalSelectionSimulation/Tests/** \
             /d:sonar.cs.nunit.reportsPaths=Tests/editmode-results.xml,Tests/playmode-results.xml \
             /d:sonar.cs.opencover.reportsPaths=Tests/NaturalSelectionSimulation-opencov/EditMode/TestCoverageResults_0000.xml,Tests/NaturalSelectionSimulation-opencov/PlayMode/TestCoverageResults_0000.xml
-          $DOTNET_ROOT/dotnet build NaturalSelectionSimulation.sln
+          $DOTNET_ROOT/dotnet build NaturalSelectionSimulation/NaturalSelectionSimulation.sln
           ./dotnet-sonarscanner end /d:sonar.login=$SONAR_TOKEN
