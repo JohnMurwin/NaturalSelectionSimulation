@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
       # available list of containers here:
       # https://hub.docker.com/r/unityci/editor/tags?page=1&ordering=last_updated&name=ubuntu-2020.1.17f1-base
-    container: unityci/editor:ubuntu-2020.3.26f1-base-0.17
+    container: unityci/editor:ubuntu-2020.3.25f1-base-0.17
     
     steps:
       
@@ -40,7 +40,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: Library
-          key: Library-2020.3.26
+          key: Library-2020.3.25
 
       # Run editor tests using Unity TestRunner w CodeCoverage
       - name: Run editor Tests
@@ -109,7 +109,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: ${{ matrix.testMode }} Test Results
           customParameters: -nographics -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./CodeCoverage -coverageOptions generateAdditionalMetrics
-          unityVersion: 2020.3.26f1
+          unityVersion: 2020.3.25f1
       
       # Upload Test Results as Artifacts for each testMode matrix
       - name: Upload Results as Artifacts
@@ -159,7 +159,6 @@ jobs:
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          projectPath: NaturalSelectionSimulation
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Custom
           version: ${{ steps.versionOutput.outputs.semVer }}
@@ -179,7 +178,7 @@ jobs:
     timeout-minutes: 40
     # available list of containers here:
     # https://hub.docker.com/r/unityci/editor/tags?page=1&ordering=last_updated&name=ubuntu-2020.1.17f1-base
-    container: unityci/editor:ubuntu-2020.3.26f1-base-0.17
+    container: unityci/editor:ubuntu-2020.3.25f1-base-0.17
     env:
       DOTNET_ROOT: '/opt/unity/Editor/Data/NetCore/Sdk-2.2.107'
       
@@ -204,7 +203,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: Library
-          key: Library-2020.3.26
+          key: Library-2020.3.25
 
       # Install dotnet-sonarscanner for analysis
       - name: Install Sonar Scanner
