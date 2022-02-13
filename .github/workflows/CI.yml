@@ -196,7 +196,7 @@ jobs:
             /d:sonar.verbose=false \
             /d:sonar.login=$SONAR_TOKEN \
             /d:sonar.host.url=https://sonarcloud.io \
-            /d:sonar.exclusions=Assets/Plugins/**,Assets/_Demo/** \
+            /d:sonar.exclusions=Assets/Plugins/**,Assets/_Demo/**,Assets/NaturalSelectionSimulation/Effects/**, \
             /d:sonar.cpd.exclusions=Assets/Tests/** \
             /d:sonar.coverage.exclusions=Assets/Tests/** \
             /d:sonar.cs.nunit.reportsPaths=Tests/editmode-results.xml,Tests/playmode-results.xml \

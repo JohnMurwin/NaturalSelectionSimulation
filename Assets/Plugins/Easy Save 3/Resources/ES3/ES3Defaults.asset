@@ -43,6 +43,7 @@ MonoBehaviour:
     - NaturalSelectionSimulation
     - NSS.PlayTests
     - Boxophobic.Utils.Editor
+    - FullscreenEditor
     - sc.stylizedwater2.editor
     - CodeStage.AFPSCounter.Editor
     - TileWorldCreator.Editor
