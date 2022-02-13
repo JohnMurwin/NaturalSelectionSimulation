@@ -1,36 +1,52 @@
 using UnityEngine;
 using System.Collections;
+using NaturalSelectionSimulation;
 
 [RequireComponent( typeof(Camera) )]
 public class FlyCam : MonoBehaviour {
-	public float acceleration = 50; // how fast you accelerate
-	public float accSprintMultiplier = 4; // how much faster you go when "sprinting"
+	private float _acceleration = 30; // how fast the camera moves
 	public float lookSensitivity = 1; // mouse look sensitivity
 	public float dampingCoefficient = 5; // how quickly you break to a halt after you stop your input
-	public bool focusOnEnable = true; // whether or not to focus and lock cursor immediately on enable
+	private bool _focusOnEnable = true; // whether or not to focus when camera starts up
+	
+	// variables setting the keys for movement
+	private KeyCode _forward = KeyCode.W;
+	private KeyCode _backward = KeyCode.S;
+	private KeyCode _up = KeyCode.Space ;
+	private KeyCode _down = KeyCode.E;
+	private KeyCode _left = KeyCode.A;
+	private KeyCode _right = KeyCode.D;
+	private KeyCode _focus = KeyCode.F;
 
 	Vector3 velocity; // current velocity
 
-	static bool Focused {
-		get => Cursor.lockState == CursorLockMode.Locked;
-		set {
-			Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
-			Cursor.visible = value == false;
-		}
-	}
+	static private bool _focused;
+
+	// this would enable locking the cursor in addition to the movement arrows
+	//static bool Focused {
+	//	get => Cursor.lockState == CursorLockMode.Locked;
+	//	set {
+	//		Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
+	//		Cursor.visible = true;
+	//	}
+	//}
 
 	void OnEnable() {
-		if( focusOnEnable ) Focused = true;
+		if( _focusOnEnable ) _focused = true;
 	}
 
-	void OnDisable() => Focused = false;
+	void OnDisable() => _focused = false;
 
 	void Update() {
 		// Input
-		if( Focused )
+		if (_focused)
+		{
 			UpdateInput();
-		else if( Input.GetMouseButtonDown( 0 ) )
-			Focused = true;
+		}
+		else if (Input.GetKeyDown(_focus))
+		{
+			_focused = true;
+		}
 
 		// Physics
 		velocity = Vector3.Lerp( velocity, Vector3.zero, dampingCoefficient * Time.deltaTime );
@@ -48,9 +64,9 @@ public class FlyCam : MonoBehaviour {
 		Quaternion vert = Quaternion.AngleAxis( mouseDelta.y, Vector3.right );
 		transform.rotation = horiz * rotation * vert;
 
-		// Leave cursor lock
+		// unlock the camera for additional movement
 		if( Input.GetKeyDown( KeyCode.Escape ) )
-			Focused = false;
+			_focused = false;
 	}
 
 	Vector3 GetAccelerationVector() {
@@ -61,16 +77,14 @@ public class FlyCam : MonoBehaviour {
 				moveInput += dir;
 		}
 
-		AddMovement( KeyCode.W, Vector3.forward );
-		AddMovement( KeyCode.S, Vector3.back );
-		AddMovement( KeyCode.D, Vector3.right );
-		AddMovement( KeyCode.A, Vector3.left );
-		AddMovement( KeyCode.Space, Vector3.up );
-		AddMovement( KeyCode.LeftControl, Vector3.down );
+		AddMovement( _forward, Vector3.forward );
+		AddMovement( _backward, Vector3.back );
+		AddMovement( _right, Vector3.right );
+		AddMovement( _left, Vector3.left );
+		AddMovement( _up, Vector3.up );
+		AddMovement( _down, Vector3.down );
 		Vector3 direction = transform.TransformVector( moveInput.normalized );
 
-		if( Input.GetKey( KeyCode.LeftShift ) )
-			return direction * ( acceleration * accSprintMultiplier ); // "sprinting"
-		return direction * acceleration; // "walking"
+		return direction * _acceleration; // "walking"
 	}
 }
