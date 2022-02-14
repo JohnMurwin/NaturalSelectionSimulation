@@ -20,22 +20,16 @@ public class FlyCam : MonoBehaviour {
 
 	Vector3 velocity; // current velocity
 
+	private float _zoomIncriment = 20f; // how fast the zoom is
 	static private bool _focused;
 
-	// this would enable locking the cursor in addition to the movement arrows
-	//static bool Focused {
-	//	get => Cursor.lockState == CursorLockMode.Locked;
-	//	set {
-	//		Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
-	//		Cursor.visible = true;
-	//	}
-	//}
 
 	void OnEnable() {
 		if( _focusOnEnable ) _focused = true;
 	}
 
 	void OnDisable() => _focused = false;
+
 
 	void Update() {
 		// Input
@@ -51,6 +45,15 @@ public class FlyCam : MonoBehaviour {
 		// Physics
 		velocity = Vector3.Lerp( velocity, Vector3.zero, dampingCoefficient * Time.deltaTime );
 		transform.position += velocity * Time.deltaTime;
+
+		// this controls the zoom using the scroll wheel
+        if (Camera.main.orthographic)
+        {
+			Camera.main.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * _zoomIncriment;
+		}
+		else {
+			Camera.main.fieldOfView -= Input.GetAxis("Mouse ScrollWheel") * _zoomIncriment;
+		}
 	}
 
 	void UpdateInput() {
