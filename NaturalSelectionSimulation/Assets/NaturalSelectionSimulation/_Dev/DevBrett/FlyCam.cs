@@ -19,17 +19,13 @@ public class FlyCam : MonoBehaviour {
 	private KeyCode _focus = KeyCode.F;
 
 	Vector3 velocity; // current velocity
-
 	static private bool _focused;
 
-	// this would enable locking the cursor in addition to the movement arrows
-	//static bool Focused {
-	//	get => Cursor.lockState == CursorLockMode.Locked;
-	//	set {
-	//		Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
-	//		Cursor.visible = true;
-	//	}
-	//}
+
+	// new section for right clicking and rotating the camera around an object
+	public GameObject target;
+	private float _speed = 5;
+
 
 	void OnEnable() {
 		if( _focusOnEnable ) _focused = true;
@@ -48,9 +44,19 @@ public class FlyCam : MonoBehaviour {
 			_focused = true;
 		}
 
-		// Physics
+		// Physics of the camera
 		velocity = Vector3.Lerp( velocity, Vector3.zero, dampingCoefficient * Time.deltaTime );
 		transform.position += velocity * Time.deltaTime;
+
+
+		// the part that deals with rotating the camera around using the right click
+		if (Input.GetMouseButton(1))
+		{
+			transform.RotateAround(target.transform.position, transform.up, Input.GetAxis("Mouse X") * _speed);
+			transform.RotateAround(target.transform.position, transform.right, Input.GetAxis("Mouse Y") * -_speed);
+		}
+
+
 	}
 
 	void UpdateInput() {
