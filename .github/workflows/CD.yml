@@ -37,7 +37,7 @@ jobs:
       - name: Cache Project Library for next Build
         uses: actions/cache@v2
         with:
-          path: NaturalSelectionSimulation/Library
+          path: /Library
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
       
@@ -53,7 +53,6 @@ jobs:
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          projectPath: NaturalSelectionSimulation
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Custom
           version: ${{ steps.versionOutput.outputs.semVer }}

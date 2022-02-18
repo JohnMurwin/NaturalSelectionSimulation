@@ -11,7 +11,7 @@
 VERSION_FILE="./.github/version.txt"
 VERSION_NUM="./.github/versionNum.txt"
 SONAR_FILE=""
-UNITY_FILE="./NaturalSelectionSimulation/ProjectSettings/ProjectSettings.asset"
+UNITY_FILE="./ProjectSettings/ProjectSettings.asset"
 
 # 0. Check for if the branch name even exists
 if [ "$GITHUB_REF_NAME" == "" ]; then
