@@ -23,6 +23,8 @@ public class FlyCam : MonoBehaviour {
 	private float _zoomIncriment = 20f; // how fast the zoom is
 	static private bool _focused;
 
+	private float _speed = 5;
+
 
 	void OnEnable() {
 		if( _focusOnEnable ) _focused = true;
@@ -42,9 +44,10 @@ public class FlyCam : MonoBehaviour {
 			_focused = true;
 		}
 
-		// Physics
+		// Physics of the camera
 		velocity = Vector3.Lerp( velocity, Vector3.zero, dampingCoefficient * Time.deltaTime );
 		transform.position += velocity * Time.deltaTime;
+
 
 		// this controls the zoom using the scroll wheel
         if (Camera.main.orthographic)
@@ -53,6 +56,14 @@ public class FlyCam : MonoBehaviour {
 		}
 		else {
 			Camera.main.fieldOfView -= Input.GetAxis("Mouse ScrollWheel") * _zoomIncriment;
+		}
+
+
+		// the part that deals with rotating the camera around using the right click
+		if (Input.GetMouseButton(1))
+		{
+			transform.RotateAround(target.transform.position, transform.up, Input.GetAxis("Mouse X") * _speed);
+			transform.RotateAround(target.transform.position, transform.right, Input.GetAxis("Mouse Y") * -_speed);
 		}
 	}
 
