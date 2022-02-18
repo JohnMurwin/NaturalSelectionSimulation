@@ -19,11 +19,10 @@ public class FlyCam : MonoBehaviour {
 	private KeyCode _focus = KeyCode.F;
 
 	Vector3 velocity; // current velocity
+
+	private float _zoomIncriment = 20f; // how fast the zoom is
 	static private bool _focused;
 
-
-	// new section for right clicking and rotating the camera around an object
-	public GameObject target;
 	private float _speed = 5;
 
 
@@ -32,6 +31,7 @@ public class FlyCam : MonoBehaviour {
 	}
 
 	void OnDisable() => _focused = false;
+
 
 	void Update() {
 		// Input
@@ -49,14 +49,22 @@ public class FlyCam : MonoBehaviour {
 		transform.position += velocity * Time.deltaTime;
 
 
+		// this controls the zoom using the scroll wheel
+        if (Camera.main.orthographic)
+        {
+			Camera.main.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * _zoomIncriment;
+		}
+		else {
+			Camera.main.fieldOfView -= Input.GetAxis("Mouse ScrollWheel") * _zoomIncriment;
+		}
+
+
 		// the part that deals with rotating the camera around using the right click
 		if (Input.GetMouseButton(1))
 		{
 			transform.RotateAround(target.transform.position, transform.up, Input.GetAxis("Mouse X") * _speed);
 			transform.RotateAround(target.transform.position, transform.right, Input.GetAxis("Mouse Y") * -_speed);
 		}
-
-
 	}
 
 	void UpdateInput() {
