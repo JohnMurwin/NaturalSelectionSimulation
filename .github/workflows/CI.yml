@@ -1,82 +1,74 @@
 #   Continuous Integration Pipeline
-#   Uses: SonarCloud, GameCI, UnityTestRunner,
-#   From: John Murwin, Mirage, SonarCloud, and Fathom7
+#   Uses: SonarCloud, GameCI, UnityTestRunner, ExtendaActions
+#   From: John Murwin, TimothYolt, the MirageNet team, DavidFinol, SonarCloud, and Fathom7
 
-name: CI
+name: CI Mk2
 on:
-  push:
+  push: 
     branches: [main, dev]
     paths-ignore:
       - 'docs/**'
       - '*.md'
-  pull_request:
-    types: [opened, synchronize, reopened, edited]
-    paths-ignore:
-      - 'docs/**'
-      - '*.md'
+  pull_request: {}
 
 jobs:
-
   TestProject:
-    name: Run Tests in ${{ matrix.testMode }}
+    name: Run Tests
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        projectPath:
-          - NaturalSelectionSimulation
-        testMode:
-          - playmode
-          - editmode
-
+      # available list of containers here:
+      # https://hub.docker.com/r/unityci/editor/tags?page=1&ordering=last_updated&name=ubuntu-2020.1.17f1-base
+    container: unityci/editor:ubuntu-2020.3.26f1-base-0.17
+    
     steps:
-      # First we checkout the project with LFS support (don't need fetch depth here)
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-        with:
-          lfs: true
-
-      # Cache library for future speed for Analysis
-      - name: Cache Library
-        uses: actions/cache@v2
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}
-          restore-keys: |
-            Library-
-
-      # Using GameCI's Unity Test Runner, Run Tests via CLI
-      - name: Unity Test Runner via CLI
-        uses: game-ci/unity-test-runner@v2
-        id: tests
+      
+      # First we need to grab the UnityLicense we uploaded as a Secret from the Workflow: UnityActivation
+      - name: Activate Unity
+        continue-on-error: true # exit code is 1 for manual activation
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        run: |
+          echo "$UNITY_LICENSE" | tr -d '\r' > UnityLicenseFile.ulf
+          unity-editor -nographics -logFile /dev/stdout -manualLicenseFile UnityLicenseFile.ulf -quit
+          
+      # Checkout the project @ fetch-depth 0 for full history and LFS support
+      - name: Checkout Repository
+        uses: actions/checkout@v1
+          
+      # Cache library for future run speed
+      - name: Cache Library
+        id: cache-library
+        uses: actions/cache@v2
         with:
-          projectPath: ${{ matrix.projectPath }}
-          testMode: ${{ matrix.testMode }}
-          artifactsPath: ${{ matrix.testMode }}-artifacts
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: ${{ matrix.testMode }} Test Results
-          customParameters: -nographics -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./CodeCoverage -coverageOptions generateAdditionalMetrics
-          unityVersion: 2020.3.26f1
-      
-      # Upload Code Coverage XML Reports to CodeCov
-      - name: Upload XML report to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          name: Unity Test Runner Results
-          flags: automated
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: CodeCoverage/**/*.xml
+          path: Library
+          key: Library-2020.3.26
 
-      # Upload Test Results as Artifacts for each testMode matrix
-      - name: Upload Results as Artifacts
-        uses: actions/upload-artifact@v2
+      # Run editor tests using Unity TestRunner w CodeCoverage
+      - name: Run editor Tests
+        run: unity-editor -nographics -logFile /dev/stdout -runTests -testPlatform editmode -testResults Tests/editmode-results.xml -enableCodeCoverage -coverageResultsPath Tests -debugCodeOptimization
+        timeout-minutes: 20
+
+      # Run play tests using Unity TestRunner w CodeCoverage
+      - name: Run play Tests
+        run: unity-editor -nographics -logFile /dev/stdout -runTests -testPlatform playmode -testResults Tests/playmode-results.xml -enableCodeCoverage -coverageResultsPath Tests -debugCodeOptimization
+        timeout-minutes: 20
+
+      # Upload Test w Coverage Results for Later
+      - name: Archive Test Results
+        uses: actions/upload-artifact@v2.3.1
         if: always()
         with:
-          name: Test results for ${{ matrix.testMode }}
-          path: ${{ steps.tests.outputs.artifactsPath }}
-  
+          name: Test results
+          path: Tests
+       
+      # Use NUnit to Publish Github annotation of Test Results    
+      - name: Publish Test Results
+        uses: MirageNet/nunit-reporter@v1.0.11
+        if: always()
+        with:
+          path: "Tests/*.xml"
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+                
+          
   BuildProject:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
@@ -87,7 +79,7 @@ jobs:
           - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
           - StandaloneLinux64 # Build a Linux 64-bit standalone.
-
+    
     steps:
       # First checkout the repo with both LFS and FetchDepth 0 for full commit
       - name: Checkout Repo
@@ -95,36 +87,119 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
-
+      
       # Cache project for future speed
       - name: Cache Project Library for next Build
         uses: actions/cache@v2
         with:
-          path: NaturalSelectionSimulation/Library
+          path: Library
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
-
+      
       # Read from file and assign to outputs object
       - name: Version Assignmnet
         id: versionOutput
         run: |
           read -r firstline < ".github/versionNum.txt"
           echo ::set-output name=semVer::$firstline
-
+      
       # Use GameCI to build project with TargetPlatform Matrix
-      - name: Build Matrix with UnityBuilder@v2  
+      - name: Build Matrix with UnityBuilder@v2
         uses: game-ci/unity-builder@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          projectPath: NaturalSelectionSimulation
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Custom
           version: ${{ steps.versionOutput.outputs.semVer }}
-
+      
       # Upload Build Artifacts *for PR's*
-      - name: Upload Build Artifacts with Matrix 
+      - name: Upload Build Artifacts with Matrix
         uses: actions/upload-artifact@v2
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
+          
+  
+  LintProject:
+    needs: [ TestProject ]  # needs coverage from test CI
+    name: Lint Project
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    # available list of containers here:
+    # https://hub.docker.com/r/unityci/editor/tags?page=1&ordering=last_updated&name=ubuntu-2020.1.17f1-base
+    container: unityci/editor:ubuntu-2020.3.26f1-base-0.17
+    env:
+      DOTNET_ROOT: '/opt/unity/Editor/Data/NetCore/Sdk-2.2.107'
+      
+    steps:
+      
+      # First we need to grab the UnityLicense we uploaded as a Secret from the Workflow: UnityActivation
+      - name: Activate Unity
+        continue-on-error: true # exit code is 1 for manual activation
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        run: |
+          echo "$UNITY_LICENSE" | tr -d '\r' > UnityLicenseFile.ulf
+          unity-editor -nographics -logFile /dev/stdout -manualLicenseFile UnityLicenseFile.ulf -quit
+
+      # Checkout the project @ fetch-depth 0 for full history and LFS support
+      - name: Checkout Repository
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
+          
+      # Cache library for future run speed
+      - name: Cache Library
+        id: cache-library
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-2020.3.26
+
+      # Install dotnet-sonarscanner for analysis
+      - name: Install Sonar Scanner
+        run: |
+          $DOTNET_ROOT/dotnet tool install dotnet-sonarscanner --tool-path . --version 5.4.0
+          apt update
+          apt install -y openjdk-11-jre-headless
+          
+      # Generate Unity Solution for Scanning    
+      - name: Generate Solution
+        run: unity-editor -nographics -logFile /dev/stdout -customBuildName NaturalSelectionSimulation -projectPath . -executeMethod  UnityEditor.SyncVS.SyncSolution -quit
+          
+      # unity 2020.3 outputs <ReferenceOutputAssembly>false</ReferenceOutputAssembly> on linux
+      # this breaks references to other csproj for docfx and sonar.
+      # This step is a work around for this so docfx runs in correctly
+      # replacing false with true in ReferenceOutputAssembly
+      - name: Fix Csproj
+        run: sed -i 's/<ReferenceOutputAssembly>false<\/ReferenceOutputAssembly>/<ReferenceOutputAssembly>true<\/ReferenceOutputAssembly>/g' *.csproj
+
+      # Download Test Results from Artifacts
+      - name: Get Test Coverages
+        uses: actions/download-artifact@v2
+        with:
+          name: Test results
+          path: Tests
+
+      # Run SonarQube Analysis
+      - name: SonarQube Analysis
+        env:
+          FrameworkPathOverride: /opt/unity/Editor/Data/MonoBleedingEdge/
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ls -l
+          ./dotnet-sonarscanner begin \
+            /o:"johnmurwin" \
+            /k:"JohnMurwin_NaturalSelectionSimulation" \
+            /d:sonar.verbose=false \
+            /d:sonar.login=$SONAR_TOKEN \
+            /d:sonar.host.url=https://sonarcloud.io \
+            /d:sonar.exclusions=Assets/Plugins/**,Assets/_Demo/**,Assets/NaturalSelectionSimulation/Effects/**, \
+            /d:sonar.cpd.exclusions=Assets/Tests/** \
+            /d:sonar.coverage.exclusions=Assets/Tests/** \
+            /d:sonar.cs.nunit.reportsPaths=Tests/editmode-results.xml,Tests/playmode-results.xml \
+            /d:sonar.cs.opencover.reportsPaths=Tests/NaturalSelectionSimulation-opencov/EditMode/TestCoverageResults_0000.xml,Tests/NaturalSelectionSimulation-opencov/PlayMode/TestCoverageResults_0000.xml
+          $DOTNET_ROOT/dotnet build NaturalSelectionSimulation.sln
+          ./dotnet-sonarscanner end /d:sonar.login=$SONAR_TOKEN
