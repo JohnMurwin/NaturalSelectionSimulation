@@ -4,10 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MenuController : MonoBehaviour
+namespace NaturalSelectionSimulation
 {
-    public void ExitButton()
+    public class MenuController : MonoBehaviour
     {
-        Application.Quit();
+        public void ExitGame()
+        {
+            Application.Quit();
+        }
     }
 }
