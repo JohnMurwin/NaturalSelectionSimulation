@@ -46,12 +46,15 @@ namespace NaturalSelectionSimulation
 
             for (int i = 0; i < resolutions.Length; i++)
             {
-                var option = $"{resolutions[i].width} x {resolutions[i].height}";
-                options.Add(option);
-
-                if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+                if (isFourThreeAspect(resolutions[i].width, resolutions[i].height) || isSixteenNineAspect(resolutions[i].width, resolutions[i].height))
                 {
-                    currentResolutionIndex = i;
+                    var option = $"{resolutions[i].width} x {resolutions[i].height}";
+                    options.Add(option);
+
+                    if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+                    {
+                        currentResolutionIndex = i;
+                    }
                 }
             }
 
@@ -102,6 +105,43 @@ namespace NaturalSelectionSimulation
             {
                 Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
             }
+        }
+
+        public bool isFourThreeAspect(int width, int height)
+        {
+            int factor = gcd(width, height);
+            int wFactor = width / factor;
+            int hFactor = height / factor;
+
+            if (wFactor == 4 && hFactor == 3)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool isSixteenNineAspect(int width, int height)
+        {
+            int factor = gcd(width, height);
+            int wFactor = width / factor;
+            int hFactor = height / factor;
+
+            if (wFactor == 16 && hFactor == 9)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public int gcd(int a, int b)
+        {
+            return (b == 0) ? a : gcd(b, a % b);
         }
 
         public void ExitGame()
