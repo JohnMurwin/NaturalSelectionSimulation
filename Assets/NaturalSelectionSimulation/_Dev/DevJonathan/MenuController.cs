@@ -15,7 +15,7 @@ namespace NaturalSelectionSimulation
 
         [Header("Screen Mode Dropdown")]
         public TMP_Dropdown screenModeDropdown;
-        private int _screenMode;
+        private int _screenModeIndex;
         Dictionary<int, string> screenModes = new Dictionary<int, string>()
         {
             { 0, "Fullscreen" },
@@ -25,6 +25,7 @@ namespace NaturalSelectionSimulation
 
         [Header("Resolution Dropdown")]
         public TMP_Dropdown resolutionDropdown;
+        private int _resolutionIndex;
         private Resolution[] resolutions;
 
         #endregion
@@ -55,14 +56,16 @@ namespace NaturalSelectionSimulation
             }
 
             resolutionDropdown.AddOptions(options);
-            resolutionDropdown.value = currentResolutionIndex;
+            _resolutionIndex = currentResolutionIndex;
+            resolutionDropdown.value = _resolutionIndex;
             resolutionDropdown.RefreshShownValue();
         }
 
         public void SetResolution(int resolutionIndex)
         {
-            var resolution = resolutions[resolutionIndex];
-            Screen.SetResolution(resolution.width, resolution.height, screenModes[_screenMode] == "Fullscreen");
+            _resolutionIndex = resolutionIndex;
+            var resolution = resolutions[_resolutionIndex];
+            Screen.SetResolution(resolution.width, resolution.height, screenModes[_screenModeIndex] == "Fullscreen");
         }
 
         private void InitializeScreenModeDropdown()
@@ -73,12 +76,12 @@ namespace NaturalSelectionSimulation
 
             if (screenModes.ContainsKey(PlayerPrefs.GetInt("masterFullscreen", -1)))
             {
-                _screenMode = PlayerPrefs.GetInt("masterFullscreen");
-                screenModeDropdown.value = _screenMode;
+                _screenModeIndex = PlayerPrefs.GetInt("masterFullscreen");
+                screenModeDropdown.value = _screenModeIndex;
             }
             else
             {
-                _screenMode = 0;
+                _screenModeIndex = 0;
                 screenModeDropdown.value = 0;
             }
 
@@ -87,7 +90,7 @@ namespace NaturalSelectionSimulation
 
         public void SetScreenMode(int screenMode)
         {
-            _screenMode = screenMode;
+            _screenModeIndex = screenMode;
             PlayerPrefs.SetInt("masterFullscreen", screenMode);
             Screen.fullScreen = screenModes[screenMode] == "Fullscreen";
 
