@@ -11,7 +11,7 @@ namespace NaturalSelectionSimulation
 {
     public class MenuController : MonoBehaviour
     {
-        #region Display Settings
+        #region Display Settings Members/Properties
 
         [Header("Screen Mode Dropdown")]
         public TMP_Dropdown screenModeDropdown;
@@ -38,13 +38,23 @@ namespace NaturalSelectionSimulation
 
         #endregion
 
+        #region Audio Settings Members/Properties
+
+        [Header("Master Volume Setting")]
+        public TMP_Text masterSliderValue = null;
+        public Slider masterSlider = null;
+
+        #endregion
+
         private void Start()
         {
             InitializeScreenModeDropdown();
             InitializeResolution();
             InitializeAspectRatios();
+            InitializeMasterVolume();
         }
 
+        #region Display Methods
         private void InitializeAspectRatios()
         {
             aspectRatioDropdown.ClearOptions();
@@ -195,6 +205,25 @@ namespace NaturalSelectionSimulation
         {
             return (b == 0) ? a : gcd(b, a % b);
         }
+
+        #endregion
+
+        #region Audio Settings Methods
+
+        private void InitializeMasterVolume()
+        {
+            SetMasterVolume(PlayerPrefs.GetFloat("masterVolume", -1) != -1 ? PlayerPrefs.GetFloat("masterVolume") : 50);
+        }
+
+        public void SetMasterVolume(float volume)
+        {
+            AudioListener.volume = volume;
+            masterSliderValue.text = volume.ToString("0");
+
+            PlayerPrefs.SetFloat("masterVolume", AudioListener.volume);
+        }
+
+        #endregion
 
         public void ExitGame()
         {
