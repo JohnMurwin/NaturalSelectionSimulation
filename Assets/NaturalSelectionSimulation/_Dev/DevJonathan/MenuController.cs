@@ -26,35 +26,66 @@ namespace NaturalSelectionSimulation
         [Header("Resolution Dropdown")]
         public TMP_Dropdown resolutionDropdown;
         private int _resolutionIndex;
-        private Resolution[] resolutions;
+        private List<Resolution> resolutions = new List<Resolution>();
+
+        [Header("Aspect Ratio Dropdown")]
+        public TMP_Dropdown aspectRatioDropdown;
+        Dictionary<int, string> aspectRatios = new Dictionary<int, string>()
+        {
+            { 0, "16:9" },
+            { 1, "4:3" }
+        };
 
         #endregion
 
         private void Start()
         {
-            InitializeResolution();
             InitializeScreenModeDropdown();
+            InitializeResolution();
+            InitializeAspectRatios();
+        }
+
+        private void InitializeAspectRatios()
+        {
+            aspectRatioDropdown.ClearOptions();
+
+            aspectRatioDropdown.AddOptions(aspectRatios.OrderBy(x => x.Key).Select(x => x.Value).ToList());
+            aspectRatioDropdown.value = isSixteenNineAspect(resolutions[_resolutionIndex].width, resolutions[_resolutionIndex].height) ? 0 : 1;
+            aspectRatioDropdown.RefreshShownValue();
+        }
+
+        public void SetAspectRatio(int aspectRatioIndex)
+        {
+            var resolution = resolutions.Where(r => (aspectRatioIndex == 0 && isSixteenNineAspect(r.width, r.height)) 
+                    || (aspectRatioIndex == 1 && isFourThreeAspect(r.width, r.height))).OrderBy(r => Math.Abs(_resolutionIndex - resolutions.IndexOf(r))).FirstOrDefault();
+
+            _resolutionIndex = resolutions.IndexOf(resolution);
+            resolutionDropdown.value = _resolutionIndex;
+            resolutionDropdown.RefreshShownValue();
         }
 
         private void InitializeResolution()
         {
-            resolutions = Screen.resolutions;
+            var screenResolutions = Screen.resolutions;
             resolutionDropdown.ClearOptions();
 
             List<string> options = new List<string>();
             int currentResolutionIndex = 0;
+            int counter = 0;
 
-            for (int i = 0; i < resolutions.Length; i++)
+            for (int i = 0; i < screenResolutions.Length; i++)
             {
-                if (isFourThreeAspect(resolutions[i].width, resolutions[i].height) || isSixteenNineAspect(resolutions[i].width, resolutions[i].height))
+                if (isFourThreeAspect(screenResolutions[i].width, screenResolutions[i].height) || isSixteenNineAspect(screenResolutions[i].width, screenResolutions[i].height))
                 {
-                    var option = $"{resolutions[i].width} x {resolutions[i].height}";
+                    resolutions.Add(screenResolutions[i]);
+                    var option = $"{screenResolutions[i].width} x {screenResolutions[i].height}";
                     options.Add(option);
 
-                    if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+                    if (screenResolutions[i].width == Screen.width && screenResolutions[i].height == Screen.height)
                     {
-                        currentResolutionIndex = i;
+                        currentResolutionIndex = counter;
                     }
+                    counter++;
                 }
             }
 
@@ -69,6 +100,9 @@ namespace NaturalSelectionSimulation
             _resolutionIndex = resolutionIndex;
             var resolution = resolutions[_resolutionIndex];
             Screen.SetResolution(resolution.width, resolution.height, screenModes[_screenModeIndex] == "Fullscreen");
+
+            aspectRatioDropdown.value = isSixteenNineAspect(resolution.width, resolution.height) ? 0 : 1;
+            aspectRatioDropdown.RefreshShownValue();
         }
 
         private void InitializeScreenModeDropdown()
@@ -86,7 +120,11 @@ namespace NaturalSelectionSimulation
             {
                 _screenModeIndex = 0;
                 screenModeDropdown.value = 0;
+                PlayerPrefs.SetInt("masterFullscreen", 0);
             }
+
+            resolutionDropdown.enabled = screenModes[_screenModeIndex] != "Fullscreen";
+            aspectRatioDropdown.enabled = screenModes[_screenModeIndex] != "Fullscreen";
 
             screenModeDropdown.RefreshShownValue();
         }
@@ -97,7 +135,21 @@ namespace NaturalSelectionSimulation
             PlayerPrefs.SetInt("masterFullscreen", screenMode);
             Screen.fullScreen = screenModes[screenMode] == "Fullscreen";
 
-            if(screenModes[screenMode] == "Windowed")
+            resolutionDropdown.enabled = screenModes[_screenModeIndex] != "Fullscreen";
+            aspectRatioDropdown.enabled = screenModes[_screenModeIndex] != "Fullscreen";
+
+            if (screenModes[screenMode] == "Fullscreen")
+            {
+                var resolution = resolutions.First(r => r.width == Screen.width && r.height == Screen.height);
+                _resolutionIndex = resolutions.IndexOf(resolution);
+                resolutionDropdown.value = _resolutionIndex;
+                Screen.SetResolution(resolution.width, resolution.height, screenModes[_screenModeIndex] == "Fullscreen");
+                resolutionDropdown.RefreshShownValue();
+
+                aspectRatioDropdown.value = isSixteenNineAspect(resolution.width, resolution.height) ? 0 : 1;
+                aspectRatioDropdown.RefreshShownValue();
+            }
+            else if(screenModes[screenMode] == "Windowed")
             {
                 Screen.fullScreenMode = FullScreenMode.Windowed;
             }
