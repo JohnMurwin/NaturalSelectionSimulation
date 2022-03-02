@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System;
 
 namespace NaturalSelectionSimulation
 {
@@ -22,11 +23,46 @@ namespace NaturalSelectionSimulation
             { 2, "Borderless" }
         };
 
+        [Header("Resolution Dropdown")]
+        public TMP_Dropdown resolutionDropdown;
+        private Resolution[] resolutions;
+
         #endregion
 
         private void Start()
         {
+            InitializeResolution();
             InitializeScreenModeDropdown();
+        }
+
+        private void InitializeResolution()
+        {
+            resolutions = Screen.resolutions;
+            resolutionDropdown.ClearOptions();
+
+            List<string> options = new List<string>();
+            int currentResolutionIndex = 0;
+
+            for (int i = 0; i < resolutions.Length; i++)
+            {
+                var option = $"{resolutions[i].width} x {resolutions[i].height}";
+                options.Add(option);
+
+                if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+                {
+                    currentResolutionIndex = i;
+                }
+            }
+
+            resolutionDropdown.AddOptions(options);
+            resolutionDropdown.value = currentResolutionIndex;
+            resolutionDropdown.RefreshShownValue();
+        }
+
+        public void SetResolution(int resolutionIndex)
+        {
+            var resolution = resolutions[resolutionIndex];
+            Screen.SetResolution(resolution.width, resolution.height, screenModes[_screenMode] == "Fullscreen");
         }
 
         private void InitializeScreenModeDropdown()
