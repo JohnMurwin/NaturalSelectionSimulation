@@ -227,7 +227,23 @@ namespace NaturalSelectionSimulation
 
         public void ExitGame()
         {
-            Application.Quit();
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
         }
+
+
+
+        #region SceneNavigationRegion
+
+
+        public void LoadSimulationScene()
+        {
+            SceneManager.LoadScene(1, LoadSceneMode.Single);
+        }
+
+        #endregion
     }
 }
