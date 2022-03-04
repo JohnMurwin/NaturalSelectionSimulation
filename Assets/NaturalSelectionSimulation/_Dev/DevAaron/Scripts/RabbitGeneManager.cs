@@ -348,4 +348,40 @@ public class RabbitGeneManager : MonoBehaviour
         }
         return newRabbit;
     }
+
+    void Start()
+    {
+        //testing
+        //make rabbit 1
+        var maleRabbitGenes = new RabbitGeneCollection(7, 8, 8, 5, 4, 5, 8, 5, 6, true);
+        PrintAttributes(maleRabbitGenes);
+        //make rabbit 2
+        var femaleRabbitGenes = new RabbitGeneCollection(6, 7, 9, 6, 3, 6, 5, 7, 4, false);
+        PrintAttributes(femaleRabbitGenes);
+
+        //lets make 5 offsrping and see the results
+        for (int i = 0; i < 5; i++)
+        {
+            var rabbitOffspringGenes = GenerateNewGeneCollection(maleRabbitGenes, femaleRabbitGenes);
+            PrintAttributes(rabbitOffspringGenes);
+        }
+    }
+
+    int rabbitCount = 1;
+    void PrintAttributes(RabbitGeneCollection rabbitGenes)
+    {
+        Debug.Log("Rabbit: " + rabbitCount.ToString());
+        Debug.Log("Speed: " + rabbitGenes.Speed.ToString());
+        Debug.Log("Size: " + rabbitGenes.Size.ToString());
+        Debug.Log("Sight Distance: " + rabbitGenes.SightDistance.ToString());
+        Debug.Log("Reproductive Urge: " + rabbitGenes.ReproductiveUrge.ToString());
+        Debug.Log("Life Expectancy: " + rabbitGenes.LifeExpectancy.ToString());
+        Debug.Log("Hearing Distance: " + rabbitGenes.HearingDistance.ToString());
+        Debug.Log("Growth Time: " + rabbitGenes.GrowthTime.ToString());
+        Debug.Log("Gestation: " + rabbitGenes.Gestation.ToString());
+        Debug.Log("Desirability: " + rabbitGenes.Desirability.ToString());
+        Debug.Log("Is Male: " + rabbitGenes.IsMale.ToString());
+        Debug.Log("");
+        rabbitCount++;
+    }
 }
