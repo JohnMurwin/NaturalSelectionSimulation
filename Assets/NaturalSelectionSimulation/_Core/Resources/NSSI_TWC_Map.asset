@@ -22939,7 +22939,7 @@ MonoBehaviour:
       Data: d478a775218f480d8f99dac97fbe0b6f
     - Name: active
       Entry: 5
-      Data: false
+      Data: true
     - Name: layerName
       Entry: 1
       Data: Grass
@@ -30582,7 +30582,7 @@ MonoBehaviour:
       Data: 813e130461814b24a70c00ab0c52ec37
     - Name: active
       Entry: 5
-      Data: false
+      Data: true
     - Name: layerName
       Entry: 1
       Data: Rocks
@@ -38816,7 +38816,7 @@ MonoBehaviour:
       Data: false
     - Name: active
       Entry: 5
-      Data: false
+      Data: true
     - Name: selectedCopyLayerIndex
       Entry: 3
       Data: 0
@@ -39080,7 +39080,7 @@ MonoBehaviour:
       Data: false
     - Name: active
       Entry: 5
-      Data: false
+      Data: true
     - Name: selectedCopyLayerIndex
       Entry: 3
       Data: 0
