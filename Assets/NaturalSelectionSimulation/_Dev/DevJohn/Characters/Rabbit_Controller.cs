@@ -4,7 +4,7 @@ using UnityEngine.AI;
 using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
-namespace NaturalSelectionSimulaiton
+namespace NaturalSelectionSimulation
 {
     [RequireComponent(typeof(Animator)), RequireComponent(typeof(CharacterController))]
     public class Rabbit_Controller : MonoBehaviour
