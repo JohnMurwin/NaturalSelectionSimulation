@@ -1,11 +1,10 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
-using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace NaturalSelectionSimulation
 {
@@ -55,12 +54,20 @@ namespace NaturalSelectionSimulation
 
         #endregion
 
+        #region Controls Settings Members/Properties
+
+        [Header("Invert Y Toggle")]
+        public Toggle invertYToggle = null;
+
+        #endregion
+
         private void Start()
         {
             InitializeScreenModeDropdown();
             InitializeResolution();
             InitializeAspectRatios();
             InitializeMasterVolume();
+            InitializeControls();
         }
 
         #region Display Settings Methods
@@ -256,6 +263,23 @@ namespace NaturalSelectionSimulation
             DisplayOptionsView.SetActive(false);
             AudioOptionsView.SetActive(false);
             ControlsOptionsView.SetActive(true);
+        }
+
+        private void InitializeControls()
+        {
+            invertYToggle.isOn = PlayerPrefs.GetInt("masterInvertY", -1) == 1;
+            InvertYControls(invertYToggle.isOn);
+        }
+
+        public void InvertYToggled()
+        {
+            PlayerPrefs.SetInt("masterInvertY", invertYToggle.isOn ? 1 : 0);
+            InvertYControls(invertYToggle.isOn);
+        }
+
+        private void InvertYControls(bool invert)
+        {
+            //Handle Controls
         }
 
         #endregion
