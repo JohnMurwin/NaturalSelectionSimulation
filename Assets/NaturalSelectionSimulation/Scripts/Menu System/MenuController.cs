@@ -11,6 +11,15 @@ namespace NaturalSelectionSimulation
 {
     public class MenuController : MonoBehaviour
     {
+        #region Options Menu Members/Properties
+
+        [Header("Option Tabs")]
+        public GameObject DisplayOptionsView;
+        public GameObject AudioOptionsView;
+        public GameObject ControlsOptionsView;
+
+        #endregion
+
         #region Display Settings Members/Properties
 
         [Header("Screen Mode Dropdown")]
@@ -54,7 +63,15 @@ namespace NaturalSelectionSimulation
             InitializeMasterVolume();
         }
 
-        #region Display Methods
+        #region Display Settings Methods
+
+        public void DisplayTabClick()
+        {
+            DisplayOptionsView.SetActive(true);
+            AudioOptionsView.SetActive(false);
+            ControlsOptionsView.SetActive(false);
+        }
+
         private void InitializeAspectRatios()
         {
             aspectRatioDropdown.ClearOptions();
@@ -210,6 +227,13 @@ namespace NaturalSelectionSimulation
 
         #region Audio Settings Methods
 
+        public void AudioTabClick()
+        {
+            DisplayOptionsView.SetActive(false);
+            AudioOptionsView.SetActive(true);
+            ControlsOptionsView.SetActive(false);
+        }
+
         private void InitializeMasterVolume()
         {
             SetMasterVolume(PlayerPrefs.GetFloat("masterVolume", -1) != -1 ? PlayerPrefs.GetFloat("masterVolume") : 50);
@@ -225,6 +249,17 @@ namespace NaturalSelectionSimulation
 
         #endregion
 
+        #region Controls Settings Methods
+
+        public void ControlsTabClick()
+        {
+            DisplayOptionsView.SetActive(false);
+            AudioOptionsView.SetActive(false);
+            ControlsOptionsView.SetActive(true);
+        }
+
+        #endregion
+
         public void ExitGame()
         {
             #if UNITY_EDITOR
@@ -234,10 +269,7 @@ namespace NaturalSelectionSimulation
             #endif
         }
 
-
-
         #region SceneNavigationRegion
-
 
         public void LoadSimulationScene()
         {
