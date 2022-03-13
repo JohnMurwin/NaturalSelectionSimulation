@@ -77,7 +77,7 @@ public class FlyCam : MonoBehaviour {
 		Vector2 mouseDelta;
 
 		// Rotation
-		if (PlayerPrefs.GetFloat("masterMouseSensitivity", -1) == 1)
+		if (PlayerPrefs.GetInt("masterInvertY", -1) == 1)
         {
 			mouseDelta = lookSensitivity * new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 		}
