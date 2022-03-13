@@ -24,13 +24,18 @@ public class FlyCam : MonoBehaviour {
 	static private bool _focused;
 
 	private float _speed = 5;
+    private bool _isPaused;
 
-
-	void OnEnable() {
+    void OnEnable() {
 		if( _focusOnEnable ) _focused = true;
+        StateController.PauseMenuState += StateController_PauseMenuState;
 	}
 
-	void OnDisable() => _focused = false;
+	void OnDisable()
+	{
+		_focused = false;
+        StateController.PauseMenuState -= StateController_PauseMenuState;
+	}
 
 	private void Start()
 	{
@@ -38,6 +43,9 @@ public class FlyCam : MonoBehaviour {
 	}
 
 	void Update() {
+		if (_isPaused)
+			return;
+
 		// Input
 		if (_focused)
 		{
@@ -77,7 +85,7 @@ public class FlyCam : MonoBehaviour {
 		Vector2 mouseDelta;
 
 		// Rotation
-		if (PlayerPrefs.GetFloat("masterMouseSensitivity", -1) == 1)
+		if (PlayerPrefs.GetInt("masterInvertY", -1) == 1)
         {
 			mouseDelta = lookSensitivity * new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 		}
@@ -114,4 +122,10 @@ public class FlyCam : MonoBehaviour {
 
 		return direction * _acceleration; // "walking"
 	}
+
+	private void StateController_PauseMenuState(bool isPaused)
+	{
+		_isPaused = isPaused;
+	}
+
 }
