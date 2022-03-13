@@ -319,6 +319,11 @@ namespace NaturalSelectionSimulation
             SceneManager.LoadScene(1, LoadSceneMode.Single);
         }
 
+        public void MainMenuScene()
+        {
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
+        }
+
         #endregion
     }
 }
