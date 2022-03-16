@@ -5,7 +5,7 @@ using NaturalSelectionSimulation;
 [RequireComponent( typeof(Camera) )]
 public class FlyCam : MonoBehaviour {
 	private float _acceleration = 30; // how fast the camera moves
-	public float lookSensitivity = 1; // mouse look sensitivity
+	private float lookSensitivity = 1; // mouse look sensitivity
 	public float dampingCoefficient = 5; // how quickly you break to a halt after you stop your input
 	private bool _focusOnEnable = true; // whether or not to focus when camera starts up
 	
@@ -32,6 +32,10 @@ public class FlyCam : MonoBehaviour {
 
 	void OnDisable() => _focused = false;
 
+	private void Start()
+	{
+		lookSensitivity = PlayerPrefs.GetFloat("masterMouseSensitivity", 1);
+	}
 
 	void Update() {
 		// Input
