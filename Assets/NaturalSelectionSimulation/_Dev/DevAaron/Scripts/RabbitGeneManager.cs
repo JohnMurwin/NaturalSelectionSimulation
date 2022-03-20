@@ -60,7 +60,7 @@ namespace NaturalSelectionSimulation
             public bool IsMale { get; set; }
         }
 
-        RabbitGeneCollection GenerateNewGeneCollection(RabbitGeneCollection rabbit1, RabbitGeneCollection rabbit2)
+        public RabbitGeneCollection GenerateNewGeneCollection(RabbitGeneCollection rabbit1, RabbitGeneCollection rabbit2)
         {
             RabbitGeneCollection newRabbit = new RabbitGeneCollection();
             float parentChance = Random.Range(0f, 1f);
