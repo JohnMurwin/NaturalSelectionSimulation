@@ -4,61 +4,58 @@ using UnityEngine;
 
 namespace NaturalSelectionSimulation
 {
-    public class RabbitGeneManager : MonoBehaviour
+    public class RabbitGeneCollection : MonoBehaviour
     {
         public float _mutationChanceDecider = 0.75f;
 
-        public class RabbitGeneCollection
+        public RabbitGeneCollection(float spd, float sz, float hDistance, float sDistance, float lExpectancy,
+            float g, float rUrge, float gTime, float d, bool male)
         {
-            public RabbitGeneCollection(float spd, float sz, float hDistance, float sDistance, float lExpectancy,
-                float g, float rUrge, float gTime, float d, bool male)
-            {
-                Speed = spd;
-                Size = sz;
-                HearingDistance = hDistance;
-                SightDistance = sDistance;
-                LifeExpectancy = lExpectancy;
-                Gestation = g;
-                ReproductiveUrge = rUrge;
-                GrowthTime = gTime;
-                Desirability = d;
-                IsMale = male;
-            }
-
-            public RabbitGeneCollection()
-            {
-                Speed = 0;
-                Size = 0;
-                HearingDistance = 0;
-                SightDistance = 0;
-                LifeExpectancy = 0;
-                Gestation = 0;
-                ReproductiveUrge = 0;
-                GrowthTime = 0;
-                Desirability = 0;
-                IsMale = true;
-            }
-
-            public float Speed { get; set; }
-
-            public float Size { get; set; }
-
-            public float HearingDistance { get; set; }
-
-            public float SightDistance { get; set; }
-
-            public float LifeExpectancy { get; set; }
-
-            public float Gestation { get; set; }
-
-            public float ReproductiveUrge { get; set; }
-
-            public float GrowthTime { get; set; }
-
-            public float Desirability { get; set; }
-
-            public bool IsMale { get; set; }
+            Speed = spd;
+            Size = sz;
+            HearingDistance = hDistance;
+            SightDistance = sDistance;
+            LifeExpectancy = lExpectancy;
+            Gestation = g;
+            ReproductiveUrge = rUrge;
+            GrowthTime = gTime;
+            Desirability = d;
+            IsMale = male;
         }
+
+        public RabbitGeneCollection()
+        {
+            Speed = 0;
+            Size = 0;
+            HearingDistance = 0;
+            SightDistance = 0;
+            LifeExpectancy = 0;
+            Gestation = 0;
+            ReproductiveUrge = 0;
+            GrowthTime = 0;
+            Desirability = 0;
+            IsMale = true;
+        }
+
+        public float Speed { get; set; }
+
+        public float Size { get; set; }
+
+        public float HearingDistance { get; set; }
+
+        public float SightDistance { get; set; }
+
+        public float LifeExpectancy { get; set; }
+
+        public float Gestation { get; set; }
+
+        public float ReproductiveUrge { get; set; }
+
+        public float GrowthTime { get; set; }
+
+        public float Desirability { get; set; }
+
+        public bool IsMale { get; set; }
 
         public RabbitGeneCollection GenerateNewGeneCollection(RabbitGeneCollection rabbit1, RabbitGeneCollection rabbit2)
         {
@@ -327,19 +324,19 @@ namespace NaturalSelectionSimulation
 
         void PrintAttributes(RabbitGeneCollection rabbitGenes)
         {
-            Debug.Log("Rabbit: " + rabbitCount + "\n" 
-                                 + "Speed: " + rabbitGenes.Speed + "\n" 
-                                 + "Size: " + rabbitGenes.Size + "\n" 
-                                 + "Sight Distance: " + rabbitGenes.SightDistance + "\n" 
-                                 + "Reproductive Urge: " + rabbitGenes.ReproductiveUrge + "\n" 
-                                 + "Life Expectancy: " + rabbitGenes.LifeExpectancy + "\n" 
-                                 + "Hearing Distance: " + rabbitGenes.HearingDistance + "\n" 
-                                 + "Growth Time: " + rabbitGenes.GrowthTime + "\n" 
-                                 + "Gestation: " + rabbitGenes.Gestation + "\n" 
-                                 + "Desirability: " + rabbitGenes.Desirability + "\n" 
-                                 + "Is Male: " + rabbitGenes.IsMale
+            Debug.Log("Rabbit: " + rabbitCount + "\n"
+                                    + "Speed: " + rabbitGenes.Speed + "\n"
+                                    + "Size: " + rabbitGenes.Size + "\n"
+                                    + "Sight Distance: " + rabbitGenes.SightDistance + "\n"
+                                    + "Reproductive Urge: " + rabbitGenes.ReproductiveUrge + "\n"
+                                    + "Life Expectancy: " + rabbitGenes.LifeExpectancy + "\n"
+                                    + "Hearing Distance: " + rabbitGenes.HearingDistance + "\n"
+                                    + "Growth Time: " + rabbitGenes.GrowthTime + "\n"
+                                    + "Gestation: " + rabbitGenes.Gestation + "\n"
+                                    + "Desirability: " + rabbitGenes.Desirability + "\n"
+                                    + "Is Male: " + rabbitGenes.IsMale
             );
             rabbitCount++;
         }
-    }
+    }   
 }

@@ -28,8 +28,8 @@ namespace NaturalSelectionSimulation
         private Vector3 _wanderTarget;
         private Vector3 _targetLocation;
 
-        private RabbitGeneManager _geneManager;
-        private RabbitGeneManager _targetGeneManager;
+        private RabbitGeneCollection _geneCollection;
+        private RabbitGeneCollection _targetGeneCollection;
 
         private Animator _animator;
         private CharacterController _characterController;
@@ -95,7 +95,7 @@ namespace NaturalSelectionSimulation
             _animator = GetComponent<Animator>();
             _characterController = GetComponent<CharacterController>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
-            _geneManager = GetComponent<RabbitGeneManager>();
+            _geneCollection = GetComponent<RabbitGeneCollection>();
         }
 
         private void Update()
@@ -138,26 +138,22 @@ namespace NaturalSelectionSimulation
 
                 case WanderState.Reproduce:
                     // get targetLocation
-                    _targetLocation = _targetGeneManager.transform.position;
+                    _targetLocation = _targetGeneCollection.transform.position;
 
                     // LookAt targetLocation
-                    transform.LookAt(_targetGeneManager.transform.position);
+                    transform.LookAt(_targetGeneCollection.transform.position);
 
                     // find distance to target
-                    var distanceFromMate = Vector3.ProjectOnPlane(_targetGeneManager.transform.position - position, Vector3.up);
+                    var distanceFromMate = Vector3.ProjectOnPlane(_targetGeneCollection.transform.position - position, Vector3.up);
 
                     // if we are at target, move to Idles
                     if (distanceFromMate.magnitude < contingencyDistance)
                     {
-                        //grab gene collections
-                        RabbitGeneManager.RabbitGeneCollection geneCollection = _geneManager.GetComponent<RabbitGeneManager.RabbitGeneCollection>();
-                        RabbitGeneManager.RabbitGeneCollection targetGeneCollection = _targetGeneManager.GetComponent<RabbitGeneManager.RabbitGeneCollection>();
-
                         SetState(WanderState.Idle);
                         //if this rabbit is female, and target rabbit is male
-                        if (!geneCollection.IsMale && targetGeneCollection.IsMale){
+                        if (!_geneCollection.IsMale && _targetGeneCollection.IsMale){
                             //create offspring
-                            RabbitGeneManager.RabbitGeneCollection _offspringGeneCollection = _geneManager.GenerateNewGeneCollection(geneCollection, targetGeneCollection);
+                            RabbitGeneCollection _offspringGeneCollection = _geneCollection.GenerateNewGeneCollection(_geneCollection, _targetGeneCollection);
 
                             //need to create a rabbit and spawn at location of female
                             //GameObject obj = Instantiate(rabbitPrefabs[Random.Range(0, rabbitPrefabs.Length)], new Vector3(_spawnPos.x, 0.5f, _spawnPos.z), Quaternion.identity);  // instantiate rabbit prefab at our spawn pos 
@@ -219,6 +215,9 @@ namespace NaturalSelectionSimulation
                 case WanderState.Wander:
                     HandleWander();
                     break;
+                case WanderState.Reproduce:
+                    HandleReproduce();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -252,6 +251,25 @@ namespace NaturalSelectionSimulation
 
             // set nav target to position
             _wanderTarget = targetPos;
+
+            // set animator
+            _animator.SetBool("isIdle", false);
+            _animator.SetBool("isWalking", true);
+        }
+
+        /// <summary>
+        /// Triggers the Wander State
+        /// </summary>
+        void HandleReproduce()
+        {
+           //we need to pull our target rabbit from here somehow //discuss with John
+            //var targetPos = target rabbit;
+
+            // see if position is valid
+            //ValidatePosition(ref targetPos);
+
+            // set nav target to position
+            //_wanderTarget = targetPos;
 
             // set animator
             _animator.SetBool("isIdle", false);
