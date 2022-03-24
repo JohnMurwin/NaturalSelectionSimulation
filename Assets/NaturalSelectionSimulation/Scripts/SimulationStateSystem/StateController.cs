@@ -27,9 +27,14 @@ namespace NaturalSelectionSimulation
         #region Public Variables
         public delegate void OnIterationAdvanceHandler();
         public static event OnIterationAdvanceHandler OnIterationAdvance;
+
+        public static event Action<bool> PauseMenuState;
+
+        public GameObject PauseMenu = null;
+        public GameObject MainCamera = null;
         #endregion
-        
-        
+
+
         // TODO: REMOVE DEBUG VARIABLES
         public TMP_Text DEBUGsimulationSpeedText;
         public float DEBUGsimulationSpeed = 1f;
@@ -62,7 +67,14 @@ namespace NaturalSelectionSimulation
             
             if (Input.GetKeyDown(KeyCode.RightArrow))   // Fast Forward
                 FastForwardSimulation();
-            
+
+            if (_isPaused && Input.GetKeyDown(KeyCode.M)) //temporary key binging
+            {
+                PauseMenu.SetActive(true);
+            }
+
+            PauseMenuState?.Invoke(PauseMenu.activeSelf);
+
             // Core Simulation Iteration System
             if (!_isPaused)
             {
@@ -102,7 +114,7 @@ namespace NaturalSelectionSimulation
             _isPaused = true;
             _isFastForward = false;
             _isSlowDown = false;
-            
+
             Time.timeScale = 0f;
             DEBUGsimulationSpeed = 0f;
         }
@@ -116,7 +128,7 @@ namespace NaturalSelectionSimulation
             _isPaused = false;
             _isFastForward = false;
             _isSlowDown = false;
-            
+
             Time.timeScale = _iterationDuration;
             DEBUGsimulationSpeed = _iterationDuration;
         }
