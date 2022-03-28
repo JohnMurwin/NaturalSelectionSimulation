@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,6 +16,8 @@ namespace NaturalSelectionSimulation
         
         public GameObject[] rabbitPrefabs;
         public GameObject rabbitParentContainer;
+
+        public TMP_Text RabbitPopulationDisplayText; 
 
         #endregion
 
@@ -33,6 +36,11 @@ namespace NaturalSelectionSimulation
         {
             //StartCoroutine(SpawnAnimals()); // Spawn Rabbits before we start
             SpawnAnimals();
+        }
+
+        private void Update()
+        {
+            RabbitPopulationDisplayText.text = $"Rabbit Population: {spawnCount}";
         }
 
         #endregion
