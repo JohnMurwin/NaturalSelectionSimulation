@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 namespace NaturalSelectionSimulation
 {
@@ -32,6 +33,7 @@ namespace NaturalSelectionSimulation
 
         public GameObject PauseMenu = null;
         public GameObject MainCamera = null;
+
         #endregion
 
 
@@ -146,7 +148,15 @@ namespace NaturalSelectionSimulation
             Time.timeScale = _fastSpeed;
             DEBUGsimulationSpeed = _fastSpeed;
         }
+
+        public void OpenPauseMenu()
+        {
+            PauseSimulation();
+            PauseMenu.SetActive(true);
+            PauseMenuState?.Invoke(PauseMenu.activeSelf);
+        }
+
         #endregion
-        
+
     }
 }
