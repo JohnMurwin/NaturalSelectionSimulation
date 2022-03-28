@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 namespace NaturalSelectionSimulation
@@ -8,9 +9,15 @@ namespace NaturalSelectionSimulation
         #region Private Variables
         private int _iterationCount = 0;    // simple counter for currentIteration number (our 'high-score')
 
+        public TMP_Text SimulationTimeDisplayText;
+
         #endregion
-        
-        
+
+        private void Start()
+        {
+            SimulationTimeDisplayText.text = "Day 1 - 00:00";
+        }
+
         private void OnEnable()
         {
             StateController.OnIterationAdvance += AdvanceIteration; // Subscribe to AdvanceCall
@@ -29,6 +36,7 @@ namespace NaturalSelectionSimulation
         public void AdvanceIteration()
         {
             _iterationCount++; //advance turn count
+            SimulationTimeDisplayText.text = $"Day {(_iterationCount / 1440) + 1} - {new TimeSpan((_iterationCount / 60) % 24, _iterationCount % 60, 0).ToString(@"hh\:mm")}";
         }
         #endregion
     }
