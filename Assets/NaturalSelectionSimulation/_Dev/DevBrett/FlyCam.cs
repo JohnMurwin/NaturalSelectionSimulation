@@ -12,7 +12,7 @@ public class FlyCam : MonoBehaviour {
 	// variables setting the keys for movement
 	private KeyCode _forward = KeyCode.W;
 	private KeyCode _backward = KeyCode.S;
-	private KeyCode _up = KeyCode.Space ;
+	private KeyCode _up = KeyCode.Q ;
 	private KeyCode _down = KeyCode.E;
 	private KeyCode _left = KeyCode.A;
 	private KeyCode _right = KeyCode.D;
