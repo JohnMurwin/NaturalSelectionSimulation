@@ -38813,7 +38813,7 @@ MonoBehaviour:
       Data: Grass
     - Name: foldout
       Entry: 5
-      Data: false
+      Data: true
     - Name: active
       Entry: 5
       Data: true
