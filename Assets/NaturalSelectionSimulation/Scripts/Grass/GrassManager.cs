@@ -7,14 +7,14 @@ namespace NaturalSelectionSimulation
 {
     public class GrassManager : MonoBehaviour
     {
-        #region Public Variabls
+        #region Public Variables
 
         
 
         #endregion
         
 
-        #region PrivateVariables
+        #region Private Variables
 
         private GameObject[] grassObjects;
 
@@ -22,7 +22,7 @@ namespace NaturalSelectionSimulation
         #endregion
 
 
-        #region UnityMethods
+        #region Unity Methods
 
         private void Start()
         {
@@ -33,7 +33,11 @@ namespace NaturalSelectionSimulation
             foreach (GameObject grassObject in grassObjects)
             {
                 count++;
-                //grassObject.Test();
+                
+                /* THIS IS HOW YOU CALL A GAMEOBJECTS EMBEDDED SCRIPT
+                Grass call = (Grass) grassObject.GetComponent(typeof(Grass));
+                call.Test();
+                */
             }
             
             Debug.Log("A total of: " + count + " grass objects...");
@@ -42,7 +46,7 @@ namespace NaturalSelectionSimulation
         #endregion
 
 
-        #region PrivateMethods
+        #region Private Methods
 
 
 

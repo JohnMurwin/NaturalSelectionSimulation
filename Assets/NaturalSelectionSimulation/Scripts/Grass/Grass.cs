@@ -1,12 +1,39 @@
+using System.Collections;
 using UnityEngine;
 
 namespace NaturalSelectionSimulation
 {
     public class Grass: MonoBehaviour
     {
-        public void Test()
+        #region Public Variables
+
+        
+
+        #endregion
+
+        #region Private Variables
+
+        
+
+        #endregion
+
+        #region Unity Methods
+
+        
+
+        #endregion
+
+        #region Private Methods
+
+        void KillPlant()
         {
-            Debug.Log("Hello");
+            
         }
+
+        private IEnumerator ScaleToTarget(Vector3 targetScale, float scaleDuration)
+        {
+            yield return null;
+        }
+        #endregion
     }
 }
