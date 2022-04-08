@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace NaturalSelectionSimulation
@@ -32,15 +33,18 @@ namespace NaturalSelectionSimulation
             int count = 0;
             foreach (GameObject grassObject in grassObjects)
             {
-                count++;
+                Grass grass = (Grass) grassObject.GetComponent(typeof(Grass));
                 
-                /* THIS IS HOW YOU CALL A GAMEOBJECTS EMBEDDED SCRIPT
-                Grass call = (Grass) grassObject.GetComponent(typeof(Grass));
-                call.Test();
-                */
+                if (grass.IsAlive)
+                {
+                    count++;
+                }
             }
             
             Debug.Log("A total of: " + count + " grass objects...");
+
+            //For testing purposes only, will kill plants after 5 seconds and then spawn them back 5 seconds later
+            //StartCoroutine(TestPlants()); 
         }
 
         #endregion
@@ -48,7 +52,59 @@ namespace NaturalSelectionSimulation
 
         #region Private Methods
 
+        //For testing purposes only
+        private IEnumerator TestPlants()
+        {
+            //Fade in
+            yield return TestKillPlants();
 
+            //Wait for the duration
+            float counter = 0;
+            while (counter < 5f)
+            {
+                counter += Time.deltaTime;
+                yield return null;
+            }
+
+            //Fade out
+            yield return TestSpawnPlants();
+        }
+
+        //For testing purposes only
+        private IEnumerator TestKillPlants()
+        {
+            //Wait for the duration
+            float counter = 0;
+            while (counter < 5f)
+            {
+                counter += Time.deltaTime;
+                yield return null;
+            }
+
+            foreach (GameObject grassObject in grassObjects)
+            {
+                Grass grass = (Grass)grassObject.GetComponent(typeof(Grass));
+                grass.KillPlant();
+            }
+        }
+
+        //For testing purposes only
+        private IEnumerator TestSpawnPlants()
+        {
+            //Wait for the duration
+            float counter = 0;
+            while (counter < 5f)
+            {
+                counter += Time.deltaTime;
+                yield return null;
+            }
+
+            foreach (GameObject grassObject in grassObjects)
+            {
+                Grass grass = (Grass)grassObject.GetComponent(typeof(Grass));
+                grass.SpawnPlant();
+            }
+        }
 
         #endregion
 
