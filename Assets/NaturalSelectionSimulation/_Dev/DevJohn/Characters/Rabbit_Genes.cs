@@ -14,7 +14,7 @@ namespace NaturalSelectionSimulation
         }
         [SerializeField] public Genders Gender { get; set; }
         [SerializeField] public float SensoryDistance { get; set; }
-        
+        [SerializeField] public float Size { get; set; }
 
 
         #endregion

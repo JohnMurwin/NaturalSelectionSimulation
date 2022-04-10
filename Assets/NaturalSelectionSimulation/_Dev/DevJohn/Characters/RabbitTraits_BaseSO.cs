@@ -19,7 +19,7 @@ namespace NaturalSelectionSimulation
             public float health = 100f;
             
             [SerializeField, Tooltip("How big (or small) this animal is.")]
-            public float size = 1f;
+            public static float size = 1f;
             
             [SerializeField, Tooltip("How far this animal can hear other animals.")]
             public static float hearingDistance = 40f;
@@ -43,6 +43,15 @@ namespace NaturalSelectionSimulation
 
 
         #region TraitFunctions
+        
+        /// <summary>
+        /// Size value for setting visual scale of rabbit
+        /// </summary>
+        /// <returns>Size scale greater than 1</returns>
+        public static float Size()
+        {
+            return ValueRandomizerFormula(size, 1f) + 1f;    // adding 1 to make sure they arent too small
+        }
 
         /// <summary>
         /// Sensory distance seeder.
@@ -55,7 +64,7 @@ namespace NaturalSelectionSimulation
 
             return (ValueRandomizerFormula(hearingDistance, hearingWeight) + ValueRandomizerFormula(sightDistance, sightWeight));
         }
-
+        
         /// <summary>
         /// ValueRandomizerFormula: Takes in a value and a weight and randomly returns a value based off RandomRange and Weight
         /// </summary>
