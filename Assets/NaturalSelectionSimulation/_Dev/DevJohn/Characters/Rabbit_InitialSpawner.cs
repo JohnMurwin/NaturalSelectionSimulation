@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace NaturalSelectionSimulation
 {
-    public class Rabbit_Spawner : MonoBehaviour
+    public class Rabbit_InitialSpawner : MonoBehaviour
     {
         #region PublicVariables
         public int spawnCount = 100;
@@ -16,16 +16,13 @@ namespace NaturalSelectionSimulation
         
         public GameObject[] rabbitPrefabs;
         public GameObject rabbitParentContainer;
-
-        public TMP_Text RabbitPopulationDisplayText; 
-
+        
         #endregion
 
         #region PrivateVariables
 
         private Vector3 _spawnPos;
 
-        
 
         #endregion
         
@@ -36,11 +33,6 @@ namespace NaturalSelectionSimulation
         {
             //StartCoroutine(SpawnAnimals()); // Spawn Rabbits before we start
             SpawnAnimals();
-        }
-
-        private void Update()
-        {
-            RabbitPopulationDisplayText.text = $"Rabbit Population: {spawnCount}";
         }
 
         #endregion
@@ -58,12 +50,23 @@ namespace NaturalSelectionSimulation
                 
                 GameObject obj = Instantiate(rabbitPrefabs[Random.Range(0,rabbitPrefabs.Length)], new Vector3(_spawnPos.x, 0.5f, _spawnPos.z), Quaternion.identity);  // instantiate rabbit prefab at our spawn pos 
                 obj.transform.parent = rabbitParentContainer.transform; // set spawned rabbits parent to parent container
-                
-                //yield return new WaitForSeconds(spawnRate); // wait to spawn again
+
+                SetInitialGenes(obj);   // sets all initial genes
             }
             
             Debug.Log("Last Rabbit Spawned... a total of: " + spawnCount + " spawned.");
         }
+
+        /// <summary>
+        /// Sets Initial Rabbits Genes based off RabbitTraits_BaseSO & functions
+        /// </summary>
+        /// <param name="rabbit"></param>
+        private void SetInitialGenes(GameObject rabbit)
+        {
+            rabbit.GetComponent<Rabbit_Genes>().SensoryDistance = RabbitTraits_BaseSO.SensoryDistance();
+
+        }
+
 
         /// <summary>
         /// Randomly selects a position inside a Unit Sphere with radius spawnRange
