@@ -36,9 +36,9 @@ MonoBehaviour:
     - Polyperfect.Animals
     - Polyperfect.Common
     - TileWorldCreator
+    - NaturalSelectionSimulation
     - sc.stylizedwater2.runtime
     - Boxophobic.Utils.Scripts
-    - NaturalSelectionSimulation
     - CodeStage.AFPSCounter.Runtime
     - Assembly-CSharp
     - NSS.PlayTests
