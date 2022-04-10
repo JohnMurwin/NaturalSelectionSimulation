@@ -7,21 +7,15 @@ namespace NaturalSelectionSimulation
     {
         #region Public Variables
         
-        [SerializeField]
-        public float SensoryDistance { get; set; }
-
-
-        #endregion
-
-
-        #region Private Variables
-
+        [SerializeField] public enum Genders
+        {
+            Male,
+            Female
+        }
+        [SerializeField] public Genders Gender { get; set; }
+        [SerializeField] public float SensoryDistance { get; set; }
         
 
-        #endregion
-
-
-        #region Unity Methods
 
         #endregion
     }

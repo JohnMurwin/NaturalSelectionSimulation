@@ -51,7 +51,7 @@ namespace NaturalSelectionSimulation
                 GameObject obj = Instantiate(rabbitPrefabs[Random.Range(0,rabbitPrefabs.Length)], new Vector3(_spawnPos.x, 0.5f, _spawnPos.z), Quaternion.identity);  // instantiate rabbit prefab at our spawn pos 
                 obj.transform.parent = rabbitParentContainer.transform; // set spawned rabbits parent to parent container
 
-                SetInitialGenes(obj);   // sets all initial genes
+                SetInitialGenes(obj, i);   // sets all initial genes
             }
             
             Debug.Log("Last Rabbit Spawned... a total of: " + spawnCount + " spawned.");
@@ -61,10 +61,17 @@ namespace NaturalSelectionSimulation
         /// Sets Initial Rabbits Genes based off RabbitTraits_BaseSO & functions
         /// </summary>
         /// <param name="rabbit"></param>
-        private void SetInitialGenes(GameObject rabbit)
+        private void SetInitialGenes(GameObject rabbit, int spawnNumber)
         {
+            // Sensory Distance
             rabbit.GetComponent<Rabbit_Genes>().SensoryDistance = RabbitTraits_BaseSO.SensoryDistance();
-
+            
+            // Gender
+            if (spawnNumber%2 == 0)
+                rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Male; // even
+            else
+                rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Female;   // odd
+            
         }
 
 
