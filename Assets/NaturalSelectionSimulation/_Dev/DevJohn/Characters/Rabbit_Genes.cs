@@ -13,9 +13,6 @@ namespace NaturalSelectionSimulation
         
         #region Private Variables
 
-        
-        
-
         #endregion
         #region Public Variables
 
@@ -23,8 +20,6 @@ namespace NaturalSelectionSimulation
         public Genders gender;
         public float health;
         public float stamina;
-        public float hunger;
-        public float thirst;
         public float size;
         public float speed;
         public float sensoryDistance;
@@ -37,8 +32,6 @@ namespace NaturalSelectionSimulation
         public Genders Gender { get; set; }
         public float Health { get; set; }
         public float Stamina { get; set; }
-        public float Hunger { get; set; }
-        public float Thirst { get; set; }
         public float Size { get; set; }
         public float Speed { get; set; }
         public float SensoryDistance { get; set; }
@@ -63,8 +56,6 @@ namespace NaturalSelectionSimulation
             gender = Gender;
             health = Health;
             stamina = Stamina;
-            hunger = Hunger;
-            thirst = Thirst;
             size = Size;
             speed = Speed;
             sensoryDistance = SensoryDistance;

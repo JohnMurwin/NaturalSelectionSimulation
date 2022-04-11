@@ -10,16 +10,16 @@ namespace NaturalSelectionSimulation
     {
         #region Public Traits
         [SerializeField, Tooltip("How much health this animal has.")]
-        public float health = 100f;
+        public static float health = 100f;
         
         [SerializeField, Tooltip("How many seconds this animal can run for before it gets tired.")]
-        public float stamina = 10f;
+        public static float stamina = 10f;
         
         [SerializeField, Tooltip("How big (or small) this animal is.")]
-        public static float size = 1f;
+        public static float size = 2f;
         
         [SerializeField, Tooltip("How fast this animal is.")]
-        public float speed = 1f;
+        public static float speed = 5f;
         
         [SerializeField, Tooltip("How far this animal can hear other animals.")]
         public static float hearingDistance = 40f;
@@ -28,40 +28,42 @@ namespace NaturalSelectionSimulation
         public static float sightDistance = 20f;
         
         [SerializeField, Tooltip("How long this animal takes to grow its offspring until viable birth.")]
-        public float gestationDuration = 15f;
+        public static float gestationDuration = 15f;
         
         [SerializeField, Tooltip("How fast this animal is.")]
-        public float growthTime = 4f;
+        public static float growthTime = 4f;
         
-        [SerializeField, Tooltip("How desirable this animal is to its mates (male only).")]
+        [SerializeField, Tooltip("How desirable this animal is to its mates (females will use this number as a target)).")]
         public static float desirability = 100f;
         
         [SerializeField, Tooltip("How quickly this animal will want to mate again (if pregnant, disabled until offspring birthed).")]
-        public float reproductiveUrge = 1f;
+        public static float reproductiveUrge = 1f;
         
         #endregion
 
 
         #region TraitFunctions
 
-        public static float Desirability()
+        public static float Health()
         {
-            return ValueRandomizerFormula(desirability, 1f);    // adding 1 to make sure they arent too small
+            return ValueRandomizerFormula(health, 1f);
         }
         
-        /// <summary>
-        /// Size value for setting visual scale of rabbit
-        /// </summary>
-        /// <returns>Size scale greater than 1</returns>
+        public static float Stamina()
+        {
+            return ValueRandomizerFormula(stamina, 1f);
+        }
+        
         public static float Size()
         {
-            return ValueRandomizerFormula(size, 1f) + 1f;    // adding 1 to make sure they arent too small
+            return ValueRandomizerFormula(size, 1f);
         }
-
-        /// <summary>
-        /// Sensory distance seeder.
-        /// </summary>
-        /// <returns>Rabbits total sensory distance as a function of Hearing & Sight</returns>
+        
+        public static float Speed()
+        {
+            return ValueRandomizerFormula(speed, 1f);
+        }
+        
         public static float SensoryDistance()
         {
             float hearingWeight = 0.8f; // how important is hearing compared to sight
@@ -69,6 +71,27 @@ namespace NaturalSelectionSimulation
 
             return (ValueRandomizerFormula(hearingDistance, hearingWeight) + ValueRandomizerFormula(sightDistance, sightWeight));
         }
+        
+        public static float GestationDuration()
+        {
+            return ValueRandomizerFormula(gestationDuration, 1f);
+        }
+
+        public static float GrowthTime()
+        {
+            return ValueRandomizerFormula(growthTime, 1f);
+        }
+        
+        public static float Desirability()
+        {
+            return ValueRandomizerFormula(desirability, 1f);
+        }
+        
+        public static float ReproductiveUrge()
+        {
+            return ValueRandomizerFormula(reproductiveUrge, 1f);
+        }
+        
         
         /// <summary>
         /// ValueRandomizerFormula: Takes in a value and a weight and randomly returns a value based off RandomRange and Weight

@@ -64,10 +64,19 @@ namespace NaturalSelectionSimulation
         /// <param name="rabbit"></param>
         private void SetInitialGenes(GameObject rabbit, int spawnNumber)
         {
+            // Health
+            rabbit.GetComponent<Rabbit_Genes>().Health = RabbitTraits_BaseSO.Health();
+
+            // Stamina
+            rabbit.GetComponent<Rabbit_Genes>().Stamina = RabbitTraits_BaseSO.Stamina();
+
             // Size
             float size = RabbitTraits_BaseSO.Size();
             rabbit.GetComponent<Rabbit_Genes>().Size = size;
             rabbit.transform.localScale = new Vector3(size, size, size);
+
+            // Speed
+            rabbit.GetComponent<Rabbit_Genes>().Speed = RabbitTraits_BaseSO.Speed();
             
             // Sensory Distance
             rabbit.GetComponent<Rabbit_Genes>().SensoryDistance = RabbitTraits_BaseSO.SensoryDistance();
@@ -75,17 +84,24 @@ namespace NaturalSelectionSimulation
             // Gender
             if (spawnNumber % 2 == 0)
             {
-                rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Male; // even
-                rabbit.GetComponent<Rabbit_Genes>().Desirability = RabbitTraits_BaseSO.Desirability(); // only males get desirability
-
+                rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Male; // even == male
             }
             else
             {
-                rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Female;   // odd
-                
+                rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Female;   // odd == female
             }
+            
+            // Gestation (only females get)
+            rabbit.GetComponent<Rabbit_Genes>().GestationDuration = RabbitTraits_BaseSO.GestationDuration();
 
-                Debug.Log("Rabbits Size: " + new Vector3(size, size, size));
+            // Growth
+            rabbit.GetComponent<Rabbit_Genes>().GrowthTime = RabbitTraits_BaseSO.GrowthTime();
+
+            // Desirability (females will use this number as a target)
+            rabbit.GetComponent<Rabbit_Genes>().Desirability = RabbitTraits_BaseSO.Desirability();
+
+            // Reproductive Urge
+            rabbit.GetComponent<Rabbit_Genes>().ReproductiveUrge = RabbitTraits_BaseSO.ReproductiveUrge();
         }
 
 
