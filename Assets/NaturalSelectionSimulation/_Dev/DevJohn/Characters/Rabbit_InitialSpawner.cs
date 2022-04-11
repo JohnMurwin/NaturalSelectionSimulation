@@ -73,12 +73,19 @@ namespace NaturalSelectionSimulation
             rabbit.GetComponent<Rabbit_Genes>().SensoryDistance = RabbitTraits_BaseSO.SensoryDistance();
             
             // Gender
-            if (spawnNumber%2 == 0)
+            if (spawnNumber % 2 == 0)
+            {
                 rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Male; // even
+                rabbit.GetComponent<Rabbit_Genes>().Desirability = RabbitTraits_BaseSO.Desirability(); // only males get desirability
+
+            }
             else
+            {
                 rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Female;   // odd
-            
-            Debug.Log("Rabbits Size: " + new Vector3(size, size, size));
+                
+            }
+
+                Debug.Log("Rabbits Size: " + new Vector3(size, size, size));
         }
 
 
