@@ -31,6 +31,7 @@ namespace NaturalSelectionSimulation
         private Animator _animator;
         private CharacterController _characterController;
         private NavMeshAgent _navMeshAgent;
+        private Rabbit_Genes _genes;
 
         #endregion
 
@@ -92,7 +93,14 @@ namespace NaturalSelectionSimulation
             _characterController = GetComponent<CharacterController>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
         }
-        
+
+        private void Start()
+        {
+            _genes = GetComponent<Rabbit_Genes>();
+
+            _wanderRange = _genes.SensoryDistance;
+        }
+
         private void Update()
         {
             // get origin for gizmos
