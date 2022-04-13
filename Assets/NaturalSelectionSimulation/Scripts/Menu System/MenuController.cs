@@ -1,16 +1,24 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
-using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace NaturalSelectionSimulation
 {
     public class MenuController : MonoBehaviour
     {
+        #region Options Menu Members/Properties
+
+        [Header("Option Tabs")]
+        public GameObject DisplayOptionsView;
+        public GameObject AudioOptionsView;
+        public GameObject ControlsOptionsView;
+
+        #endregion
+
         #region Display Settings Members/Properties
 
         [Header("Screen Mode Dropdown")]
@@ -46,15 +54,36 @@ namespace NaturalSelectionSimulation
 
         #endregion
 
+        #region Controls Settings Members/Properties
+
+        [Header("Invert Y Toggle")]
+        public Toggle invertYToggle = null;
+
+        [Header("Mouse Sensitivity Setting")]
+        public TMP_Text mouseSensitivitySliderValue = null;
+        public Slider mouseSensitivitySlider = null;
+
+        #endregion
+
         private void Start()
         {
             InitializeScreenModeDropdown();
             InitializeResolution();
             InitializeAspectRatios();
             InitializeMasterVolume();
+            InitializeMouseSensitivity();
+            InitializeInvertYToggle();
         }
 
-        #region Display Methods
+        #region Display Settings Methods
+
+        public void DisplayTabClick()
+        {
+            DisplayOptionsView.SetActive(true);
+            AudioOptionsView.SetActive(false);
+            ControlsOptionsView.SetActive(false);
+        }
+
         private void InitializeAspectRatios()
         {
             aspectRatioDropdown.ClearOptions();
@@ -210,6 +239,13 @@ namespace NaturalSelectionSimulation
 
         #region Audio Settings Methods
 
+        public void AudioTabClick()
+        {
+            DisplayOptionsView.SetActive(false);
+            AudioOptionsView.SetActive(true);
+            ControlsOptionsView.SetActive(false);
+        }
+
         private void InitializeMasterVolume()
         {
             SetMasterVolume(PlayerPrefs.GetFloat("masterVolume", -1) != -1 ? PlayerPrefs.GetFloat("masterVolume") : 50);
@@ -218,9 +254,51 @@ namespace NaturalSelectionSimulation
         public void SetMasterVolume(float volume)
         {
             AudioListener.volume = volume;
+            masterSlider.value = volume;
             masterSliderValue.text = volume.ToString("0");
 
             PlayerPrefs.SetFloat("masterVolume", AudioListener.volume);
+        }
+
+        #endregion
+
+        #region Controls Settings Methods
+
+        public void ControlsTabClick()
+        {
+            DisplayOptionsView.SetActive(false);
+            AudioOptionsView.SetActive(false);
+            ControlsOptionsView.SetActive(true);
+        }
+
+        private void InitializeMouseSensitivity()
+        {
+            SetMouseSensitivity(PlayerPrefs.GetFloat("masterMouseSensitivity", -1) != -1 ? PlayerPrefs.GetFloat("masterMouseSensitivity") : 1);
+        }
+
+        public void SetMouseSensitivity(float sensitivity)
+        {
+            mouseSensitivitySlider.value = sensitivity;
+            mouseSensitivitySliderValue.text = sensitivity.ToString("0");
+
+            PlayerPrefs.SetFloat("masterMouseSensitivity", sensitivity);
+        }
+
+        private void InitializeInvertYToggle()
+        {
+            invertYToggle.isOn = PlayerPrefs.GetInt("masterInvertY", -1) == 1;
+            InvertYControls(invertYToggle.isOn);
+        }
+
+        public void InvertYToggled()
+        {
+            PlayerPrefs.SetInt("masterInvertY", invertYToggle.isOn ? 1 : 0);
+            InvertYControls(invertYToggle.isOn);
+        }
+
+        private void InvertYControls(bool invert)
+        {
+            //Handle Controls
         }
 
         #endregion
@@ -234,14 +312,16 @@ namespace NaturalSelectionSimulation
             #endif
         }
 
-
-
         #region SceneNavigationRegion
-
 
         public void LoadSimulationScene()
         {
             SceneManager.LoadScene(1, LoadSceneMode.Single);
+        }
+
+        public void MainMenuScene()
+        {
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
         }
 
         #endregion

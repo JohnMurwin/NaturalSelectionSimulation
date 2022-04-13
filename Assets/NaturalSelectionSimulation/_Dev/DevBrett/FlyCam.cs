@@ -5,14 +5,14 @@ using NaturalSelectionSimulation;
 [RequireComponent( typeof(Camera) )]
 public class FlyCam : MonoBehaviour {
 	private float _acceleration = 30; // how fast the camera moves
-	public float lookSensitivity = 1; // mouse look sensitivity
+	private float lookSensitivity = 1; // mouse look sensitivity
 	public float dampingCoefficient = 5; // how quickly you break to a halt after you stop your input
 	private bool _focusOnEnable = true; // whether or not to focus when camera starts up
 	
 	// variables setting the keys for movement
 	private KeyCode _forward = KeyCode.W;
 	private KeyCode _backward = KeyCode.S;
-	private KeyCode _up = KeyCode.Space ;
+	private KeyCode _up = KeyCode.Q ;
 	private KeyCode _down = KeyCode.E;
 	private KeyCode _left = KeyCode.A;
 	private KeyCode _right = KeyCode.D;
@@ -24,16 +24,28 @@ public class FlyCam : MonoBehaviour {
 	static private bool _focused;
 
 	private float _speed = 5;
+    private bool _isPaused;
 
-
-	void OnEnable() {
+    void OnEnable() {
 		if( _focusOnEnable ) _focused = true;
+        StateController.PauseMenuState += StateController_PauseMenuState;
 	}
 
-	void OnDisable() => _focused = false;
+	void OnDisable()
+	{
+		_focused = false;
+        StateController.PauseMenuState -= StateController_PauseMenuState;
+	}
 
+	private void Start()
+	{
+		lookSensitivity = PlayerPrefs.GetFloat("masterMouseSensitivity", 1);
+	}
 
 	void Update() {
+		if (_isPaused)
+			return;
+
 		// Input
 		if (_focused)
 		{
@@ -70,9 +82,18 @@ public class FlyCam : MonoBehaviour {
 	void UpdateInput() {
 		// Position
 		velocity += GetAccelerationVector() * Time.deltaTime;
+		Vector2 mouseDelta;
 
 		// Rotation
-		Vector2 mouseDelta = lookSensitivity * new Vector2( Input.GetAxis( "Mouse X" ), -Input.GetAxis( "Mouse Y" ) );
+		if (PlayerPrefs.GetInt("masterInvertY", -1) == 1)
+        {
+			mouseDelta = lookSensitivity * new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+		}
+		else
+        {
+			mouseDelta = lookSensitivity * new Vector2(Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
+		}
+
 		Quaternion rotation = transform.rotation;
 		Quaternion horiz = Quaternion.AngleAxis( mouseDelta.x, Vector3.up );
 		Quaternion vert = Quaternion.AngleAxis( mouseDelta.y, Vector3.right );
@@ -101,4 +122,10 @@ public class FlyCam : MonoBehaviour {
 
 		return direction * _acceleration; // "walking"
 	}
+
+	private void StateController_PauseMenuState(bool isPaused)
+	{
+		_isPaused = isPaused;
+	}
+
 }
