@@ -17,7 +17,7 @@ namespace NaturalSelectionSimulation
 
         #region PrivateVariables
 
-        private const float contingencyDistance = 0.1f; // distance for which to check against to determine "if arrived" 
+        private const float _contingencyDistance = 0.5f; // distance for which to check against to determine "if arrived" 
 
         private float _idleTimeOut;
 
@@ -128,7 +128,7 @@ namespace NaturalSelectionSimulation
                     var distanceFromTarget = Vector3.ProjectOnPlane(_targetLocation - position, Vector3.up);
 
                     // if we are at target, move to Idles
-                    if (distanceFromTarget.magnitude < contingencyDistance)
+                    if (distanceFromTarget.magnitude < _contingencyDistance)
                     {
                         SetState(AIState.Idle);
                         UpdateAnimals();
