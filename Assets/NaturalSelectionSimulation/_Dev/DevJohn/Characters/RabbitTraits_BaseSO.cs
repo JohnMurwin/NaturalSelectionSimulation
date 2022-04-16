@@ -37,7 +37,7 @@ namespace NaturalSelectionSimulation
         public static float desirability = 100f;
         
         [SerializeField, Tooltip("How quickly this animal will want to mate again (if pregnant, disabled until offspring birthed).")]
-        public static float reproductiveUrge = 1f;
+        public static float reproductiveUrge = 150f;
         
         #endregion
 

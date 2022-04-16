@@ -1,7 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 namespace NaturalSelectionSimulation
@@ -17,7 +17,7 @@ namespace NaturalSelectionSimulation
 
         #region PrivateVariables
 
-        private const float contingencyDistance = 0.5f; // distance for which to check against to determine "if arrived" 
+        private const float contingencyDistance = 0.1f; // distance for which to check against to determine "if arrived" 
 
         private float _idleTimeOut;
         [Header("Animal Traits & Stats")]
@@ -32,6 +32,7 @@ namespace NaturalSelectionSimulation
         private CharacterController _characterController;
         private NavMeshAgent _navMeshAgent;
         private Rabbit_Genes _genes;
+
 
         #endregion
 
@@ -92,13 +93,18 @@ namespace NaturalSelectionSimulation
             _animator = GetComponent<Animator>();
             _characterController = GetComponent<CharacterController>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
+
         }
 
         private void Start()
         {
             _genes = GetComponent<Rabbit_Genes>();
 
+            // TODO: Undo this WanderRange eventually
             _wanderRange = _genes.SensoryDistance;
+
+            // 
+            //StartCoroutine(ReproductiveUrgeCountdown);
         }
 
         private void Update()
@@ -107,7 +113,9 @@ namespace NaturalSelectionSimulation
             _origin = transform.position;
             var position = _origin;
             _targetLocation = position;
+            
 
+            //* Remember these functions are for MOVING the character, all other logic is handled in HandleSomeThing();
             switch (CurrentState)
             {
                 case WanderState.Wander:
@@ -128,6 +136,7 @@ namespace NaturalSelectionSimulation
                     }
 
                     break;
+
                 case WanderState.Idle:
                     
                     // short timer for Idle and then back to wander
@@ -166,6 +175,7 @@ namespace NaturalSelectionSimulation
                 return;
             }
         }
+
 
         /// <summary>
         /// Sets the WanderState based off state input

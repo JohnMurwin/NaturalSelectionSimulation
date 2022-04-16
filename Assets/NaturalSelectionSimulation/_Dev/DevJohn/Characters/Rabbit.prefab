@@ -1395,7 +1395,7 @@ GameObject:
   - component: {fileID: 1256886929}
   m_Layer: 0
   m_Name: Rabbit
-  m_TagString: Untagged
+  m_TagString: Rabbit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1487,6 +1487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentState: 0
+  _rabbitList: {fileID: 0}
   _wanderRange: 10
   _showGizmos: 0
   _drawWanderRange: 1
@@ -1503,6 +1504,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd1372a891034e74bb8e6f12f1923e58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gender: 0
+  health: 0
+  stamina: 0
+  size: 0
+  speed: 0
+  sensoryDistance: 0
+  gestationDuration: 0
+  growthTime: 0
+  desirability: 0
+  reproductiveUrge: 0
 --- !u!1 &8206494462990575746
 GameObject:
   m_ObjectHideFlags: 0
