@@ -11,7 +11,7 @@ namespace NaturalSelectionSimulation
     {
         #region PublicVariables
 
-        public WanderState CurrentState;    // Holder for our Enum State
+        public AIState CurrentState;    // Holder for our Enum State
 
         #endregion
 
@@ -20,8 +20,7 @@ namespace NaturalSelectionSimulation
         private const float contingencyDistance = 0.1f; // distance for which to check against to determine "if arrived" 
 
         private float _idleTimeOut;
-        [Header("Animal Traits & Stats")]
-        [SerializeField, Tooltip("How far from initial point the animal wall wander by itself (doesnt include food or flee from predator")]
+
         private float _wanderRange = 10f;
 
         private Vector3 _origin;
@@ -54,7 +53,7 @@ namespace NaturalSelectionSimulation
         /// STATE SYSTEM: the primary components for what state to trigger.
         /// Each State has its own associated systems and functions to call. 
         /// </summary>
-        public enum WanderState
+        public enum AIState
         {
             Idle,
             Wander,
@@ -118,7 +117,7 @@ namespace NaturalSelectionSimulation
             //* Remember these functions are for MOVING the character, all other logic is handled in HandleSomeThing();
             switch (CurrentState)
             {
-                case WanderState.Wander:
+                case AIState.Wander:
                     // get targetLocation
                     _targetLocation = _wanderTarget;
                     
@@ -131,18 +130,18 @@ namespace NaturalSelectionSimulation
                     // if we are at target, move to Idles
                     if (distanceFromTarget.magnitude < contingencyDistance)
                     {
-                        SetState(WanderState.Idle);
+                        SetState(AIState.Idle);
                         UpdateAnimals();
                     }
 
                     break;
 
-                case WanderState.Idle:
+                case AIState.Idle:
                     
                     // short timer for Idle and then back to wander
                     if (Time.time >= _idleTimeOut)
                     {
-                        SetState(WanderState.Wander);
+                        SetState(AIState.Wander);
                         UpdateAnimals();
                     }
 
@@ -169,7 +168,7 @@ namespace NaturalSelectionSimulation
         /// </summary>
         void UpdateAnimals()
         {
-            if (CurrentState == WanderState.Dead)
+            if (CurrentState == AIState.Dead)
             {
                 Debug.LogError("Trying to update the AI of a dead animal, something is borked...");
                 return;
@@ -182,10 +181,10 @@ namespace NaturalSelectionSimulation
         /// </summary>
         /// <param name="state">State to set to</param>
         /// <exception cref="ArgumentOutOfRangeException">Exception output for bad state set</exception>
-        void SetState(WanderState state)
+        void SetState(AIState state)
         {
             var previousState = CurrentState;
-            if (previousState == WanderState.Dead)
+            if (previousState == AIState.Dead)
             {
                 Debug.LogError("Attempting state on a dead animal, cant do that...");
                 return;
@@ -194,10 +193,10 @@ namespace NaturalSelectionSimulation
             CurrentState = state;
             switch (CurrentState)
             {
-                case WanderState.Idle:
+                case AIState.Idle:
                     HandleIdle();
                     break;
-                case WanderState.Wander:
+                case AIState.Wander:
                     HandleWander();
                     break;
                 default:
