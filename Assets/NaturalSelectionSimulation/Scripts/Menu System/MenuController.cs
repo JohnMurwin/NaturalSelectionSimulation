@@ -49,7 +49,7 @@ namespace NaturalSelectionSimulation
         #region Audio Settings Members/Properties
 
         [Header("Master Volume Setting")]
-        public TMP_Text masterSliderValue = null;
+        public Text masterSliderValue = null;
         public Slider masterSlider = null;
 
         #endregion
@@ -60,7 +60,7 @@ namespace NaturalSelectionSimulation
         public Toggle invertYToggle = null;
 
         [Header("Mouse Sensitivity Setting")]
-        public TMP_Text mouseSensitivitySliderValue = null;
+        public Text mouseSensitivitySliderValue = null;
         public Slider mouseSensitivitySlider = null;
 
         #endregion

@@ -9,12 +9,12 @@ namespace NaturalSelectionSimulation
 
         public bool IsAlive = true;
         public Vector3 Position;
+        public Vector3 originalScale;
 
         #endregion
 
         #region Private Variables
 
-        private Vector3 originalScale;
 
         #endregion
 
