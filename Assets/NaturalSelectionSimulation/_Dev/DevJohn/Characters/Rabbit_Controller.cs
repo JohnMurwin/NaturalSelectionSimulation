@@ -24,12 +24,15 @@ namespace NaturalSelectionSimulation
         private float _wanderRange = 10f;
 
         private Vector3 _origin;
-        private Vector3 _wanderTarget;
         private Vector3 _targetLocation;
+        private Vector3 _distanceFromTarget;
+        private Vector3 _wanderTarget;
+
 
         private Animator _animator;
         private CharacterController _characterController;
         private NavMeshAgent _navMeshAgent;
+        
         private Rabbit_Genes _genes;
 
 
@@ -92,18 +95,13 @@ namespace NaturalSelectionSimulation
             _animator = GetComponent<Animator>();
             _characterController = GetComponent<CharacterController>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
+            _genes = GetComponent<Rabbit_Genes>();
 
         }
 
         private void Start()
         {
-            _genes = GetComponent<Rabbit_Genes>();
-
-            // TODO: Undo this WanderRange eventually
-            _wanderRange = _genes.SensoryDistance;
-
-            // 
-            //StartCoroutine(ReproductiveUrgeCountdown);
+            _wanderRange = _genes.SensoryDistance;  // TODO: Undo this WanderRange eventually
         }
 
         private void Update()
@@ -113,8 +111,10 @@ namespace NaturalSelectionSimulation
             var position = _origin;
             _targetLocation = position;
             
+            // sort out if need to eat, drink, mate, or flee
 
-            //* Remember these functions are for MOVING the character, all other logic is handled in HandleSomeThing();
+
+            // ! Remember these functions are for MOVING the character, all other logic is handled in HandleSomeThing();
             switch (CurrentState)
             {
                 case AIState.Wander:
@@ -125,10 +125,10 @@ namespace NaturalSelectionSimulation
                     transform.LookAt(_targetLocation);
                     
                     // find distance to target
-                    var distanceFromTarget = Vector3.ProjectOnPlane(_targetLocation - position, Vector3.up);
+                    _distanceFromTarget = Vector3.ProjectOnPlane(_targetLocation - position, Vector3.up);
 
                     // if we are at target, move to Idles
-                    if (distanceFromTarget.magnitude < _contingencyDistance)
+                    if (_distanceFromTarget.magnitude < _contingencyDistance)
                     {
                         SetState(AIState.Idle);
                         UpdateAnimals();
@@ -148,7 +148,7 @@ namespace NaturalSelectionSimulation
                     break;
             }
 
-            // set NavMeshAgent component values
+            // ** set NavMeshAgent component values
             if (_navMeshAgent)
             {
                 _navMeshAgent.destination = _targetLocation;
@@ -237,7 +237,8 @@ namespace NaturalSelectionSimulation
             _animator.SetBool("isIdle", false);
             _animator.SetBool("isWalking", true);
         }
-        
+
+
         /// <summary>
         /// Validate that random Nav position is a valid position
         /// </summary>

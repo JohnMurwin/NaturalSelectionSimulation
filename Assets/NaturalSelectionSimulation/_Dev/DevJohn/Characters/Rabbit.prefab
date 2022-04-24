@@ -1393,6 +1393,7 @@ GameObject:
   - component: {fileID: 8309489808689839398}
   - component: {fileID: 8206490617575824119}
   - component: {fileID: 1256886929}
+  - component: {fileID: 8652104548688759414}
   m_Layer: 0
   m_Name: Rabbit
   m_TagString: Rabbit
@@ -1487,8 +1488,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentState: 0
-  _rabbitList: {fileID: 0}
-  _wanderRange: 10
   _showGizmos: 0
   _drawWanderRange: 1
   _drawTargetLine: 1
@@ -1514,6 +1513,19 @@ MonoBehaviour:
   growthTime: 0
   desirability: 0
   reproductiveUrge: 0
+--- !u!114 &8652104548688759414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8206490617575824116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a99e3d894ff466f9da52556a368955a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grassManager: {fileID: 0}
 --- !u!1 &8206494462990575746
 GameObject:
   m_ObjectHideFlags: 0
