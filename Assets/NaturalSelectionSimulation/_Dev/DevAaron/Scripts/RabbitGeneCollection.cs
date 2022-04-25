@@ -62,6 +62,7 @@ namespace NaturalSelectionSimulation
             RabbitGeneCollection newRabbit = new RabbitGeneCollection();
             float parentChance = Random.Range(0f, 1f);
             float _mutationChance = Random.Range(0f, 1f);
+            
             if (parentChance < 0.5f)
             {
                 if (_mutationChance >= _mutationChanceDecider)

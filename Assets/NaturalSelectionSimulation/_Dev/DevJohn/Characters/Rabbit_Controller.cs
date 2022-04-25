@@ -40,6 +40,8 @@ namespace NaturalSelectionSimulation
         private Rabbit_Genes _genes;
         private Rabbit_MateController _mateController;
 
+        private Rabbit_ReproductionController _reproductionController;
+
 
         #endregion
 
@@ -105,6 +107,8 @@ namespace NaturalSelectionSimulation
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _genes = GetComponent<Rabbit_Genes>();
             _mateController = GetComponent<Rabbit_MateController>();
+
+            _reproductionController = GameObject.Find("RabbitSpawner").GetComponent<Rabbit_ReproductionController>();
 
         }
 
@@ -233,8 +237,6 @@ namespace NaturalSelectionSimulation
         /// </summary>
         private void HandleMating()
         {
-            Debug.Log("Hey we are mating!");
-            
             _animator.SetBool("isIdle", true);
             _animator.SetBool("isWalking", false);
 
@@ -243,8 +245,7 @@ namespace NaturalSelectionSimulation
                 isPregnant = true;
                 
                 // spawn new rabbit
-                Instantiate(DEBUGBABY, transform.position, transform.rotation);  //! remove this in favor of below
-                Debug.Log("A new rabbit was spawned!"); // TODO: replace this with actual Spawn Rabbit call
+                _reproductionController.SpawnRabbit(transform.position, _chosenMate, gameObject);
             }
             
             // reset mate timer
