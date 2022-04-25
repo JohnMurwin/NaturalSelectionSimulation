@@ -63,7 +63,6 @@ namespace NaturalSelectionSimulation
             growthTime = GrowthTime;
             desirability = Desirability;
             reproductiveUrge = ReproductiveUrge;
-
         }
 
         #endregion

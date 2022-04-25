@@ -34,9 +34,9 @@ MonoBehaviour:
     - Cinemachine
     - Beautify.Universal.Runtime
     - Polyperfect.Animals
+    - NaturalSelectionSimulation
     - Polyperfect.Common
     - TileWorldCreator
-    - NaturalSelectionSimulation
     - sc.stylizedwater2.runtime
     - Boxophobic.Utils.Scripts
     - CodeStage.AFPSCounter.Runtime

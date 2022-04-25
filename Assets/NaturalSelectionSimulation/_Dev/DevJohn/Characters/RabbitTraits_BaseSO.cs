@@ -56,7 +56,8 @@ namespace NaturalSelectionSimulation
         
         public static float Size()
         {
-            return ValueRandomizerFormula(size, 1f);
+            //return ValueRandomizerFormula(size, 1f);
+            return 1f;
         }
         
         public static float Speed()

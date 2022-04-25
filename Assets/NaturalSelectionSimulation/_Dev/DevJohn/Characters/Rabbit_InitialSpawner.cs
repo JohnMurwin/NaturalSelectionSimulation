@@ -84,11 +84,11 @@ namespace NaturalSelectionSimulation
             // Gender
             if (spawnNumber % 2 == 0)
             {
-                rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Male; // even == male
+                rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Female; // even == male
             }
             else
             {
-                rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Female;   // odd == female
+                rabbit.GetComponent<Rabbit_Genes>().Gender = Rabbit_Genes.Genders.Male;   // odd == female
             }
             
             // Gestation (only females get)
