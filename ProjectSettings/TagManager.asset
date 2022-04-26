@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Grass
+  - Rabbit
   layers:
   - Default
   - TransparentFX

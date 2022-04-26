@@ -1,7 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 namespace NaturalSelectionSimulation
@@ -10,28 +10,38 @@ namespace NaturalSelectionSimulation
     public class Rabbit_Controller : MonoBehaviour
     {
         #region PublicVariables
+        public bool isPregnant = false;
+        public float mateTimer = 0;
+        
+        public AIState CurrentState;    // Holder for our Enum State
 
-        public WanderState CurrentState;    // Holder for our Enum State
+        public GameObject DEBUGBABY;
 
         #endregion
 
         #region PrivateVariables
 
-        private const float contingencyDistance = 0.5f; // distance for which to check against to determine "if arrived" 
-
-        private float _idleTimeOut;
-        [Header("Animal Traits & Stats")]
-        [SerializeField, Tooltip("How far from initial point the animal wall wander by itself (doesnt include food or flee from predator")]
-        private float _wanderRange = 10f;
+        private const float ContingencyDistance = 1f; // distance for which to check against to determine "if arrived" 
+        
+        private float _idleTimeOut = 15f;
+        private float _wanderRange;
 
         private Vector3 _origin;
+        public Vector3 _targetLocation;
+        private Vector3 _distanceFromTarget;
         private Vector3 _wanderTarget;
-        private Vector3 _targetLocation;
 
+        public GameObject _chosenMate = null;
+        
         private Animator _animator;
         private CharacterController _characterController;
         private NavMeshAgent _navMeshAgent;
+        
         private Rabbit_Genes _genes;
+        private Rabbit_MateController _mateController;
+
+        private Rabbit_ReproductionController _reproductionController;
+
 
         #endregion
 
@@ -39,13 +49,14 @@ namespace NaturalSelectionSimulation
 
         [Header("Debug Gizmos")]
         [SerializeField, Tooltip("If true, gizmos will be drawn in the editor.")]
-        private bool _showGizmos = false;
+        private bool _showGizmos = true;
         [SerializeField] 
         private bool _drawWanderRange = true;
         private Color _distanceColor = new Color(0f, 0f, 200f);
         [SerializeField] 
         private bool _drawTargetLine = true;
         private Color _targetLineColor = new Color(10f, 10f, 200f);
+        
 
         #endregion
         
@@ -53,10 +64,12 @@ namespace NaturalSelectionSimulation
         /// STATE SYSTEM: the primary components for what state to trigger.
         /// Each State has its own associated systems and functions to call. 
         /// </summary>
-        public enum WanderState
+        public enum AIState
         {
             Idle,
             Wander,
+            SearchingForMate,
+            Mating,
             Dead
         }
         
@@ -92,13 +105,16 @@ namespace NaturalSelectionSimulation
             _animator = GetComponent<Animator>();
             _characterController = GetComponent<CharacterController>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
+            _genes = GetComponent<Rabbit_Genes>();
+            _mateController = GetComponent<Rabbit_MateController>();
+
+            _reproductionController = GameObject.Find("RabbitSpawner").GetComponent<Rabbit_ReproductionController>();
+
         }
 
         private void Start()
         {
-            _genes = GetComponent<Rabbit_Genes>();
-
-            _wanderRange = _genes.SensoryDistance;
+            _wanderRange = _genes.SensoryDistance;  // TODO: Undo this WanderRange eventually
         }
 
         private void Update()
@@ -107,40 +123,49 @@ namespace NaturalSelectionSimulation
             _origin = transform.position;
             var position = _origin;
             _targetLocation = position;
+            
+            // Reproductive Urge Timer
+            mateTimer += Time.deltaTime * 1;
 
+            // sort out if need to eat, drink, mate, or flee
+            if (mateTimer >= _genes.ReproductiveUrge && !isPregnant && (_chosenMate == null)) //TODO: tie in hunger and thirst
+            {
+                SetState(AIState.SearchingForMate);
+            }
+
+            // TODO: handle dying of thirst and hunger here
+
+            // ! Remember these functions are for MOVING the character, all other logic is handled in HandleSomeThing();
             switch (CurrentState)
             {
-                case WanderState.Wander:
-                    // get targetLocation
-                    _targetLocation = _wanderTarget;
+                case AIState.Mating:
+                    // because we arent going to move while mating this will be an empty call, but might need it for animations
+                    break;  
+                
+                case AIState.SearchingForMate:
+                    if (_chosenMate != null)
+                        MoveToTarget(transform.position,_chosenMate.transform.position);
                     
-                    // LookAt targetLocation
-                    transform.LookAt(_targetLocation);
-                    
-                    // find distance to target
-                    var distanceFromTarget = Vector3.ProjectOnPlane(_targetLocation - position, Vector3.up);
-
-                    // if we are at target, move to Idles
-                    if (distanceFromTarget.magnitude < contingencyDistance)
-                    {
-                        SetState(WanderState.Idle);
-                        UpdateAnimals();
-                    }
+                    break;
+                
+                case AIState.Wander:
+                    MoveToTarget(transform.position,_wanderTarget);
 
                     break;
-                case WanderState.Idle:
+
+                case AIState.Idle:
                     
                     // short timer for Idle and then back to wander
                     if (Time.time >= _idleTimeOut)
                     {
-                        SetState(WanderState.Wander);
+                        SetState(AIState.Wander);
                         UpdateAnimals();
                     }
 
                     break;
             }
 
-            // set NavMeshAgent component values
+            // ** set NavMeshAgent component values
             if (_navMeshAgent)
             {
                 _navMeshAgent.destination = _targetLocation;
@@ -160,22 +185,23 @@ namespace NaturalSelectionSimulation
         /// </summary>
         void UpdateAnimals()
         {
-            if (CurrentState == WanderState.Dead)
+            if (CurrentState == AIState.Dead)
             {
                 Debug.LogError("Trying to update the AI of a dead animal, something is borked...");
                 return;
             }
         }
 
+
         /// <summary>
         /// Sets the WanderState based off state input
         /// </summary>
         /// <param name="state">State to set to</param>
         /// <exception cref="ArgumentOutOfRangeException">Exception output for bad state set</exception>
-        void SetState(WanderState state)
+        public void SetState(AIState state)
         {
             var previousState = CurrentState;
-            if (previousState == WanderState.Dead)
+            if (previousState == AIState.Dead)
             {
                 Debug.LogError("Attempting state on a dead animal, cant do that...");
                 return;
@@ -184,17 +210,77 @@ namespace NaturalSelectionSimulation
             CurrentState = state;
             switch (CurrentState)
             {
-                case WanderState.Idle:
+                case AIState.Mating:
+                    HandleMating();
+
+                    break;
+                
+                case AIState.SearchingForMate:
+                    HandleSearchingForMate();
+                    break;
+                
+                case AIState.Idle:
                     HandleIdle();
                     break;
-                case WanderState.Wander:
+                
+                case AIState.Wander:
                     HandleWander();
                     break;
+                
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private void HandleMating()
+        {
+            _animator.SetBool("isIdle", true);
+            _animator.SetBool("isWalking", false);
+
+            if (_genes.Gender == Rabbit_Genes.Genders.Female)
+            {
+                isPregnant = true;
+                
+                // spawn new rabbit
+                _reproductionController.SpawnRabbit(transform.position, _chosenMate, gameObject);
+            }
+            
+            // reset mate timer
+            mateTimer = 0;
+
+            // reset mate target
+            _chosenMate = null;
+
+            // go back to wander state
+            SetState(AIState.Wander);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void HandleSearchingForMate()
+        {
+            Debug.Log("How many times am I looking for a mate?");
+
+            // if male we want to find a mate
+            if (_genes.Gender == Rabbit_Genes.Genders.Male)
+            {
+                if (_chosenMate == null)
+                    _chosenMate = Rabbit_MateController.FindMate(transform.position, _genes.SensoryDistance);
+
+                _animator.SetBool("isIdle", false);
+                _animator.SetBool("isWalking", true);
+            }
+            else // we are female and should probably also find one? but for now will just sit still waiting for a male
+            {
+                _animator.SetBool("isIdle", true);
+                _animator.SetBool("isWalking", false);
+            }
+        }
+        
         /// <summary>
         /// Triggers the Idle State
         /// </summary>
@@ -228,7 +314,38 @@ namespace NaturalSelectionSimulation
             _animator.SetBool("isIdle", false);
             _animator.SetBool("isWalking", true);
         }
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void MoveToTarget(Vector3 position, Vector3 targetPos)
+        {
+            // get targetLocation
+            _targetLocation = targetPos;
+
+            // LookAt targetLocation
+            transform.LookAt(_targetLocation);
+
+            // find distance to target
+            _distanceFromTarget = Vector3.ProjectOnPlane(_targetLocation - position, Vector3.up);
+
+            // if we are at target, figure out state
+            if (_distanceFromTarget.magnitude <= ContingencyDistance)
+            {
+                if (CurrentState == AIState.Wander)
+                    SetState(AIState.Idle);
+                if (CurrentState == AIState.SearchingForMate) // we found a mate
+                {
+                    _chosenMate.GetComponent<Rabbit_Controller>()._chosenMate = gameObject; // tell them I am their mate
+                    
+                    _chosenMate.GetComponent<Rabbit_Controller>().SetState(AIState.Mating); // update them to be mating
+                    SetState(AIState.Mating);
+                }
+
+                UpdateAnimals();
+            }
+        }
+
         /// <summary>
         /// Validate that random Nav position is a valid position
         /// </summary>
