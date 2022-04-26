@@ -128,7 +128,7 @@ namespace NaturalSelectionSimulation
             mateTimer += Time.deltaTime * 1;
 
             // sort out if need to eat, drink, mate, or flee
-            if (mateTimer >= _genes.reproductiveUrge && !isPregnant && (_chosenMate == null)) //TODO: tie in hunger and thirst
+            if (mateTimer >= _genes.ReproductiveUrge && !isPregnant && (_chosenMate == null)) //TODO: tie in hunger and thirst
             {
                 SetState(AIState.SearchingForMate);
             }
