@@ -10,12 +10,11 @@ namespace NaturalSelectionSimulation
     public class Rabbit_Controller : MonoBehaviour
     {
         #region PublicVariables
-        public bool isPregnant = false;
-        public float mateTimer = 0;
+        public bool isPregnant = false; //TODO: convert to private
+        public float mateTimer = 0; //TODO: convert to private
+        public float birthTimer = 0; //TODO: convert to private
         
         public AIState CurrentState;    // Holder for our Enum State
-
-        public GameObject DEBUGBABY;
 
         #endregion
 
@@ -23,15 +22,16 @@ namespace NaturalSelectionSimulation
 
         private const float ContingencyDistance = 1f; // distance for which to check against to determine "if arrived" 
         
-        private float _idleTimeOut = 15f;
+        private float _idleTimeOut = 5f;    // short initial time, random time later
         private float _wanderRange;
 
         private Vector3 _origin;
-        public Vector3 _targetLocation;
+        private Vector3 _targetLocation;
         private Vector3 _distanceFromTarget;
         private Vector3 _wanderTarget;
 
-        public GameObject _chosenMate = null;
+        private GameObject _chosenMate = null;
+        private GameObject _offspringFather = null;
         
         private Animator _animator;
         private CharacterController _characterController;
@@ -124,6 +124,16 @@ namespace NaturalSelectionSimulation
             var position = _origin;
             _targetLocation = position;
             
+            // Birth Timer
+            if (isPregnant)
+            {
+                birthTimer += Time.deltaTime * 1;
+
+                if (birthTimer >= _genes.GestationDuration)
+                    GiveBirth();
+            }
+                
+            
             // Reproductive Urge Timer
             mateTimer += Time.deltaTime * 1;
 
@@ -176,6 +186,8 @@ namespace NaturalSelectionSimulation
                 Debug.LogError("No NavMeshAgent found, need Agent to move to targetLocation...");
         }
 
+        
+
         #endregion
 
         #region CustomMethods
@@ -191,8 +203,7 @@ namespace NaturalSelectionSimulation
                 return;
             }
         }
-
-
+        
         /// <summary>
         /// Sets the WanderState based off state input
         /// </summary>
@@ -231,6 +242,21 @@ namespace NaturalSelectionSimulation
                     throw new ArgumentOutOfRangeException();
             }
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        private void GiveBirth()
+        {
+            // spawn new rabbit
+            _reproductionController.SpawnRabbit(transform.position, _offspringFather, gameObject);
+            
+            // reset for next offspring
+            _offspringFather = null;
+            isPregnant = false;
+            birthTimer = 0;
+        }
 
         /// <summary>
         /// 
@@ -241,17 +267,13 @@ namespace NaturalSelectionSimulation
             _animator.SetBool("isWalking", false);
 
             if (_genes.Gender == Rabbit_Genes.Genders.Female)
-            {
                 isPregnant = true;
-                
-                // spawn new rabbit
-                _reproductionController.SpawnRabbit(transform.position, _chosenMate, gameObject);
-            }
-            
+
             // reset mate timer
             mateTimer = 0;
 
             // reset mate target
+            _offspringFather = _chosenMate;
             _chosenMate = null;
 
             // go back to wander state

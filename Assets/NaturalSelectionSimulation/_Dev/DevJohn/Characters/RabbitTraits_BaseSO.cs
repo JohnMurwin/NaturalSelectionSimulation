@@ -28,7 +28,7 @@ namespace NaturalSelectionSimulation
         public static float sightDistance = 20f;
         
         [SerializeField, Tooltip("How long this animal takes to grow its offspring until viable birth.")]
-        public static float gestationDuration = 15f;
+        public static float gestationDuration = 60f;
         
         [SerializeField, Tooltip("How fast this animal is.")]
         public static float growthTime = 4f;
