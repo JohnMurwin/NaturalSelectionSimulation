@@ -13,6 +13,7 @@ namespace NaturalSelectionSimulation
         public bool isPregnant = false; //TODO: convert to private
         public float mateTimer = 0; //TODO: convert to private
         public float birthTimer = 0; //TODO: convert to private
+        public float growthTimer = 0; //TODO: convert to private
         
         public AIState CurrentState;    // Holder for our Enum State
 
@@ -124,6 +125,12 @@ namespace NaturalSelectionSimulation
             var position = _origin;
             _targetLocation = position;
             
+            // Growth Timer
+            if (_genes.IsChild)
+            {
+                StartCoroutine(GrowSize());
+            }
+            
             // Birth Timer
             if (isPregnant)
             {
@@ -132,13 +139,13 @@ namespace NaturalSelectionSimulation
                 if (birthTimer >= _genes.GestationDuration)
                     GiveBirth();
             }
-                
-            
+
             // Reproductive Urge Timer
-            mateTimer += Time.deltaTime * 1;
+            if (!isPregnant && !_genes.IsChild)    // cant mate if pregnant or child
+                mateTimer += Time.deltaTime * 1;
 
             // sort out if need to eat, drink, mate, or flee
-            if (mateTimer >= _genes.ReproductiveUrge && !isPregnant && (_chosenMate == null)) //TODO: tie in hunger and thirst
+            if (mateTimer >= _genes.ReproductiveUrge && !isPregnant && (_chosenMate == null) && !_genes.IsChild) //TODO: tie in hunger and thirst
             {
                 SetState(AIState.SearchingForMate);
             }
@@ -240,6 +247,29 @@ namespace NaturalSelectionSimulation
                 
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator GrowSize()
+        {
+            if (transform.localScale.x >= _genes.Size)  // breakout for more than one instance running
+                yield break;
+
+            float currentTime = 0f;
+            float growTime = _genes.GrowthTime;
+            
+            Vector3 originalSize = transform.localScale;
+            Vector3 matureSize = new Vector3(_genes.Size, _genes.Size, _genes.Size);
+
+            while (currentTime < growTime)
+            {
+                currentTime += Time.deltaTime;
+                transform.localScale = Vector3.Lerp(originalSize, matureSize, currentTime / growTime);
+                yield return null;
             }
         }
         

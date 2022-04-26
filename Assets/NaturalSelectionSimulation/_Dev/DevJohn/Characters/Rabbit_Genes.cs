@@ -19,6 +19,7 @@ namespace NaturalSelectionSimulation
         }
 
         public Genders Gender { get; set; }
+        public bool IsChild { get; set; }
         public float Health { get; set; }
         public float Stamina { get; set; }
         public float Size { get; set; }
@@ -58,6 +59,7 @@ namespace NaturalSelectionSimulation
             GrowthTime = ReproduceGene(father.GrowthTime, mother.GrowthTime);
             Desirability =  ReproduceGene(father.Desirability, mother.Desirability);
             Gender = ReproduceGender();
+            IsChild = true;
         }
 
         
