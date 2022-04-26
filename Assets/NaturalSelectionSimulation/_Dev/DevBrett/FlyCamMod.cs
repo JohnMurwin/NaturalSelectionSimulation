@@ -3,12 +3,15 @@ using System.Collections;
 using NaturalSelectionSimulation;
 
 [RequireComponent(typeof(Camera))]
-public class FlyCam : MonoBehaviour
+public class FlyCamMod : MonoBehaviour
 {
 	private float _acceleration = 30; // how fast the camera moves
 	private float lookSensitivity = 1; // mouse look sensitivity
 	public float dampingCoefficient = 5; // how quickly you break to a halt after you stop your input
 	private bool _focusOnEnable = true; // whether or not to focus when camera starts up
+
+	public static FlyCamMod instance;
+	public Transform followTransform;
 
 	Camera _camera;
 	public Camera orbitCamera;
@@ -47,11 +50,23 @@ public class FlyCam : MonoBehaviour
 		_camera = Camera.main;
 		_camera.enabled = true;
 		orbitCamera.enabled = false;
+		instance = this;
 		lookSensitivity = PlayerPrefs.GetFloat("masterMouseSensitivity", 1);
 	}
 
 	void Update()
 	{
+
+		if (followTransform != null)
+		{
+			transform.position = followTransform.position;
+		}
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			followTransform = null;
+		}
+
 		if (_isPaused || Input.GetKeyDown(KeyCode.Space))
 		{
 			if (_camera.enabled)
