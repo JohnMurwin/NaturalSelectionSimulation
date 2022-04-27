@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class DeathManager : MonoBehaviour
 {
+    /*
     private Animator _animator;
     private float _lifeExpectancyLimit;
     private float _lifeTimeCounter = 0f;
@@ -42,4 +43,5 @@ public class DeathManager : MonoBehaviour
     {
         _animator.SetBool("isDead_0", true);
     }
+    */
 }

@@ -5,6 +5,21 @@ namespace NaturalSelectionSimulation
 {
     public class Rabbit_Genes : MonoBehaviour
     {
+        //! DEBUG
+        public Genders gender;
+        public bool child;
+        public float health;
+        public float stamina;
+        public float size;
+        public float speed;
+        public float sensoryDistance;
+        public float gestationDuration;
+        public float lifeExpectency;
+        public float growthTime;
+        public float desirability;
+        public float reproductiveUrge;
+        //! DEBUG
+        
         #region Private Variables
         
         private const float MutationChanceDecider = 0.75f;
@@ -36,6 +51,23 @@ namespace NaturalSelectionSimulation
         
         
         #region Unity Methods
+        
+        private void Start()
+        {
+            //TODO: Remove debug components for Gene display
+            gender = Gender;
+            child = IsChild;
+            health = Health;
+            stamina = Stamina;
+            size = Size;
+            speed = Speed;
+            sensoryDistance = SensoryDistance;
+            gestationDuration = GestationDuration;
+            lifeExpectency = LifeExpectancy;
+            growthTime = GrowthTime;
+            desirability = Desirability;
+            reproductiveUrge = ReproductiveUrge;
+        }
 
         #endregion
 
