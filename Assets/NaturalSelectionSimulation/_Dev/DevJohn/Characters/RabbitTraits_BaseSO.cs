@@ -28,10 +28,10 @@ namespace NaturalSelectionSimulation
         public static float sightDistance = 20f;
         
         [SerializeField, Tooltip("How long this animal takes to grow its offspring until viable birth.")]
-        public static float gestationDuration = 15f;
+        public static float gestationDuration = 60f;
         
-        [SerializeField, Tooltip("How fast this animal is.")]
-        public static float growthTime = 4f;
+        [SerializeField, Tooltip("How fast this animal grows to be an adult.")]
+        public static float growthTime = 120f;
         
         [SerializeField, Tooltip("How desirable this animal is to its mates (females will use this number as a target)).")]
         public static float desirability = 100f;

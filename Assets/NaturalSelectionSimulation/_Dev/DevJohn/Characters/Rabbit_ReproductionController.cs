@@ -1,4 +1,5 @@
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace NaturalSelectionSimulation
 {
@@ -33,6 +34,10 @@ namespace NaturalSelectionSimulation
             // Instantiate GameObject
             GameObject obj = Instantiate(rabbitPrefabs[Random.Range(0,rabbitPrefabs.Length)], new Vector3(spawnPosition.x, 0.5f, spawnPosition.z), Quaternion.identity);  // instantiate rabbit prefab at 
         
+            // make baby small
+            float initialSize = Random.Range(0f, 0.3f);
+            obj.transform.localScale = new Vector3(initialSize, initialSize, initialSize);
+                
             // set spawned rabbits parent to parent container
             obj.transform.parent = rabbitParentContainer.transform; 
             

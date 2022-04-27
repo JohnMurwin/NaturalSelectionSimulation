@@ -41,7 +41,7 @@ namespace NaturalSelectionSimulation
                     {
                         var rabbitObject = hit.transform.gameObject;
 
-                        if (rabbitObject.GetComponent<Rabbit_Genes>().Gender == Rabbit_Genes.Genders.Female)
+                        if (rabbitObject.GetComponent<Rabbit_Genes>().Gender == Rabbit_Genes.Genders.Female && !rabbitObject.GetComponent<Rabbit_Genes>().IsChild)
                         {
                             debugCount++;
                         
