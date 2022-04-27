@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4583882195077845238
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4583882195077845239}
+  - component: {fileID: 4583882195077845232}
+  - component: {fileID: 4583882195077845233}
+  m_Layer: 0
+  m_Name: RabbitSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4583882195077845239
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4583882195077845238}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 47.32, y: 0, z: 54.63}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4583882195077845232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4583882195077845238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fc7ae8c1381e4601b0847beb2ed449a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnCount: 50
+  spawnRate: 0
+  spawnRange: 50
+  rabbitPrefabs:
+  - {fileID: 8206490617575824116, guid: 751bd9aadafea476fbe54b57b57970b3, type: 3}
+  rabbitParentContainer: {fileID: 0}
+--- !u!114 &4583882195077845233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4583882195077845238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a77760909ab489d8e15850a19626447, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rabbitPrefabs:
+  - {fileID: 8206490617575824116, guid: 751bd9aadafea476fbe54b57b57970b3, type: 3}
+  - {fileID: 6053722054318300462, guid: fbdca1895f2e14416991019752638344, type: 3}
+  - {fileID: 6053722054318300462, guid: 16c3eb80130474ec48241a86aab12662, type: 3}
+  - {fileID: 6053722054318300462, guid: 95d0b1635cd1a41209b8929cf2da52e3, type: 3}
+  rabbitParentContainer: {fileID: 0}
