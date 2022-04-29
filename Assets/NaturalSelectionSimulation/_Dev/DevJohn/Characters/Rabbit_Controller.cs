@@ -186,8 +186,8 @@ namespace NaturalSelectionSimulation
             if (_navMeshAgent)
             {
                 _navMeshAgent.destination = _targetLocation;
-                _navMeshAgent.speed = 1f;
-                _navMeshAgent.angularSpeed = 1f;
+                _navMeshAgent.speed = _genes.Speed;
+                _navMeshAgent.angularSpeed = _genes.Speed / _genes.Size;
             }
             else
                 Debug.LogError("No NavMeshAgent found, need Agent to move to targetLocation...");

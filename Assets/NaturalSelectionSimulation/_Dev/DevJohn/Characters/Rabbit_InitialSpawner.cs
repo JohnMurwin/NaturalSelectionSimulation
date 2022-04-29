@@ -63,14 +63,14 @@ namespace NaturalSelectionSimulation
         /// Sets Initial Rabbits Genes based off RabbitTraits_BaseSO & functions
         /// </summary>
         /// <param name="rabbit"></param>
-        private void SetInitialGenes(GameObject rabbit, int spawnNumber)
+        public void SetInitialGenes(GameObject rabbit, int spawnNumber)
         {
-            // Health
+            // Healths
             rabbit.GetComponent<Rabbit_Genes>().Health = RabbitTraitsBaseSo.Health();
 
             // Stamina
             rabbit.GetComponent<Rabbit_Genes>().Stamina = RabbitTraitsBaseSo.Stamina();
-
+            
             // Size
             float size = RabbitTraitsBaseSo.Size();
             rabbit.GetComponent<Rabbit_Genes>().Size = size;

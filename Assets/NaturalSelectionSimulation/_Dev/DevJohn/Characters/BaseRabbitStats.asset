@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 661122ea98b94d1293a056ff5d4e9924, type: 3}
   m_Name: BaseRabbitStats
   m_EditorClassIdentifier: 
-  speed: 1
-  stamina: 10
-  power: 10
-  toughness: 5
-  size: 1
-  hearingDistance: 1
-  sightDistance: 1
-  gestationDuration: 15
-  growthTime: 1
-  desirability: 1
-  reproductiveUrge: 1
+  health: 100
+  stamina: 50
+  size: 2
+  speed: 2
+  hearingDistance: 40
+  sightDistance: 30
+  gestationDuration: 60
+  growthTime: 120
+  desirability: 70
+  reproductiveUrge: 150
