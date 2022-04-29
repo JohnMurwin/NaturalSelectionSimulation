@@ -65,7 +65,10 @@ namespace NaturalSelectionSimulation
         /// <param name="rabbit"></param>
         public void SetInitialGenes(GameObject rabbit, int spawnNumber)
         {
-            // Healths
+            // Life Expectancy
+            rabbit.GetComponent<Rabbit_Genes>().LifeExpectancy = RabbitTraitsBaseSo.LifeExpectancy();
+            
+            // Health
             rabbit.GetComponent<Rabbit_Genes>().Health = RabbitTraitsBaseSo.Health();
 
             // Stamina

@@ -94,7 +94,6 @@ namespace NaturalSelectionSimulation
             IsChild = true;
         }
 
-        
         /// <summary>
         /// Uses a bit of random math to calculate the genes to return (either using father/mother values, or mutating them)
         /// </summary>
