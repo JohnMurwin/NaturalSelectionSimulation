@@ -16,6 +16,8 @@ namespace NaturalSelectionSimulation
         
         public GameObject[] rabbitPrefabs;
         public GameObject rabbitParentContainer;
+
+        public RabbitTraits_BaseSO RabbitTraitsBaseSo;
         
         #endregion
 
@@ -31,7 +33,6 @@ namespace NaturalSelectionSimulation
 
         private void Awake()
         {
-            //StartCoroutine(SpawnAnimals()); // Spawn Rabbits before we start
             SpawnAnimals();
         }
 
@@ -65,21 +66,21 @@ namespace NaturalSelectionSimulation
         private void SetInitialGenes(GameObject rabbit, int spawnNumber)
         {
             // Health
-            rabbit.GetComponent<Rabbit_Genes>().Health = RabbitTraits_BaseSO.Health();
+            rabbit.GetComponent<Rabbit_Genes>().Health = RabbitTraitsBaseSo.Health();
 
             // Stamina
-            rabbit.GetComponent<Rabbit_Genes>().Stamina = RabbitTraits_BaseSO.Stamina();
+            rabbit.GetComponent<Rabbit_Genes>().Stamina = RabbitTraitsBaseSo.Stamina();
 
             // Size
-            float size = RabbitTraits_BaseSO.Size();
+            float size = RabbitTraitsBaseSo.Size();
             rabbit.GetComponent<Rabbit_Genes>().Size = size;
             rabbit.transform.localScale = new Vector3(size, size, size);
 
             // Speed
-            rabbit.GetComponent<Rabbit_Genes>().Speed = RabbitTraits_BaseSO.Speed();
+            rabbit.GetComponent<Rabbit_Genes>().Speed = RabbitTraitsBaseSo.Speed();
             
             // Sensory Distance
-            rabbit.GetComponent<Rabbit_Genes>().SensoryDistance = RabbitTraits_BaseSO.SensoryDistance();
+            rabbit.GetComponent<Rabbit_Genes>().SensoryDistance = RabbitTraitsBaseSo.SensoryDistance();
             
             // Gender
             if (spawnNumber % 2 == 0)
@@ -92,16 +93,16 @@ namespace NaturalSelectionSimulation
             }
             
             // Gestation (only females get)
-            rabbit.GetComponent<Rabbit_Genes>().GestationDuration = RabbitTraits_BaseSO.GestationDuration();
+            rabbit.GetComponent<Rabbit_Genes>().GestationDuration = RabbitTraitsBaseSo.GestationDuration();
 
             // Growth
-            rabbit.GetComponent<Rabbit_Genes>().GrowthTime = RabbitTraits_BaseSO.GrowthTime();
+            rabbit.GetComponent<Rabbit_Genes>().GrowthTime = RabbitTraitsBaseSo.GrowthTime();
 
             // Desirability (females will use this number as a target)
-            rabbit.GetComponent<Rabbit_Genes>().Desirability = RabbitTraits_BaseSO.Desirability();
+            rabbit.GetComponent<Rabbit_Genes>().Desirability = RabbitTraitsBaseSo.Desirability();
 
             // Reproductive Urge
-            rabbit.GetComponent<Rabbit_Genes>().ReproductiveUrge = RabbitTraits_BaseSO.ReproductiveUrge();
+            rabbit.GetComponent<Rabbit_Genes>().ReproductiveUrge = RabbitTraitsBaseSo.ReproductiveUrge();
         }
 
 
