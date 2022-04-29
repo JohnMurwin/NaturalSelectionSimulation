@@ -345,16 +345,16 @@ namespace NaturalSelectionSimulation
         
         private void SetBaseGeneValues()
         {
-            baseRabbitGenes.health = healthSlider.value;
-            baseRabbitGenes.stamina = staminaSlider.value;
-            baseRabbitGenes.size = sizeSlider.value;
-            baseRabbitGenes.speed = speedSlider.value;
-            baseRabbitGenes.hearingDistance = hearingSlider.value;
-            baseRabbitGenes.sightDistance = sightSlider.value;
-            baseRabbitGenes.gestationDuration = gestationSlider.value;
-            baseRabbitGenes.growthTime = growthSlider.value;
-            baseRabbitGenes.desirability = desirabilitySlider.value;
-            baseRabbitGenes.reproductiveUrge = reproductiveSlider.value;
+            //baseRabbitGenes.health = healthSlider.value;
+            //baseRabbitGenes.stamina = staminaSlider.value;
+            //baseRabbitGenes.size = sizeSlider.value;
+            //baseRabbitGenes.speed = speedSlider.value;
+            //baseRabbitGenes.hearingDistance = hearingSlider.value;
+            //baseRabbitGenes.sightDistance = sightSlider.value;
+            //baseRabbitGenes.gestationDuration = gestationSlider.value;
+            //baseRabbitGenes.growthTime = growthSlider.value;
+            //baseRabbitGenes.desirability = desirabilitySlider.value;
+            //baseRabbitGenes.reproductiveUrge = reproductiveSlider.value;
         }
     }
 }
