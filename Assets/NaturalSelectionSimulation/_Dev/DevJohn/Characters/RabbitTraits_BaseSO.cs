@@ -9,6 +9,8 @@ namespace NaturalSelectionSimulation
     public class RabbitTraits_BaseSO : ScriptableObject
     {
         #region Public Traits
+        [SerializeField, Tooltip("How much health this animal has.")]
+        public float lifeExpectancy = 360f;
 
         [SerializeField, Tooltip("How much health this animal has.")]
         public float health = 100f;
@@ -34,18 +36,21 @@ namespace NaturalSelectionSimulation
         [SerializeField, Tooltip("How fast this animal grows to be an adult.")]
         public float growthTime = 120f;
 
-        [SerializeField,
-         Tooltip("How desirable this animal is to its mates (females will use this number as a target)).")]
+        [SerializeField, Tooltip("How desirable this animal is to its mates (females will use this number as a target)).")]
         public float desirability = 100f;
 
-        [SerializeField,
-         Tooltip("How quickly this animal will want to mate again (if pregnant, disabled until offspring birthed).")]
+        [SerializeField, Tooltip("How quickly this animal will want to mate again (if pregnant, disabled until offspring birthed).")]
         public float reproductiveUrge = 150f;
 
         #endregion
 
 
         #region TraitFunctions
+
+        public float LifeExpectancy()
+        {
+            return ValueRandomizerFormula(lifeExpectancy, 1f);
+        }
 
         public float Health()
         {

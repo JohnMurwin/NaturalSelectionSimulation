@@ -1394,6 +1394,7 @@ GameObject:
   - component: {fileID: 8206490617575824119}
   - component: {fileID: 1256886929}
   - component: {fileID: 8185439969449331156}
+  - component: {fileID: 1869924218}
   m_Layer: 0
   m_Name: Rabbit
   m_TagString: Rabbit
@@ -1489,10 +1490,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPregnant: 0
   mateTimer: 0
+  birthTimer: 0
+  growthTimer: 0
   CurrentState: 0
-  DEBUGBABY: {fileID: 2290947477075582693, guid: a7a83a2e58720415c9e4e2c28c17e819, type: 3}
-  _targetLocation: {x: 0, y: 0, z: 0}
-  _chosenMate: {fileID: 0}
   _showGizmos: 0
   _drawWanderRange: 1
   _drawTargetLine: 1
@@ -1509,12 +1509,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gender: 0
+  child: 0
   health: 0
   stamina: 0
   size: 0
   speed: 0
   sensoryDistance: 0
   gestationDuration: 0
+  lifeExpectency: 0
   growthTime: 0
   desirability: 0
   reproductiveUrge: 0
@@ -1530,6 +1532,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688944a5d9574607af677250f79904ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1869924218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8206490617575824116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d67fa2cd0670428895654bb22089670d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timePassed: 0
 --- !u!1 &8206494462990575746
 GameObject:
   m_ObjectHideFlags: 0

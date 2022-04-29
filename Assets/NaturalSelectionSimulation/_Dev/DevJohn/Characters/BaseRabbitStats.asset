@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 661122ea98b94d1293a056ff5d4e9924, type: 3}
   m_Name: BaseRabbitStats
   m_EditorClassIdentifier: 
+  lifeExpectancy: 360
   health: 100
   stamina: 50
   size: 2

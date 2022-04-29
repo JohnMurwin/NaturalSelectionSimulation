@@ -10,21 +10,26 @@ namespace NaturalSelectionSimulation
     public class Rabbit_Controller : MonoBehaviour
     {
         #region PublicVariables
-        public bool isPregnant = false; //TODO: convert to private
-        public float mateTimer = 0; //TODO: convert to private
-        public float birthTimer = 0; //TODO: convert to private
-        public float growthTimer = 0; //TODO: convert to private
-        
+        public float deadFadeTime = 15f;
+
         public AIState CurrentState;    // Holder for our Enum State
 
         #endregion
 
         #region PrivateVariables
+        
+        private bool isPregnant = false;
+        private float mateTimer = 0;
+        private float birthTimer = 0;
+        private float growthTimer = 0;
 
         private const float ContingencyDistance = 1f; // distance for which to check against to determine "if arrived" 
         
         private float _idleTimeOut = 5f;    // short initial time, random time later
         private float _wanderRange;
+        
+        private float _timePassed = 0f;
+        private float _lifeExpectancyLimit;
 
         private Vector3 _origin;
         private Vector3 _targetLocation;
@@ -71,6 +76,7 @@ namespace NaturalSelectionSimulation
             Wander,
             SearchingForMate,
             Mating,
+            Dying,
             Dead
         }
         
@@ -116,6 +122,7 @@ namespace NaturalSelectionSimulation
         private void Start()
         {
             _wanderRange = _genes.SensoryDistance;  // TODO: Undo this WanderRange eventually
+            _lifeExpectancyLimit = _genes.LifeExpectancy;
         }
 
         private void Update()
@@ -129,6 +136,14 @@ namespace NaturalSelectionSimulation
             if (_genes.IsChild)
             {
                 StartCoroutine(GrowSize());
+            }
+            
+            //Death Timer
+            _timePassed += Time.deltaTime;
+            
+            if(_timePassed >= _lifeExpectancyLimit) // TODO: handle if starved or out of water also
+            {
+                SetState(AIState.Dying);
             }
             
             // Birth Timer
@@ -155,6 +170,10 @@ namespace NaturalSelectionSimulation
             // ! Remember these functions are for MOVING the character, all other logic is handled in HandleSomeThing();
             switch (CurrentState)
             {
+                case AIState.Dying:
+                    // 
+                    break;  
+                
                 case AIState.Mating:
                     // because we arent going to move while mating this will be an empty call, but might need it for animations
                     break;  
@@ -187,7 +206,7 @@ namespace NaturalSelectionSimulation
             {
                 _navMeshAgent.destination = _targetLocation;
                 _navMeshAgent.speed = _genes.Speed;
-                _navMeshAgent.angularSpeed = _genes.Speed / _genes.Size;
+                _navMeshAgent.angularSpeed = _genes.Speed;
             }
             else
                 Debug.LogError("No NavMeshAgent found, need Agent to move to targetLocation...");
@@ -230,7 +249,6 @@ namespace NaturalSelectionSimulation
             {
                 case AIState.Mating:
                     HandleMating();
-
                     break;
                 
                 case AIState.SearchingForMate:
@@ -243,6 +261,10 @@ namespace NaturalSelectionSimulation
                 
                 case AIState.Wander:
                     HandleWander();
+                    break;
+                
+                case AIState.Dying:
+                    HandleDeath();
                     break;
                 
                 default:
@@ -286,6 +308,24 @@ namespace NaturalSelectionSimulation
             _offspringFather = null;
             isPregnant = false;
             birthTimer = 0;
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        private void HandleDeath()
+        {
+            _animator.SetBool("isIdle", false);
+            _animator.SetBool("isWalking", false);
+            
+            float anim = Random.Range(0f, 1f);
+            
+            if (anim < 0.5f)
+                _animator.SetBool("isDead_0", true);
+            else
+                _animator.SetBool("isDead_1", true);
+            
+            Destroy(gameObject, deadFadeTime);   
         }
 
         /// <summary>
@@ -366,7 +406,7 @@ namespace NaturalSelectionSimulation
             _animator.SetBool("isIdle", false);
             _animator.SetBool("isWalking", true);
         }
-
+        
         /// <summary>
         /// 
         /// </summary>
