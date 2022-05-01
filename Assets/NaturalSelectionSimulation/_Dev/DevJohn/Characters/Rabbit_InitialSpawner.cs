@@ -49,7 +49,9 @@ namespace NaturalSelectionSimulation
             {
                 FindSpawnPosition();    // Find & Validate a spawn position
                 
-                GameObject obj = Instantiate(rabbitPrefabs[Random.Range(0,rabbitPrefabs.Length)], new Vector3(_spawnPos.x, 0.5f, _spawnPos.z), Quaternion.identity);  // instantiate rabbit prefab at our spawn pos 
+                GameObject obj = Instantiate(rabbitPrefabs[Random.Range(0, rabbitPrefabs.Length)],
+                    new Vector3(_spawnPos.x, 0.5f, _spawnPos.z),
+                    Quaternion.identity); // instantiate rabbit prefab at our spawn pos 
                 
                 obj.transform.parent = rabbitParentContainer.transform; // set spawned rabbits parent to parent container
 
@@ -133,18 +135,17 @@ namespace NaturalSelectionSimulation
         /// <param name="targetPosition">Position to check</param>
         void ValidatePosition(ref Vector3 targetPosition)
         {
+            UnityEngine.AI.NavMeshHit hit; // point for good hit
 
-                UnityEngine.AI.NavMeshHit hit; // point for good hit
+            if (!UnityEngine.AI.NavMesh.SamplePosition(targetPosition, out hit, Mathf.Infinity,
+                    1 << UnityEngine.AI.NavMesh.GetAreaFromName("Walkable")))
+            {
+                Debug.LogError("Unable to get NavMesh hit sample. Need a Nav Mesh layer with name 'Walkable'");
+                enabled = false;
+                return;
+            }
 
-                if (!UnityEngine.AI.NavMesh.SamplePosition(targetPosition, out hit, Mathf.Infinity,
-                        1 << UnityEngine.AI.NavMesh.GetAreaFromName("Walkable")))
-                {
-                    Debug.LogError("Unable to get NavMesh hit sample. Need a Nav Mesh layer with name 'Walkable'");
-                    enabled = false;
-                    return;
-                }
-
-                targetPosition = hit.position;  // if we find a good location, return it
+            targetPosition = hit.position;  // if we find a good location, return it
         }
 
         #endregion
