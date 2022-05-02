@@ -6,20 +6,13 @@ namespace NaturalSelectionSimulation
     {
         #region Public Variables
 
-        private GameObject[] rabbitList;
-
-
         #endregion
 
         #region Private Variables
 
-
-
         #endregion
 
         #region Unity Methods
-
-
 
         #endregion
 

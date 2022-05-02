@@ -31,6 +31,9 @@ namespace NaturalSelectionSimulation
         private float _timePassed = 0f;
         private float _lifeExpectancyLimit;
 
+        public float _foodLevel = 0f;
+        private float _thirstLevel = 0f;
+ 
         private Vector3 _origin;
         private Vector3 _targetLocation;
         private Vector3 _distanceFromTarget;
@@ -38,6 +41,8 @@ namespace NaturalSelectionSimulation
 
         private GameObject _chosenMate = null;
         private GameObject _offspringFather = null;
+
+        private GameObject _chosenFood = null;
         
         private Animator _animator;
         private CharacterController _characterController;
@@ -47,6 +52,8 @@ namespace NaturalSelectionSimulation
         private Rabbit_MateController _mateController;
 
         private Rabbit_ReproductionController _reproductionController;
+
+        private GrassManager _grassManager;
 
 
         #endregion
@@ -74,8 +81,10 @@ namespace NaturalSelectionSimulation
         {
             Idle,
             Wander,
+            FindFood,
             SearchingForMate,
             Mating,
+            Fleeing,
             Dying,
             Dead
         }
@@ -116,13 +125,17 @@ namespace NaturalSelectionSimulation
             _mateController = GetComponent<Rabbit_MateController>();
 
             _reproductionController = GameObject.Find("RabbitSpawner").GetComponent<Rabbit_ReproductionController>();
-
+            _grassManager = GameObject.Find("GrassManager").GetComponent<GrassManager>();
         }
 
         private void Start()
         {
             _wanderRange = _genes.SensoryDistance;  // TODO: Undo this WanderRange eventually
+            
             _lifeExpectancyLimit = _genes.LifeExpectancy;
+
+            _foodLevel = _genes.Health * 4; //TODO: replace with dedicated food value
+            _thirstLevel = _genes.Stamina * 4; // TODO: replace with dedicated water value
         }
 
         private void Update()
@@ -138,10 +151,11 @@ namespace NaturalSelectionSimulation
                 StartCoroutine(GrowSize());
             }
             
-            //Death Timer
+            // Timers
             _timePassed += Time.deltaTime;
-            
-            if(_timePassed >= _lifeExpectancyLimit) // TODO: handle if starved or out of water also
+            _foodLevel -= Time.deltaTime;
+
+            if (_timePassed >= _lifeExpectancyLimit || _foodLevel <= 0) // TODO: handle if starved or out of water also
             {
                 SetState(AIState.Dying);
             }
@@ -160,9 +174,14 @@ namespace NaturalSelectionSimulation
                 mateTimer += Time.deltaTime * 1;
 
             // sort out if need to eat, drink, mate, or flee
-            if (mateTimer >= _genes.ReproductiveUrge && !isPregnant && (_chosenMate == null) && !_genes.IsChild) //TODO: tie in hunger and thirst
+            if (mateTimer >= _genes.ReproductiveUrge && !isPregnant && (_chosenMate == null) && !_genes.IsChild) 
             {
                 SetState(AIState.SearchingForMate);
+            }
+
+            if (_foodLevel <= (_genes.Health / 4) && (CurrentState != AIState.Fleeing)) 
+            {
+                SetState(AIState.FindFood);
             }
 
             // TODO: handle dying of thirst and hunger here
@@ -170,6 +189,12 @@ namespace NaturalSelectionSimulation
             // ! Remember these functions are for MOVING the character, all other logic is handled in HandleSomeThing();
             switch (CurrentState)
             {
+                case AIState.FindFood:
+                    //
+                    if (_chosenFood != null)
+                        MoveToTarget(transform.position, _chosenFood.transform.position);
+                    break;
+                
                 case AIState.Dying:
                     // 
                     break;  
@@ -247,6 +272,10 @@ namespace NaturalSelectionSimulation
             CurrentState = state;
             switch (CurrentState)
             {
+                case AIState.FindFood:
+                    HandleFood();
+                    break;
+                
                 case AIState.Mating:
                     HandleMating();
                     break;
@@ -308,6 +337,20 @@ namespace NaturalSelectionSimulation
             _offspringFather = null;
             isPregnant = false;
             birthTimer = 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void HandleFood()
+        {
+            Debug.Log("Im Hungry....");
+            
+            if (_chosenFood == null)
+                _chosenFood = _grassManager.FindNearestGrass(transform.position);
+
+            _animator.SetBool("isIdle", false);
+            _animator.SetBool("isWalking", true);
         }
         
         /// <summary>
@@ -424,6 +467,15 @@ namespace NaturalSelectionSimulation
             // if we are at target, figure out state
             if (_distanceFromTarget.magnitude <= ContingencyDistance)
             {
+                if (CurrentState == AIState.FindFood)
+                {
+                    SetState(AIState.Idle); // idle down to 'eat'
+                    
+                    _chosenFood.GetComponent<Grass>().KillPlant();  // kill plant
+
+                    _foodLevel = _genes.Health; // reset food level
+                }
+                    
                 if (CurrentState == AIState.Wander)
                     SetState(AIState.Idle);
                 if (CurrentState == AIState.SearchingForMate) // we found a mate

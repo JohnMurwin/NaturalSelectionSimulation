@@ -50,6 +50,7 @@ MonoBehaviour:
   rabbitPrefabs:
   - {fileID: 8206490617575824116, guid: 751bd9aadafea476fbe54b57b57970b3, type: 3}
   rabbitParentContainer: {fileID: 0}
+  RabbitTraitsBaseSo: {fileID: 11400000, guid: 8c49053edf1b546eda717e3a6ab424b2, type: 2}
 --- !u!114 &4583882195077845233
 MonoBehaviour:
   m_ObjectHideFlags: 0

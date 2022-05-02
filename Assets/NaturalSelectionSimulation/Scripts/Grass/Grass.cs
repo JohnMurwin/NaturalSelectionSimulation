@@ -20,7 +20,7 @@ namespace NaturalSelectionSimulation
 
         #region Unity Methods
 
-        private void Start()
+        private void Awake()
         {
             Position = transform.position;
             originalScale = transform.localScale;
