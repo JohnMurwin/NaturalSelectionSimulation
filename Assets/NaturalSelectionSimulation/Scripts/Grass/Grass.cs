@@ -46,8 +46,23 @@ namespace NaturalSelectionSimulation
 
         private IEnumerator GrassDeathSimulation()
         {
-            yield return ScaleDownToTarget(new Vector3(0,0,0), 2f);
+            //Kill Plant
+            Debug.Log("Killing Plant...");
+            yield return ScaleDownToTarget(new Vector3(0, 0, 0), 2f);
             IsAlive = false;
+
+            //Wait for the duration
+            float counter = 0;
+            while (counter < 60f)
+            {
+                counter += Time.deltaTime;
+                yield return null;
+            }
+
+            //Spawn Plant
+            Debug.Log("Plant re-spawning...");
+            yield return ScaleUpToTarget(originalScale, 2f);
+            IsAlive = true;
         }
 
         private IEnumerator GrassSpawnSimulation()
