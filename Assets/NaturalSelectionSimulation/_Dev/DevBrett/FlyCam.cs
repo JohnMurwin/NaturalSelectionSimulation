@@ -8,6 +8,9 @@ public class FlyCam : MonoBehaviour {
 	private float lookSensitivity = 1; // mouse look sensitivity
 	public float dampingCoefficient = 5; // how quickly you break to a halt after you stop your input
 	private bool _focusOnEnable = true; // whether or not to focus when camera starts up
+
+	Camera _camera;
+	public Camera orbitCamera;
 	
 	// variables setting the keys for movement
 	private KeyCode _forward = KeyCode.W;
@@ -39,12 +42,25 @@ public class FlyCam : MonoBehaviour {
 
 	private void Start()
 	{
+		_camera = Camera.main;
+		_camera.enabled = true;
+		orbitCamera.enabled = false;
 		lookSensitivity = PlayerPrefs.GetFloat("masterMouseSensitivity", 1);
 	}
 
 	void Update() {
-		if (_isPaused)
-			return;
+		if (_isPaused || Input.GetKeyDown(KeyCode.Space))
+        {
+            if (_camera.enabled)
+            {
+				orbitCamera.enabled = true;
+				_camera.enabled = false;
+            } else if (!_camera.enabled)
+            {
+				orbitCamera.enabled = false;
+				_camera.enabled = true;
+			}
+		}
 
 		// Input
 		if (_focused)
@@ -68,6 +84,12 @@ public class FlyCam : MonoBehaviour {
 		}
 		else {
 			Camera.main.fieldOfView -= Input.GetAxis("Mouse ScrollWheel") * _zoomIncriment;
+		}
+
+		// makes sure the camera can't go below the ground
+		if (transform.position.y <= 2)
+		{
+			transform.position = new Vector3(transform.position.x, 2f, transform.position.z);
 		}
 
 
