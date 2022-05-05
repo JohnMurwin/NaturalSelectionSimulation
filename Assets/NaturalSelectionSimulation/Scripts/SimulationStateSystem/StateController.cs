@@ -14,7 +14,9 @@ namespace NaturalSelectionSimulation
         [SerializeField]
         private bool _isFastForward = false;    
         [SerializeField]
-        private bool _isSlowDown = false;  
+        private bool _isSlowDown = false;
+
+        private bool isGameOver = false;
 
         private float _iterationDuration = 1f; 
         
@@ -52,7 +54,13 @@ namespace NaturalSelectionSimulation
         {
             //! TODO: REMOVE after Debug
             DEBUGsimulationSpeedText.text = DEBUGsimulationSpeed.ToString() + 'x';
-            
+
+            if (isGameOver)
+            {
+                Debug.Log("END THE GAME DANGIT");
+                PauseSimulation();
+            }
+
             // Input Check for System State
             if (!PauseMenu.activeSelf && Input.GetKeyDown(KeyCode.Space))    // Pause or Play
             {
@@ -112,6 +120,15 @@ namespace NaturalSelectionSimulation
         }
 
         #region Custom Methods
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public void EndGameSimulation()
+        {
+            isGameOver = true;
+        }
+        
         /// <summary>
         /// 
         /// </summary>
