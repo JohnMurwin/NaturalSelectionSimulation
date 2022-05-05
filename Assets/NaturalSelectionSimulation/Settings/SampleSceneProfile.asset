@@ -193,10 +193,10 @@ MonoBehaviour:
     max: 1
   lut:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   lutIntensity:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 0.336
     min: 0
     max: 1
   lutTexture:

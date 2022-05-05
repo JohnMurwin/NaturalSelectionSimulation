@@ -1393,9 +1393,10 @@ GameObject:
   - component: {fileID: 8309489808689839398}
   - component: {fileID: 8206490617575824119}
   - component: {fileID: 1256886929}
+  - component: {fileID: 8185439969449331156}
   m_Layer: 0
   m_Name: Rabbit
-  m_TagString: Untagged
+  m_TagString: Rabbit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1461,7 +1462,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8206490617575824116}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.18
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -1470,8 +1471,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: -0.08
+  m_Height: 0.37
+  m_BaseOffset: -0.04
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &8206490617575824119
@@ -1486,8 +1487,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2ec36bd2b9b4630be0d042e0b7e0882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deadFadeTime: 15
   CurrentState: 0
-  _wanderRange: 10
   _showGizmos: 0
   _drawWanderRange: 1
   _drawTargetLine: 1
@@ -1503,7 +1504,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd1372a891034e74bb8e6f12f1923e58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugSensoryDistance: 0
+  gender: 0
+  child: 0
+  health: 0
+  stamina: 0
+  size: 0
+  speed: 0
+  sensoryDistance: 0
+  gestationDuration: 0
+  lifeExpectency: 0
+  growthTime: 0
+  desirability: 0
+  reproductiveUrge: 0
+--- !u!114 &8185439969449331156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8206490617575824116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688944a5d9574607af677250f79904ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8206494462990575746
 GameObject:
   m_ObjectHideFlags: 0

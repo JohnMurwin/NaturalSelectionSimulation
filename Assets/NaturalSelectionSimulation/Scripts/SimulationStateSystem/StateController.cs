@@ -54,7 +54,7 @@ namespace NaturalSelectionSimulation
             DEBUGsimulationSpeedText.text = DEBUGsimulationSpeed.ToString() + 'x';
             
             // Input Check for System State
-            if (!PauseMenu.activeSelf && Input.GetKeyDown(KeyCode.P))    // Pause or Play
+            if (!PauseMenu.activeSelf && Input.GetKeyDown(KeyCode.Space))    // Pause or Play
             {
                 if (_isPaused)
                     PlaySimulation();
@@ -71,8 +71,13 @@ namespace NaturalSelectionSimulation
             if (!PauseMenu.activeSelf && Input.GetKeyDown(KeyCode.RightArrow))   // Fast Forward
                 FastForwardSimulation();
 
-            if (_isPaused && Input.GetKeyDown(KeyCode.M)) //temporary key binging
+            if (Input.GetKeyDown(KeyCode.Escape)) //Bring up main menu
             {
+                if (_isPaused)
+                    PlaySimulation();
+                else
+                    PauseSimulation();
+                
                 TogglePauseMenu();
             }
 
