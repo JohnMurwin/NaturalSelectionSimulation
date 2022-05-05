@@ -5,6 +5,6 @@ using UnityEngine;
 public class CameraSelect : MonoBehaviour
 {
     public void OnMouseDown(){
-        GlobalCamera.instance.followTransform = transform;
+        FlyCamMod.instance.followTransform = transform;
     }
 }
