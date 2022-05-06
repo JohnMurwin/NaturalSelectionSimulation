@@ -106,8 +106,6 @@ Delivery pipeline structure off of Github Actions custom written for this projec
 * Jonathan Gamble
 * Brett Cohen
 * Aaron Podovich
-* Bhavana Phani Mavuluri
-
 
 ### Built With
 * [Unity3D](https://unity.com)
