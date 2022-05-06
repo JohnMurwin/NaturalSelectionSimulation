@@ -52,7 +52,7 @@ namespace NaturalSelectionSimulation
         {
 	        // Locks Cursor Movement
 	        Cursor.lockState = CursorLockMode.Locked;
-	        Cursor.visible = false;
+	        //Cursor.visible = false;
         }
 
         void FixedUpdate()
