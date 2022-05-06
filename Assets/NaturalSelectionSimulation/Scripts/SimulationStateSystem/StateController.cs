@@ -21,6 +21,7 @@ namespace NaturalSelectionSimulation
         private float _iterationDuration = 1f; 
         
         private float _advanceTimer;
+        private SimulationIterationController _simulationIterationController;
         #endregion
 
 
@@ -37,6 +38,9 @@ namespace NaturalSelectionSimulation
         public Button FastForwardButton = null;
         public Button SlowModeButton = null;
 
+        public GameObject GameOverScreen = null;
+        public TMP_Text GameOverText = null;
+
         #endregion
 
 
@@ -48,6 +52,7 @@ namespace NaturalSelectionSimulation
         private void Start()
         {
             _advanceTimer = _iterationDuration;
+            _simulationIterationController = GameObject.Find("SimlationStateSystem").GetComponent<SimulationIterationController>();
         }
 
         private void Update()
@@ -127,6 +132,8 @@ namespace NaturalSelectionSimulation
         public void EndGameSimulation()
         {
             isGameOver = true;
+            GameOverText.text = $"GAME OVER!!! {Environment.NewLine}{Environment.NewLine} Final Score: {_simulationIterationController.currentScore.ToString("N0")}";
+            GameOverScreen.SetActive(true);
         }
         
         /// <summary>
