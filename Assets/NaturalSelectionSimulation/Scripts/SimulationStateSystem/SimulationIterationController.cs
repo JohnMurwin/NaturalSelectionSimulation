@@ -9,7 +9,7 @@ namespace NaturalSelectionSimulation
     {
         #region Private Variables
         private int _iterationCount = 0;    // simple counter for currentIteration number (our 'high-score')
-        private int currentScore = 0;
+        public int currentScore = 0;
 
         public TMP_Text SimulationTimeDisplayText;
         public TMP_Text SimulationCurrentScoreDisplayText;
