@@ -41,6 +41,8 @@ namespace NaturalSelectionSimulation
         public GameObject GameOverScreen = null;
         public TMP_Text GameOverText = null;
 
+        public Camera_Manager _CameraManager;
+
         #endregion
 
 
@@ -53,12 +55,20 @@ namespace NaturalSelectionSimulation
         {
             _advanceTimer = _iterationDuration;
             _simulationIterationController = GameObject.Find("SimlationStateSystem").GetComponent<SimulationIterationController>();
+            _CameraManager = GameObject.Find("Camera System").GetComponent<Camera_Manager>();
         }
 
         private void Update()
         {
             //! TODO: REMOVE after Debug
             DEBUGsimulationSpeedText.text = DEBUGsimulationSpeed.ToString() + 'x';
+
+            if (_iterationDuration == 4f)
+                _CameraManager.EnableOrbitCam();
+            else if (false)
+                _CameraManager.EnableFollowCam();
+            else
+                _CameraManager.EnableFlyCam();
 
             if (isGameOver)
             {
