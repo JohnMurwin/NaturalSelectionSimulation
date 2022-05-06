@@ -16,7 +16,7 @@ namespace NaturalSelectionSimulation
 	    [SerializeField][Tooltip("How fast the camera moves")]
 	    private float _acceleration = 30;
 	    [SerializeField][Tooltip("How quickly the camera looks around")]
-	    private float _lookSensitivity = 1;
+	    private float _lookSensitivity = 5;
 	    [SerializeField][Tooltip("How quickly you stop movement after no input")]
 	    private float _dampingCoefficient = 5;
 	    [SerializeField][Tooltip("Camera minimum Field Of View (for zoom)")]

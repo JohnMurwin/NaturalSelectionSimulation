@@ -6,7 +6,6 @@ namespace NaturalSelectionSimulation
     {
         #region Public Variables
 
-        
 
         #endregion
 
