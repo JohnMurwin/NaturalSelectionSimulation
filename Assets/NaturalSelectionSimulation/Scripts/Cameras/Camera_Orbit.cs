@@ -15,6 +15,13 @@ namespace NaturalSelectionSimulation
         #endregion
 
         #region Unity Methods
+        
+        private void Update()
+        {
+            // Locks Cursor Movement
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
 
         private void FixedUpdate()  //? using FixedUpdate instead of Update/LateUpdate to ensure physics step is even for smooth camera rotate
         {
