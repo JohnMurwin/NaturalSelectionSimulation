@@ -14,11 +14,14 @@ namespace NaturalSelectionSimulation
         [SerializeField]
         private bool _isFastForward = false;    
         [SerializeField]
-        private bool _isSlowDown = false;  
+        private bool _isSlowDown = false;
+
+        private bool isGameOver = false;
 
         private float _iterationDuration = 1f; 
         
         private float _advanceTimer;
+        private SimulationIterationController _simulationIterationController;
         #endregion
 
 
@@ -35,6 +38,11 @@ namespace NaturalSelectionSimulation
         public Button FastForwardButton = null;
         public Button SlowModeButton = null;
 
+        public GameObject GameOverScreen = null;
+        public TMP_Text GameOverText = null;
+
+        public Camera_Manager _CameraManager;
+
         #endregion
 
 
@@ -46,15 +54,30 @@ namespace NaturalSelectionSimulation
         private void Start()
         {
             _advanceTimer = _iterationDuration;
+            _simulationIterationController = GameObject.Find("SimlationStateSystem").GetComponent<SimulationIterationController>();
+            _CameraManager = GameObject.Find("Camera System").GetComponent<Camera_Manager>();
         }
 
         private void Update()
         {
             //! TODO: REMOVE after Debug
             DEBUGsimulationSpeedText.text = DEBUGsimulationSpeed.ToString() + 'x';
-            
+
+            if (_iterationDuration == 4f)
+                _CameraManager.EnableOrbitCam();
+            else if (false)
+                _CameraManager.EnableFollowCam();
+            else
+                _CameraManager.EnableFlyCam();
+
+            if (isGameOver)
+            {
+                Debug.Log("END THE GAME DANGIT");
+                PauseSimulation();
+            }
+
             // Input Check for System State
-            if (!PauseMenu.activeSelf && Input.GetKeyDown(KeyCode.P))    // Pause or Play
+            if (!PauseMenu.activeSelf && Input.GetKeyDown(KeyCode.Space))    // Pause or Play
             {
                 if (_isPaused)
                     PlaySimulation();
@@ -71,8 +94,13 @@ namespace NaturalSelectionSimulation
             if (!PauseMenu.activeSelf && Input.GetKeyDown(KeyCode.RightArrow))   // Fast Forward
                 FastForwardSimulation();
 
-            if (_isPaused && Input.GetKeyDown(KeyCode.M)) //temporary key binging
+            if (Input.GetKeyDown(KeyCode.Escape)) //Bring up main menu
             {
+                if (_isPaused)
+                    PlaySimulation();
+                else
+                    PauseSimulation();
+                
                 TogglePauseMenu();
             }
 
@@ -107,6 +135,17 @@ namespace NaturalSelectionSimulation
         }
 
         #region Custom Methods
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public void EndGameSimulation()
+        {
+            isGameOver = true;
+            GameOverText.text = $"GAME OVER!!! {Environment.NewLine}{Environment.NewLine} Final Score: {_simulationIterationController.currentScore.ToString("N0")}";
+            GameOverScreen.SetActive(true);
+        }
+        
         /// <summary>
         /// 
         /// </summary>

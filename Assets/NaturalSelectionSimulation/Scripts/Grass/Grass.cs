@@ -9,18 +9,18 @@ namespace NaturalSelectionSimulation
 
         public bool IsAlive = true;
         public Vector3 Position;
+        public Vector3 originalScale;
 
         #endregion
 
         #region Private Variables
 
-        private Vector3 originalScale;
 
         #endregion
 
         #region Unity Methods
 
-        private void Start()
+        private void Awake()
         {
             Position = transform.position;
             originalScale = transform.localScale;
@@ -46,8 +46,23 @@ namespace NaturalSelectionSimulation
 
         private IEnumerator GrassDeathSimulation()
         {
-            yield return ScaleDownToTarget(new Vector3(0,0,0), 2f);
+            //Kill Plant
+            Debug.Log("Killing Plant...");
+            yield return ScaleDownToTarget(new Vector3(0, 0, 0), 2f);
             IsAlive = false;
+
+            //Wait for the duration
+            float counter = 0;
+            while (counter < 60f)
+            {
+                counter += Time.deltaTime;
+                yield return null;
+            }
+
+            //Spawn Plant
+            Debug.Log("Plant re-spawning...");
+            yield return ScaleUpToTarget(originalScale, 2f);
+            IsAlive = true;
         }
 
         private IEnumerator GrassSpawnSimulation()

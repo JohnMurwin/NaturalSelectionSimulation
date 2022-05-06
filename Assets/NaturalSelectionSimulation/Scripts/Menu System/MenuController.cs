@@ -10,6 +10,8 @@ namespace NaturalSelectionSimulation
 {
     public class MenuController : MonoBehaviour
     {
+        public RabbitTraits_BaseSO baseRabbitGenes;
+        
         #region Options Menu Members/Properties
 
         [Header("Option Tabs")]
@@ -49,7 +51,7 @@ namespace NaturalSelectionSimulation
         #region Audio Settings Members/Properties
 
         [Header("Master Volume Setting")]
-        public TMP_Text masterSliderValue = null;
+        public Text masterSliderValue = null;
         public Slider masterSlider = null;
 
         #endregion
@@ -60,10 +62,21 @@ namespace NaturalSelectionSimulation
         public Toggle invertYToggle = null;
 
         [Header("Mouse Sensitivity Setting")]
-        public TMP_Text mouseSensitivitySliderValue = null;
+        public Text mouseSensitivitySliderValue = null;
         public Slider mouseSensitivitySlider = null;
 
         #endregion
+
+        public Slider healthSlider;
+        public Slider staminaSlider;
+        public Slider sizeSlider;
+        public Slider speedSlider;
+        public Slider hearingSlider;
+        public Slider sightSlider;
+        public Slider gestationSlider;
+        public Slider growthSlider;
+        public Slider desirabilitySlider;
+        public Slider reproductiveSlider;
 
         private void Start()
         {
@@ -316,6 +329,10 @@ namespace NaturalSelectionSimulation
 
         public void LoadSimulationScene()
         {
+            // write our values
+            SetBaseGeneValues();
+            
+            // load scene
             SceneManager.LoadScene(1, LoadSceneMode.Single);
         }
 
@@ -325,5 +342,19 @@ namespace NaturalSelectionSimulation
         }
 
         #endregion
+        
+        private void SetBaseGeneValues()
+        {
+            //baseRabbitGenes.health = healthSlider.value;
+            //baseRabbitGenes.stamina = staminaSlider.value;
+            //baseRabbitGenes.size = sizeSlider.value;
+            //baseRabbitGenes.speed = speedSlider.value;
+            //baseRabbitGenes.hearingDistance = hearingSlider.value;
+            //baseRabbitGenes.sightDistance = sightSlider.value;
+            //baseRabbitGenes.gestationDuration = gestationSlider.value;
+            //baseRabbitGenes.growthTime = growthSlider.value;
+            //baseRabbitGenes.desirability = desirabilitySlider.value;
+            //baseRabbitGenes.reproductiveUrge = reproductiveSlider.value;
+        }
     }
 }
